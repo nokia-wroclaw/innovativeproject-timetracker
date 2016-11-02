@@ -1,0 +1,20 @@
+/* app css stylesheet */
+
+body {
+  margin: 1em;
+}
+
+a, p {
+  text-decoration: none;
+  color: #A65600
+}
+
+a:hover {
+  background-color: #FFBC73;
+  color: #A65600;
+}
+
+button {
+  background-color: #FFBC73;
+  color: #A65600;
+}
