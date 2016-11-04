@@ -21,9 +21,7 @@
     <div ng-controller="sendingStateController">
         <button ng-click="changeSendingState()">{{sendingStateText}}</button>
         <p>Time resolution</p>
-        <input type="number" name="minutes" min="1" max="15" ng-model="timeResolution">
-    </div>
-    <div ng-controller="redirectController">
+        <input type="number" ng-change="syncTimeResolution()" min="1" max="15" ng-model="timeResolution">
         <button ng-click="redirect()">Go to website</button>
     </div>
 </div>
@@ -35,6 +33,7 @@
 
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="bower_components/angular-chrome-storage/angular-chrome-storage.js"></script>
   <script src="app.js"></script>
   <script src="components/version/version.js"></script>
   <script src="components/version/version-directive.js"></script>

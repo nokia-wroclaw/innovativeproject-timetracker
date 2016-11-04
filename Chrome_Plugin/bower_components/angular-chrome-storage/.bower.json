@@ -1,0 +1,20 @@
+{
+  "name": "angular-chrome-storage",
+  "version": "0.0.6",
+  "main": "localwrapper.js",
+  "ignore": [],
+  "dependencies": {
+    "angular": ">=1.2.0"
+  },
+  "homepage": "https://github.com/jimbocoder/angular-chrome-storage",
+  "_release": "0.0.6",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.0.6",
+    "commit": "7b4ccbc798c142b0bce6e26052cb3e909b63665f"
+  },
+  "_source": "https://github.com/jimbocoder/angular-chrome-storage.git",
+  "_target": "^0.0.6",
+  "_originalSource": "angular-chrome-storage",
+  "_direct": true
+}

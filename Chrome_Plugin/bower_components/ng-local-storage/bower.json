@@ -1,0 +1,21 @@
+{
+  "name": "ng-local-storage",
+  "version": "0.0.6",
+  "description": "LocalStorage wrapper for AngularJS",
+  "homepage": "https://github.com/evanshortiss/ng-local-storage",
+  "authors": [
+    "Evan Shortiss"
+  ],
+  "main": "./dist/ng-local-storage.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "angular-mocks": "1.2.12"
+  }
+}

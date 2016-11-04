@@ -6,6 +6,6 @@
     "default_popup": "index.html",
     "default_icon": "icon.png"
   },
-  "permissions" : ["notifications"],
+  "permissions" : ["notifications", "storage", "debugger"],
   "manifest_version" : 2
 }
