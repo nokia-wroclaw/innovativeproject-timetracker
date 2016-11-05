@@ -16,6 +16,7 @@ import play.mvc.*;
 
 import views.html.*;
 
+
 /**
  * This controller contains an action to handle HTTP requests
  * to the application's home page.
@@ -33,6 +34,15 @@ public class HomeController extends Controller {
      */
     public Result index() {
         return ok(index.render("Hello World!"));
+        
+    }
+    /*
+     * Action generates ErrorPage
+     * TODO- Do it better;
+     * @return Page with error
+     */
+    public Result genError(){
+    	return ok("ERROR- Login or password already exist in database");
     }
     /*
      *Metoda sluzaca do weryfikacji hasel i loginow
@@ -70,6 +80,7 @@ public class HomeController extends Controller {
            if((samelogin==1)||(samepass==1))
            {
              System.out.println("Login or password alreay exist !");
+             return redirect(routes.HomeController.genError());
            }
            else
            {
