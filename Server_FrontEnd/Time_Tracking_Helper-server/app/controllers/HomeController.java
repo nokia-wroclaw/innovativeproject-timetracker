@@ -35,18 +35,49 @@ public class HomeController extends Controller {
         return ok(index.render("Hello World!"));
     }
     /*
-     * Akcja sluzaca do dodania uzytkownika do tabeli Users
+     *Metoda sluzaca do weryfikacji hasel i loginow
+     *przed dodaniem użytkownika do tabeli Users
      * @return: przekierowanie na strone glowna
-     * TODO: weryfikacja danych (wykrycie bledow, zdublowanie loginow itp.)
      */
-    public Result addUser() {
-        Form<Users> userForm = formFactory.form(Users.class);
-        
-        Users user = userForm.bindFromRequest().get();
-        user.save();
-        //return ok("Product: " + product.name); // DEBUG
+     public Result addUser() {
+         Form<Users> userForm = formFactory.form(Users.class);
+         Users user = userForm.bindFromRequest().get();
+         Model.Finder<Integer, Users> finder = new Model.Finder<>(Users.class);
+         List<Users> users = finder.all();
+         String log=user.login;
+         String pass=user.password;
+         if(users.isEmpty())
+         {
+           user.save();
+         }
+         else
+         {
+           int samelogin=0;
+           int samepass=0;
+           int i=0;
+           while((i<users.size())&&(samelogin==0)&&(samepass==0))
+           {
+              if(users.get(i).login.equals(log))
+              {
+                samelogin=1;
+              }
+              if(users.get(i).password.equals(pass))
+              {
+                samepass=1;
+              }
+              i++;
+           }
+           if((samelogin==1)||(samepass==1))
+           {
+             System.out.println("Login or password alreay exist !");
+           }
+           else
+           {
+             user.save();
+           }
+        }
         return redirect(routes.HomeController.index());
-    }
+    }           
     /*
      * Metoda sluzaca do wypisania wszystkich danych zawartych w tabeli
      * @return: zawartosc tabeli Users- wszystkie krotki
