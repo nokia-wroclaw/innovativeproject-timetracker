@@ -17,3 +17,6 @@ POST    /user               		controllers.HomeController.addUser
 
 # Kontroler GET sluzacy do wyswietlenia wyniku zwracanego przez getUsers
 GET     /users						controllers.HomeController.getUsers
+
+# Kontroler GET sluzacy do wyswietlenia bledu
+GET    /error						controllers.HomeController.genError
