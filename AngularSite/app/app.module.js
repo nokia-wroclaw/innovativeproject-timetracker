@@ -3,11 +3,13 @@
     ng.core.NgModule({
       imports: [ 
 		ng.platformBrowser.BrowserModule,
-		ng.forms.FormsModule
+		ng.forms.FormsModule,
 	  ],
       declarations: [ 
 		app.AppComponent,
-		app.RegisterFormComponent
+		app.RegisterFormComponent,
+		app.LoginRegisterComponent,
+		app.LoginFormComponent
 	  ],
       bootstrap: [ app.AppComponent ]
     })

@@ -1,16 +1,22 @@
 (function(app) {
-  app.RegisterFormComponent = ng.core
+  app.LoginRegisterComponent = ng.core
     .Component({
-      selector: 'register-form',
-      templateUrl: 'app/components/register-form.component.html'
+      selector: 'login-register',
+      templateUrl: 'app/components/login-register.component.html'
     })
     .Class({
       constructor: [function() {
-        this.model = new app.User('', '', '', '', '');
-        this.submitted = false;
+		this.choiceloginregister = false;
+		this.login = true;
+		this.register = true;
       }],
-      onSubmit: function() {
-        this.submitted = true;
+      onRegister: function() {
+        this.register = false;
+		this.login = true;
+      },
+	  onLogin: function() {
+        this.login = false;
+		this.register = true;
       },
       // TODO: Remove this when we're done
       diagnostic: function() {

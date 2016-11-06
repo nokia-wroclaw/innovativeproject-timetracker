@@ -20,16 +20,34 @@
 	<script src="node_modules/@angular/forms/bundles/forms.umd.js"></script>
     <!-- 2. Load our 'modules' -->
 	<script src='app/model/user.js'></script>
+	<script src='app/model/userLogin.js'></script>
 	<script src='app/components/register-form.component.js'></script>
+	<script src='app/components/login-form.component.js'></script>
+	<script src='app/components/login-register.component.js'></script>
     <script src='app/app.component.js'></script>
     <script src='app/app.module.js'></script>
     <script src='app/main.js'></script>
+
+	
+	<script type = "text/javascript">
+		function gget() {
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					document.getElementById("demo").innerHTML = xmlhttp.responseText;
+				}
+			};
+			xhttp.open("GET", "http://localhost:9000/users", true);
+			xhttp.send(); 
+		}
+	</script>
 
   </head>
 
   <!-- 3. Display the application -->
   <body>
-    <my-app>Loading...</my-app>
+	
+	<my-app>Loading...</my-app>
   </body>
 
 </html>
