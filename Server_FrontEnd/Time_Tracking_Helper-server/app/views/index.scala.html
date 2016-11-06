@@ -15,6 +15,15 @@
      * Get an `Html` object by calling the built-in Play welcome
      * template and passing a `String` message.
      *@
-    @message
+	<ul id="users"> </ul>
+    <p>Add a new User</p>
+    <form action="@routes.HomeController.addUser()" method="post">
+        Login: <input type="text" name="Login"/><br>
+		Hasło: <input type="text" name="Password"/><br>
+		Imię: <input type="text" name="Name"/><br>
+		Nazwisko: <input type="text" name="Surname"/><br>
+		Email: <input type="text" name="Email"/><br>
+        <button>Add User</button>
+    </form>
 
 }
