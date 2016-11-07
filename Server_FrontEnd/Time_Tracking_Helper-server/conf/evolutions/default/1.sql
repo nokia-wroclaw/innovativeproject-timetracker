@@ -10,6 +10,7 @@ create table users (
   name                          varchar(255),
   surname                       varchar(255),
   email                         varchar(255),
+  log                           boolean,
   constraint pk_users primary key (id)
 );
 create sequence users_seq;
