@@ -88,7 +88,32 @@ public class HomeController extends Controller {
            }
         }
         return redirect(routes.HomeController.index());
-    }           
+    }
+    /*
+     *Metoda sluzaca do podawania danych o uzytkowniku,
+     *na podstawie loginu i hasła
+     * @return: przekierowanie na strone glowna
+     */
+     public Result aboutUser(){
+         Form<Users> userForm = formFactory.form(Users.class);
+         Users user = userForm.bindFromRequest().get();
+         Model.Finder<Integer, Users> finder = new Model.Finder<>(Users.class);
+         List<Users> users = finder.all();
+         String log=user.login;
+         String pass=user.password;
+           int same=0;
+           int i=0;
+           while((i<users.size())&&(same==0))
+           {
+              if((users.get(i).login.equals(log))&&(users.get(i).password.equals(pass)))
+              {
+                System.out.println("User name: "+users.get(i).name+"User surname: "+users.get(i).surname);
+                same=1;
+              }
+              i++;        
+           }
+         return redirect(routes.HomeController.index());
+   }              
     /*
      * Metoda sluzaca do wypisania wszystkich danych zawartych w tabeli
      * @return: zawartosc tabeli Users- wszystkie krotki
