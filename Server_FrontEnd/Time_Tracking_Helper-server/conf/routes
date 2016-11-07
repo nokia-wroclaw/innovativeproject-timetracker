@@ -22,7 +22,13 @@ GET     /users						controllers.HomeController.getUsers
 GET    /error						controllers.HomeController.genError
 
 # Kontroler GET sluzacy do wyswietlenia danej osoby oraz potwierdzenia zalogowania
-GET    /login						controllers.HomeController.getName(name: String, surname: String)
+GET    /login/ok					controllers.HomeController.getName(name: String, surname: String)
 
 # Kontroler GET sluzacy do potwierdzenia wylogowania
-GET    /logout						controllers.HomeController.logoutName(login: String)
+GET    /logout/ok					controllers.HomeController.logoutName(login: String)
+
+# Kontroler POST sluzacy do logowania użytkownika do systemu
+POST    /login              		controllers.HomeController.loginUser
+
+# Kontroler POST sluzacy do wylogowania użytkownika z systemu
+POST    /logout            			controllers.HomeController.logoutUser
