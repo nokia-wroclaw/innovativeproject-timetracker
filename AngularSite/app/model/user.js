@@ -6,6 +6,5 @@
 		this.login = login;
 		this.email = email;
 		this.pwd = pwd;
-
 	}
 })(window.app || (window.app = {}));

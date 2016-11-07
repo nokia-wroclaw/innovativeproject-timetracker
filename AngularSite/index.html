@@ -28,25 +28,11 @@
     <script src='app/app.module.js'></script>
     <script src='app/main.js'></script>
 
-	
-	<script type = "text/javascript">
-		function gget() {
-			var xhttp = new XMLHttpRequest();
-			xhttp.onreadystatechange = function() {
-				if (this.readyState == 4 && this.status == 200) {
-					document.getElementById("demo").innerHTML = xmlhttp.responseText;
-				}
-			};
-			xhttp.open("GET", "http://localhost:9000/users", true);
-			xhttp.send(); 
-		}
-	</script>
 
   </head>
 
   <!-- 3. Display the application -->
   <body>
-	
 	<my-app>Loading...</my-app>
   </body>
 
