@@ -1,0 +1,12 @@
+<div class="container">
+	<div [hidden]="choiceloginregister">
+		<button class="btn btn-default" (click)="onLogin()">Login</button>
+		<button class="btn btn-default" (click)="onRegister()" >Register</button>
+	</div>
+	<div [hidden]="login">
+		<login-form></login-form>
+	</div>
+	<div [hidden]="register">		
+		<register-form></register-form>
+	</div>
+</div>

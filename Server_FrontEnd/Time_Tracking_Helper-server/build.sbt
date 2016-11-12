@@ -8,5 +8,9 @@ scalaVersion := "2.11.7"
 libraryDependencies ++= Seq(
   javaJdbc,
   cache,
-  javaWs
+  javaWs,
+  filters
 )
+
+
+fork in run := false

@@ -24,6 +24,8 @@ public class Users extends Model{
 	public String surname;
 	@Required
 	public String email;
+	@Required
+	public boolean log;
 	
 	public Users(){}
 	
@@ -69,5 +71,12 @@ public class Users extends Model{
 
     public String getLogin() {
         return login;
+    }
+    public void setLog(boolean log) {
+        this.log = log;
+    }
+
+    public boolean getLog() {
+        return log;
     }
 }

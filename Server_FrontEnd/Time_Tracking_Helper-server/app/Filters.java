@@ -1,11 +1,14 @@
 import javax.inject.*;
 import play.*;
 import play.mvc.EssentialFilter;
+import play.http.DefaultHttpFilters;
 import play.http.HttpFilters;
 import play.mvc.*;
+//import play.mvc.EssentialFilter;
+import play.filters.cors.CORSFilter;
+import javax.inject.Inject;
 
-import filters.ExampleFilter;
-
+//import play.http.DefaultHttpFilters;
 /**
  * This class configures filters that run on every request. This
  * class is queried by Play to get a list of filters.
@@ -17,30 +20,27 @@ import filters.ExampleFilter;
  */
 @Singleton
 public class Filters implements HttpFilters {
+/*
+	@Inject
+    CORSFilter corsFilter;
 
-    private final Environment env;
-    private final EssentialFilter exampleFilter;
+    /*@Inject
+    public Filters( CORSFilter corsFilter)  {
 
-    /**
-     * @param env Basic environment settings for the current application.
-     * @param exampleFilter A demonstration filter that adds a header to
-     */
-    @Inject
-    public Filters(Environment env, ExampleFilter exampleFilter) {
-        this.env = env;
-        this.exampleFilter = exampleFilter;
-    }
+    	this.corsFilter=corsFilter;
 
-    @Override
+    }*/
+/*    
     public EssentialFilter[] filters() {
-      // Use the example filter if we're running development mode. If
-      // we're running in production or test mode then don't use any
-      // filters at all.
-      if (env.mode().equals(Mode.DEV)) {
-          return new EssentialFilter[] { exampleFilter };
-      } else {
-         return new EssentialFilter[] {};
-      }
+        return new EssentialFilter[] { corsFilter.asJava() };
+    }
+*/    
+
+    @Inject
+    CORSFilter corsFilter;
+
+    public EssentialFilter[] filters() {
+        return new EssentialFilter[] { corsFilter.asJava() };
     }
 
 }

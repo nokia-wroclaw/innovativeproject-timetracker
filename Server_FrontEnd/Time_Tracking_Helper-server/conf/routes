@@ -17,3 +17,12 @@ POST    /user               		controllers.HomeController.addUser
 
 # Kontroler GET sluzacy do wyswietlenia wyniku zwracanego przez getUsers
 GET     /users						controllers.HomeController.getUsers
+
+# Kontroler GET sluzacy do wyswietlenia bledu
+GET    /error						controllers.HomeController.genError
+
+# Kontroler GET sluzacy do wyswietlenia danej osoby oraz potwierdzenia zalogowania
+GET    /login						controllers.HomeController.getName(name: String, surname: String)
+
+# Kontroler GET sluzacy do potwierdzenia wylogowania
+GET    /logout						controllers.HomeController.logoutName(login: String)
