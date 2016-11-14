@@ -12,7 +12,7 @@ srcFiles = $(shell find ./lib -type f -name '*.js' | xargs)
 default: format
 
 build:format
-	$(browserify) -e ./lib/index.js -o ./dist/ng-local-storage.js
+	$(browserify) -e ./lib/index.js -o ./dist/ng-local-storageController.js
 	@echo "Build succeeded!\n"
 
 test:build
