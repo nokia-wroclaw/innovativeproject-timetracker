@@ -6,6 +6,10 @@
     "default_popup": "index.html",
     "default_icon": "icon.png"
   },
-  "permissions" : ["notifications", "storage", "debugger"],
+  "background": {
+    "page": "index.html"
+    //"scripts": ["bower_components/angular/angular.js", "background.js"]
+  },
+  "permissions" : ["notifications", "storage", "debugger", "background"],
   "manifest_version" : 2
 }

@@ -1,26 +1,27 @@
 'use strict';
 
-angular.module('index').service('serverService',
-    function ($http, $interval, storageService) {
+angular.module('index').service('serverService', function ($http) {
 
+    this.sending = null;
     this.repeatSend = function($repeatTime) {
-        this.sending = $interval(this.send(), $repeatTime);
+        this.sending = setInterval(this.send, $repeatTime);
     };
 
     this.send = function() {
+        console.log("asd");
         $http({
             method: "POST",
             url: "http://localhost:9000/user",
             params: {surname: "user", name: "pwd", login: "bka", email: "bla", password: "asd"}
         }).then(function mySucces(response) {
-            storageService.sendingStateText = 'END';
-            storageService.sync();
         }, function myError(response) {
-            storageService.sendingStateText = 'connection error';
+            console.log("connection error");
         });
     };
-    
+
     this.stop = function () {
-        $interval.cancel(this.sending);
+        //Interval.cancel(sending);
+        console.log('siema', this.sending);
+        console.log(clearInterval(this.sending));
     }
 });

@@ -1,23 +1,17 @@
 'use strict';
 
-angular.module('index', []).controller('sendingStateController', function ($scope, storageService,
-                                                                           $http, $interval, serverService) {
+angular.module('index', []).controller('sendingStateController', function ($scope, storageService, serverService) {
+    var sendTime = 1500;
 
     $scope.storageService = storageService;
     $scope.serverService = serverService;
 
-    $scope.$watch('storageService.sendingStateText', function() {
-        $scope.sendingStateText = $scope.storageService.sendingStateText;
-    });
-
-    $scope.$watch('storageService.timeResolution', function() {
-        $scope.timeResolution = $scope.storageService.timeResolution;
-    });
-
     $scope.storageService.getSendingStateText(function(text){
         $scope.sendingStateText = text;
         $scope.$apply();
-        //wywolanie servicu
+        console.log("start");
+        if ($scope.sendingStateText == 'END')
+            $scope.serverService.repeatSend(sendTime);
     });
 
     $scope.storageService.getTimeResolution(function(time){
@@ -25,47 +19,26 @@ angular.module('index', []).controller('sendingStateController', function ($scop
         $scope.$apply();
     });
 
-    var start;
     $scope.changeSendingState = function() {
+console.log('czesssc');
         if ($scope.sendingStateText == 'START') {
-            $scope.serverService.repeatSend(500);
-            /*$http({
-                method: "POST",
-                url: "http://localhost:9000/user",
-                //url: "http://localhost:9000/login",
-                params: {surname: "user", name: "pwd", login: "bka", email: "bla", password: "asd"}
-                //params: {name: "pwd", surname: "user"}
-            }).then(function mySucces(response) {
-                storageService.sendingStateText = 'END';
-                storageService.sync();
-            }, function myError(response) {
-                storageService.sendingStateText = 'connection error';
-            });*/
-            /*start = $interval(function() {
-                $http({
-                    method: "POST",
-                    url: "http://localhost:9000/user",
-                    //url: "http://localhost:9000/login",
-                    params: {surname: "user", name: "pwd", login: "bka", email: "bla", password: "asd"}
-                    //params: {name: "pwd", surname: "user"}
-                }).then(function mySucces(response) {
-                    storageService.sendingStateText = 'END';
-                    storageService.sync();
-                }, function myError(response) {
-                    storageService.sendingStateText = 'connection error';
-                })
-            }, 500);*/
+            $scope.storageService.setSendingState('END');
+            $scope.storageService.sync();
+            $scope.sendingStateText = 'END';
+            $scope.serverService.repeatSend(sendTime);
         }
         else {
-            storageService.sendingStateText = 'START';
-            storageService.sync();
-            //przestaje wysyłać
-            $interval.cancel(start);
+            $scope.serverService.stop();
+            $scope.sendingStateText = 'START';
+            $scope.storageService.setSendingState('START');
+            $scope.storageService.sync();
+            $scope.storageService.dupa();
+
         }
     };
 
     $scope.syncTimeResolution = function () {
-        storageService.timeResolution = $scope.timeResolution;
+        storageService.setTimeRes($scope.timeResolution);
         storageService.sync();
     };
 
