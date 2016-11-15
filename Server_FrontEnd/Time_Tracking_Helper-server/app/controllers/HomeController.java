@@ -38,8 +38,8 @@ public class HomeController extends Controller {
     }
     
     public Result login() {
-    	String login= session("Login");
-        return ok(login.render("Hello "+ login));
+    	String login2= session("Login");
+        return ok(login.render("Hello "+ login2));
     }
     
     public Result register() {
