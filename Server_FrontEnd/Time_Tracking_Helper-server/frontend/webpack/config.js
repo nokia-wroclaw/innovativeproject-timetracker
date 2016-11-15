@@ -10,7 +10,8 @@ var jsBundle = util.format('[name].%s.js', pkg.version);
 
 var entry = {
     login: ['./loginEntry.ts'],
-    index: ['./indexEntry.ts']
+    index: ['./indexEntry.ts'],
+    register: ['./registerEntry.ts']
 };
 
 var config = {
