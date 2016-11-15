@@ -1,29 +1,14 @@
 @*
- * This template takes a single argument, a String containing a
- * message to display.
- *@
+* This template takes a single argument, a String containing a
+* message to display.
+*@
 @(message: String)
-
 @*
- * Call the `main` template with two arguments. The first
- * argument is a `String` with the title of the page, the second
- * argument is an `Html` object containing the body of the page.
- *@
+* Call the `main` template with two arguments. The first
+* argument is a `String` with the title of the page, the second
+* argument is an `Html` object containing the body of the page.
+*@
 @main("Welcome to Play") {
-
-    @*
-     * Get an `Html` object by calling the built-in Play welcome
-     * template and passing a `String` message.
-     *@
-	<ul id="users"> </ul>
-    <p>Add a new User</p>
-    <form action="@routes.HomeController.addUser()" method="post">
-        Login: <input type="text" name="Login"/><br>
-		Hasło: <input type="text" name="Password"/><br>
-		Imię: <input type="text" name="Name"/><br>
-		Nazwisko: <input type="text" name="Surname"/><br>
-		Email: <input type="text" name="Email"/><br>
-        <button>Add User</button>
-    </form>
-
+    <index-comp></index-comp>
+    <script src="@routes.Assets.versioned("app/index.0.0.13.js")"></script>
 }

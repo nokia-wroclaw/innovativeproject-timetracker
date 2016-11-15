@@ -9,7 +9,8 @@ import javax.inject.Inject;
 import com.avaje.ebean.Model;
 
 
-import models.Users;
+import models.User;
+import play.libs.Json;
 import play.data.Form;
 import play.data.FormFactory;
 import play.mvc.*;
@@ -23,9 +24,8 @@ import views.html.*;
  */
 public class HomeController extends Controller {
 
-	
-    @Inject
-    private FormFactory formFactory;
+
+
     /**
      * An action that renders an HTML page with a welcome message.
      * The configuration in the <code>routes</code> file means that
@@ -36,103 +36,69 @@ public class HomeController extends Controller {
         return ok(index.render("Hello World!"));
         
     }
+    
+    public Result login() {
+    	String login= session("Login");
+        return ok(index.render("Hello "+ login));
+    }
     /*
-     * Action generates ErrorPage
+     * Method adding User to database
      * TODO- Do it better;
      * @return Page with error
      */
-    public Result genError(){
-    	return ok("ERROR- Login or password already exist in database");
+    public Result addUserController(){
+    	try {
+            User user = Json.fromJson(request().body().asJson(), User.class);
+			models.UserStorage.addUser(user);
+	    	return ok("ADDED");	
+	    } catch (Exception e) {
+	    	return ok("ERROR- Login already exist in database");
+		}
+    }
+    
+    public Result index2(){
+    	if(session("Login")==null){
+    		return redirect(routes.HomeController.index());
+    	}else{
+    		return redirect(routes.HomeController.login());
+    	}
     }
     /*
-     * Action sending Name and surname
+     * Action logging in User to system
      * TODO- Do it better;
      * @return Page with data
      */
-    public Result getName(String name, String surname){
-    	return ok("OK NAME: "+name+ " SURNAME: "+ surname);
+    public Result loginController(){
+    	User response;
+		try {
+            User user = Json.fromJson(request().body().asJson(), User.class);
+			response = models.UserStorage.loginUser(user);
+			session("Login",response.login);
+	    	return ok("User "+response.login +" logged in");
+		} catch (Exception e) {
+			return ok("ERROR- Login not found");
+		}
     }
     /*
-     * Action sending login
+     * Action logging out User to system
      * TODO- Do it better;
      * @return Page with login
      */
-    public Result logoutName(String login){
-    	return ok("OK LOGOUT: "+login);
+    public Result logoutController(){
+    	User response;
+		try {
+            User user = Json.fromJson(request().body().asJson(), User.class);
+			response = models.UserStorage.logoutUser(user);
+			session().clear();
+	    	return ok("User "+response.login+" logged out");
+		} catch (Exception e) {
+			return ok("ERROR- Login not found");
+		}
     }
-    /*
-     *Metoda sluzaca do weryfikacji hasel i loginow
-     *przed dodaniem użytkownika do tabeli Users
-     * @return: przekierowanie na strone glowna
-     */
-     public Result addUser() {
-         Form<Users> userForm = formFactory.form(Users.class);
-         Users user = userForm.bindFromRequest().get();
-         Model.Finder<Integer, Users> finder = new Model.Finder<>(Users.class);
-         String log=user.login;
-         String pass=user.password;
-         user.log=false;
-         Users equal=finder.where().eq("login",log).findUnique();
-         if(equal!=null)
-         {
-           System.out.println("Login alreay exist !");
-           return redirect(routes.HomeController.genError());
-         }
-         else
-         {
-             user.save();
-         }
-        return redirect(routes.HomeController.index());
-    }
-    /*
-     *Metoda sluzaca do logowania,
-     *na podstawie loginu i hasła
-     * @return: przekierowanie na strone glowna, gdy nic nie znajdzie, lub gdy znajdzie przekierowuje na strone z danymi usera
-     */
-     public Result loginUser(){
-         Form<Users> userForm = formFactory.form(Users.class);
-         Users user = userForm.bindFromRequest().get();
-         Model.Finder<Integer, Users> finder = new Model.Finder<>(Users.class);
-         String log=user.login;
-         String pass=user.password;
-         Users equal=finder.where().eq("login",log).eq("password",pass).findUnique();
-         if(equal!=null)
-         {
-            System.out.println("User name: "+equal.name+"User surname: "+equal.surname);
-            equal.setLog(true);
-            return redirect(routes.HomeController.getName(equal.name,equal.surname));
-         }
-         return redirect(routes.HomeController.index());
-   }           
-     
-     /*
-      * wylogowanie uzytkownika
-      * @return potwierdzenie lub przekierowanie na strone glowna, jesli jest cos zle
-      */
-     
-     public Result logoutUser(){
-         Form<Users> userForm = formFactory.form(Users.class);
-         Users user = userForm.bindFromRequest().get();
-         Model.Finder<Integer, Users> finder = new Model.Finder<>(Users.class);
-         String log=user.login;
-         String pass=user.password;
-         Users equal=finder.where().eq("login",log).eq("password",pass).findUnique();
-         if(equal!=null)
-         {
-             System.out.println("User name: "+equal.name+"User surname: "+equal.surname);
-             equal.setLog(false);
-             return redirect(routes.HomeController.logoutName(equal.login));
-         }
-         return redirect(routes.HomeController.index());
-   }
-    /*
-     * Metoda sluzaca do wypisania wszystkich danych zawartych w tabeli
-     * @return: zawartosc tabeli Users- wszystkie krotki
-     * TODO: modyfikacja metody- metoda po zalogowaniu do systemu ma zwrocic wszystkie informacje n.t. uzytkownika
-     */
     public Result getUsers() {
-        Model.Finder<Integer, Users> finder = new Model.Finder<>(Users.class);
-        List<Users> users = finder.all();
+        Model.Finder<Integer, User> finder = new Model.Finder<>(User.class);
+        List<User> users = finder.all();
         return ok(toJson(users));
     }
+
 }

@@ -1,6 +1,4 @@
-import { Component } from "@angular/core";
-import { User } from "../_common/user";
-import { FormsModule }   from '@angular/forms';
+import {Component} from "@angular/core";
 
 @Component({
     selector: 'login-comp',
@@ -9,12 +7,6 @@ import { FormsModule }   from '@angular/forms';
 })
 
 export class LoginComponent {
-    model = new User('', '');
-    submitted = false;
-
-    onSubmit() {
-        this.submitted = true;
-    }
     constructor() {
     }
 }

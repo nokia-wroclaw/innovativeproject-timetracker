@@ -3,21 +3,20 @@
 
 # --- !Ups
 
-create table users (
+create table user (
   id                            integer not null,
   login                         varchar(255),
   password                      varchar(255),
   name                          varchar(255),
   surname                       varchar(255),
   email                         varchar(255),
-  log                           boolean,
-  constraint pk_users primary key (id)
+  constraint pk_user primary key (id)
 );
-create sequence users_seq;
+create sequence user_seq;
 
 
 # --- !Downs
 
-drop table if exists users;
-drop sequence if exists users_seq;
+drop table if exists user;
+drop sequence if exists user_seq;
 

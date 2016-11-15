@@ -5,8 +5,6 @@ import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Executor;
 import java.util.function.Function;
 import javax.inject.*;
-
-import play.http.HttpFilters;
 import play.mvc.*;
 import play.mvc.Http.RequestHeader;
 
@@ -17,7 +15,7 @@ import play.mvc.Http.RequestHeader;
  * {@link Filters} class.
  */
 @Singleton
-public class ExampleFilter extends Filter{
+public class ExampleFilter extends Filter {
 
     private final Executor exec;
 
