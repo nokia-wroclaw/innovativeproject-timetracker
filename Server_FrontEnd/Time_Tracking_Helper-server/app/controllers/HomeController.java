@@ -39,7 +39,12 @@ public class HomeController extends Controller {
     
     public Result login() {
     	String login= session("Login");
-        return ok(index.render("Hello "+ login));
+        return ok(login.render("Hello "+ login));
+    }
+    
+    public Result register() {
+        return ok(register.render(""));
+        
     }
     /*
      * Method adding User to database

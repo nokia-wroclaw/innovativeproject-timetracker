@@ -5,6 +5,7 @@
 # An example controller showing a sample home page
 GET        /                    controllers.HomeController.index
 GET        /login               controllers.HomeController.login
+GET        /register            controllers.HomeController.register
 
 # An example controller showing how to use dependency injection
 GET        /count               controllers.CountController.count
