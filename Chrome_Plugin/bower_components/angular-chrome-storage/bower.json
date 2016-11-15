@@ -1,9 +1,0 @@
-{
-    "name": "angular-chrome-storage",
-    "version": "0.0.6",
-    "main": "localwrapper.js",
-    "ignore": [],
-    "dependencies": {
-        "angular": ">=1.2.0"
-    }
-}
