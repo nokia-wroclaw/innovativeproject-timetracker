@@ -69,37 +69,19 @@ public class HomeController extends Controller {
          Form<Users> userForm = formFactory.form(Users.class);
          Users user = userForm.bindFromRequest().get();
          Model.Finder<Integer, Users> finder = new Model.Finder<>(Users.class);
-         List<Users> users = finder.all();
          String log=user.login;
          String pass=user.password;
          user.log=false;
-         if(users.isEmpty())
+         Users equal=finder.where().eq("login",log).findUnique();
+         if(equal!=null)
          {
-           user.save();
+           System.out.println("Login alreay exist !");
+           return redirect(routes.HomeController.genError());
          }
          else
          {
-           int samelogin=0;
-           int i=0;
-           while((i<users.size())&&(samelogin==0))
-           {
-              if(users.get(i).login.equals(log))
-              {
-                samelogin=1;
-              }
-
-              i++;
-           }
-           if((samelogin==1))
-           {
-             System.out.println("Login alreay exist !");
-             return redirect(routes.HomeController.genError());
-           }
-           else
-           {
              user.save();
-           }
-        }
+         }
         return redirect(routes.HomeController.index());
     }
     /*
@@ -111,22 +93,15 @@ public class HomeController extends Controller {
          Form<Users> userForm = formFactory.form(Users.class);
          Users user = userForm.bindFromRequest().get();
          Model.Finder<Integer, Users> finder = new Model.Finder<>(Users.class);
-         List<Users> users = finder.all();
          String log=user.login;
          String pass=user.password;
-           int same=0;
-           int i=0;
-           while((i<users.size())&&(same==0))
-           {
-              if((users.get(i).login.equals(log))&&(users.get(i).password.equals(pass)))
-              {
-                System.out.println("User name: "+users.get(i).name+"User surname: "+users.get(i).surname);
-                users.get(i).setLog(true);
-                same=1;
-                return redirect(routes.HomeController.getName(users.get(i).name,users.get(i).surname));
-              }
-              i++;        
-           }
+         Users equal=finder.where().eq("login",log).eq("password",pass).findUnique();
+         if(equal!=null)
+         {
+            System.out.println("User name: "+equal.name+"User surname: "+equal.surname);
+            equal.setLog(true);
+            return redirect(routes.HomeController.getName(equal.name,equal.surname));
+         }
          return redirect(routes.HomeController.index());
    }           
      
@@ -139,22 +114,15 @@ public class HomeController extends Controller {
          Form<Users> userForm = formFactory.form(Users.class);
          Users user = userForm.bindFromRequest().get();
          Model.Finder<Integer, Users> finder = new Model.Finder<>(Users.class);
-         List<Users> users = finder.all();
          String log=user.login;
          String pass=user.password;
-           int same=0;
-           int i=0;
-           while((i<users.size())&&(same==0))
-           {
-              if((users.get(i).login.equals(log))&&(users.get(i).password.equals(pass)))
-              {
-                System.out.println("User name: "+users.get(i).name+"User surname: "+users.get(i).surname);
-                same=1;
-                users.get(i).setLog(false);
-                return redirect(routes.HomeController.logoutName(users.get(i).login));
-              }
-              i++;        
-           }
+         Users equal=finder.where().eq("login",log).eq("password",pass).findUnique();
+         if(equal!=null)
+         {
+             System.out.println("User name: "+equal.name+"User surname: "+equal.surname);
+             equal.setLog(false);
+             return redirect(routes.HomeController.logoutName(equal.login));
+         }
          return redirect(routes.HomeController.index());
    }
     /*
