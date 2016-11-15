@@ -1,0 +1,11 @@
+index-comp{
+    .center-hello-world {
+        margin: 40vh;
+        font-size: 76px;
+        transition: font-size 0.3s;
+
+        &:hover {
+            font-size: 80px;
+        }
+    }
+}
