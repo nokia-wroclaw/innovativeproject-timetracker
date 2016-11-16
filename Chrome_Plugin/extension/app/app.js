@@ -1,5 +1,3 @@
 'use strict';
 
-angular.module('myApp', [
-    'index'
-]);
+angular.module('myApp', []);

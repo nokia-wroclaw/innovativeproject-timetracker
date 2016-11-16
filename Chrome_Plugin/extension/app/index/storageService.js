@@ -1,73 +1,53 @@
 'use strict';
 
-angular.module('index').service('storageService', function () {
+angular.module('myApp').service('storageService', function () {
     var _this = this;
-    _this.sendingStateText = undefined;
+    _this.emissionState = undefined;
     _this.timeResolution = undefined;
 
-    this.setSendingState  = function (state)  {
-    _this.sendingStateText = state;
-    }
-    this.setTimeRes  = function (state)  {
-        _this.timeResolution = state;
-    }
-
-
-    this.getSendingStateText = function(callback) {
-        if (_this.sendingStateText) {
-            return _this.sendingStateText;
-        }
-        try {
-
-        chrome.storage.sync.get('sendingStateText', function(keys) {
-            console.log(keys);
-            if (keys.sendingStateText != null) {
-                _this.sendingStateText = keys.sendingStateText;
-
-                callback(_this.sendingStateText);
-            }
-            else {
-                _this.sendingStateText = "START";
-
-                callback(_this.sendingStateText);
-            }
-        });
-        } catch(e){
-            console.error(e);
-        }
-
+    this.setEmissionState = function (state) {
+        _this.emissionState = state;
+        this.sync();
     };
 
-    this.getTimeResolution = function(callback) {
-        if(_this.timeResolution) {
-            return _this.timeResolution;
-        }
-        chrome.storage.sync.get('timeResolution', function(keys) {
+    this.setTimeRes = function (time) {
+        _this.timeResolution = time;
+        this.sync();
+    };
+
+    this.getEmissionState = function (cb) {
+        chrome.storage.sync.get('emissionState', function (key) {
+            if (key.emissionState) {
+                _this.emissionState = key.emissionState;
+            } else {
+                _this.emissionState = "START";
+                _this.sync();
+            }
+            cb(_this.emissionState);
+        });
+    };
+
+    this.getTimeResolution = function (cb) {
+        chrome.storage.sync.get('timeResolution', function (keys) {
             if (keys.timeResolution != null) {
                 _this.timeResolution = keys.timeResolution;
-                callback(_this.timeResolution);
             }
             else {
                 _this.timeResolution = 1;
-                callback(_this.timeResolution);
+                _this.sync();
             }
+            cb(_this.timeResolution)
         });
     };
 
-    this.sync = function() {
-        console.log(_this.sendingStateText);
+    this.sync = function () {
 
-        chrome.storage.sync.set({
-            sendingStateText: _this.sendingStateText,
-            timeResolution: _this.timeResolution
-        }, function() {
-            console.log('Data is stored in Chrome storage');
-            console.log(_this.sendingStateText);
-
+        var obj = {
+            'emissionState': _this.emissionState ,
+            'timeResolution': _this.timeResolution
+        };
+        
+        chrome.storage.sync.set(obj, function() {
         });
     };
-
-    this.dupa = function () {
-        console.log('dupa');
-    }
 });

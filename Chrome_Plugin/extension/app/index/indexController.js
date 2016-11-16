@@ -1,49 +1,45 @@
 'use strict';
 
-angular.module('index', []).controller('sendingStateController', function ($scope, storageService, serverService) {
-    var sendTime = 1500;
+angular.module('myApp', [])
+    .controller('EmmitStateController', function ($scope, storageService) {
 
-    $scope.storageService = storageService;
-    $scope.serverService = serverService;
+        $scope.getEmissionState = function () {
+            storageService.getEmissionState(function (emissionState) {
+                $scope.emissionState = emissionState;
+                $scope.$apply();
+            });
+        };
 
-    $scope.storageService.getSendingStateText(function(text){
-        $scope.sendingStateText = text;
-        $scope.$apply();
-        console.log("start");
-        if ($scope.sendingStateText == 'END')
-            $scope.serverService.repeatSend(sendTime);
+        $scope.getTimeInterval = function () {
+            storageService.getTimeResolution(function (timeResolution) {
+                $scope.timeResolution = timeResolution;
+                $scope.$apply();
+            });
+        };
+
+        $scope.getEmissionState();
+        $scope.getTimeInterval();
+
+        $scope.changeEmissionState = function () {
+            storageService.getEmissionState(function (emissionState) {
+                if (emissionState == 'START') {
+                    storageService.setEmissionState('END');
+                    $scope.emissionState = 'END';
+                    $scope.$apply();
+                } else {
+                    storageService.setEmissionState('START');
+                    $scope.emissionState = 'START';
+                    $scope.$apply();
+                }
+            });
+        };
+
+        $scope.syncTimeResolution = function () {
+            storageService.setTimeRes($scope.timeResolution);
+        };
+
+        $scope.redirect = function () {
+            var newURL = "http://localhost:9000/users";
+            chrome.tabs.create({url: newURL});
+        };
     });
-
-    $scope.storageService.getTimeResolution(function(time){
-        $scope.timeResolution = time;
-        $scope.$apply();
-    });
-
-    $scope.changeSendingState = function() {
-console.log('czesssc');
-        if ($scope.sendingStateText == 'START') {
-            $scope.storageService.setSendingState('END');
-            $scope.storageService.sync();
-            $scope.sendingStateText = 'END';
-            $scope.serverService.repeatSend(sendTime);
-        }
-        else {
-            $scope.serverService.stop();
-            $scope.sendingStateText = 'START';
-            $scope.storageService.setSendingState('START');
-            $scope.storageService.sync();
-            $scope.storageService.dupa();
-
-        }
-    };
-
-    $scope.syncTimeResolution = function () {
-        storageService.setTimeRes($scope.timeResolution);
-        storageService.sync();
-    };
-
-    $scope.redirect = function() {
-        var newURL = "http://localhost:9000/users";
-        chrome.tabs.create({ url: newURL });
-    }
-});

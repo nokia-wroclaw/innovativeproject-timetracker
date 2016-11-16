@@ -7,8 +7,7 @@
     "default_icon": "icon.png"
   },
   "background": {
-    "page": "index.html"
-    //"scripts": ["bower_components/angular/angular.js", "background.js"]
+    "page": "background.html"
   },
   "permissions" : ["notifications", "storage", "debugger", "background"],
   "manifest_version" : 2
