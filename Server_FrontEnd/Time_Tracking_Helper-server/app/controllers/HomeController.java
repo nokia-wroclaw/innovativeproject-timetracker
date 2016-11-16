@@ -62,7 +62,7 @@ public class HomeController extends Controller {
     }
     
     public Result index2(){
-    	if(session("Login")==null){
+    	if(session("Login")!=null){
     		return redirect(routes.HomeController.index());
     	}else{
     		return redirect(routes.HomeController.login());

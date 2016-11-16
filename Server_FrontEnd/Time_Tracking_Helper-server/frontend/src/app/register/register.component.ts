@@ -1,5 +1,4 @@
 import { Component } from "@angular/core";
-import { FormsModule }   from '@angular/forms';
 import { User } from "../_common/user.ts";
 
 @Component({
@@ -18,9 +17,8 @@ export class RegisterComponent {
 
     sendUser() {
         var xhttp = new XMLHttpRequest();
-        var params = "{\"password\"=\"lol\"&\"login\"=\"Kruk0711\"&\"name\"=\"Janusz\"&\"surname\"=\"Paciaciak\"&\"email\"=\"asdasdads\"}";
-        alert(params);
-        xhttp.open("POST", "http://localhost:9000/user", true);
+        var params = JSON.stringify({password: "lol", login: "Kruk0711", name: "Janusz", surname: "Paciaciak", email: "asdasdads@k.pl"});
+        xhttp.open("POST", "http://localhost:9000/addUser", true);
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 document.getElementById("demo").innerHTML = xhttp.responseText;

@@ -1,6 +1,5 @@
 import { Component } from "@angular/core";
 import { User } from "../_common/user";
-import { FormsModule }   from '@angular/forms';
 
 @Component({
     selector: 'login-comp',

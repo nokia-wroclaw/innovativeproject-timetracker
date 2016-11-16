@@ -1,11 +1,13 @@
 import {Type, NgModule} from "@angular/core";
 import {BrowserModule} from "@angular/platform-browser";
 import {RegisterComponent} from "./register/register.component";
+import {FormsModule}   from "@angular/forms";
 
 
 @NgModule({
     imports: [
-        BrowserModule
+        BrowserModule,
+        FormsModule
     ],
     declarations: [RegisterComponent],
     bootstrap: [RegisterComponent]
