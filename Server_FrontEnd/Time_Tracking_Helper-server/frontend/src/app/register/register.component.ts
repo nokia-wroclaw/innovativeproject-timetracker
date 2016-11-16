@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { User } from "../_common/user.ts";
+import {FormsModule, NgForm} from "@angular/forms";
 
 @Component({
     selector: 'register-comp',
@@ -15,16 +16,23 @@ export class RegisterComponent {
         this.submitted = true;
     }
 
-    sendUser() {
+    sendUser(regForm:NgForm) {
         var xhttp = new XMLHttpRequest();
-        var params = JSON.stringify({password: "lol", login: "Kruk0711", name: "Janusz", surname: "Paciaciak", email: "asdasdads@k.pl"});
+        var params = JSON.stringify({
+            login: regForm.value.login,
+            password: regForm.value.password,
+            name: regForm.value.name,
+            surname: regForm.value.surname,
+            email: regForm.value.email
+        });
         xhttp.open("POST", "http://localhost:9000/addUser", true);
+        xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 document.getElementById("demo").innerHTML = xhttp.responseText;
             }
         };
-        xhttp.send();
+        xhttp.send(params);
     }
     getUsers() {
         var xhttp = new XMLHttpRequest();
