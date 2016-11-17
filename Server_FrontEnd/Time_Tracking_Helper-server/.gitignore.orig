@@ -6,4 +6,10 @@ target
 /.project
 /.settings
 /RUNNING_PID
+<<<<<<< HEAD
+node_modules/
+public/app/
+bin/
+=======
 database
+>>>>>>> feature/extension
