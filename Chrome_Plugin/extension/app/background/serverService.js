@@ -25,7 +25,7 @@ angular.module('myApp').service('serverService', function ($http, storageService
     var send = function () {
         $http({
                   method: "POST",
-                  url: "http://localhost:9000/user",
+                  url: "http://localhost:9000/addUser",
                   params: {
                       surname: "user",
                       name: "pwd",
