@@ -22,12 +22,12 @@
                 <label for="email">E-mail</label>
                 <input type="text" class="form-control" required [(ngModel)] = "model.email" name = "email">
             </div>
-            <button type="submit" class="btn btn-default" [disabled]="!registerForm.form.valid" (click) = "sendUser(registerForm); getUsers();" >Submit</button>
+            <button type="submit" class="btn btn-default" [disabled]="!registerForm.form.valid" (click) = "sendUser(registerForm);" >Submit</button>
         </form>
     </div>
-    <div  id="demo2" [hidden]="!submitted">
+    <div [hidden]="!submitted">
         <h2>Test: Podane dane - {{ model.name }}, {{ model.surname }}, {{ model.login }},
             {{ model.email }}, {{ model.pwd }}</h2>
     </div>
-    <div id="demo"></div>
+    <div id="registerServerAnswer"></div>
 </div>

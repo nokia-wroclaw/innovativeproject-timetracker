@@ -20,7 +20,7 @@ export class RegisterComponent {
         var xhttp = new XMLHttpRequest();
         var params = JSON.stringify({
             login: regForm.value.login,
-            password: regForm.value.password,
+            password: regForm.value.pwd,
             name: regForm.value.name,
             surname: regForm.value.surname,
             email: regForm.value.email
@@ -29,7 +29,12 @@ export class RegisterComponent {
         xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("demo").innerHTML = xhttp.responseText;
+                //document.getElementById("demo").innerHTML = xhttp.responseText;
+                if(xhttp.responseText == "ADDED") {
+                    document.getElementById("registerServerAnswer").innerHTML = "Registration successful";
+                } else {
+                    document.getElementById("registerServerAnswer").innerHTML = "Unsuccessful registration, please try again!";
+                }
             }
         };
         xhttp.send(params);
@@ -39,7 +44,7 @@ export class RegisterComponent {
         xhttp.open("GET", "http://localhost:9000/users", true);
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("demo").innerHTML = xhttp.responseText;
+                document.getElementById("registerServerAnswer").innerHTML = xhttp.responseText;
             }
         };
         xhttp.send();
