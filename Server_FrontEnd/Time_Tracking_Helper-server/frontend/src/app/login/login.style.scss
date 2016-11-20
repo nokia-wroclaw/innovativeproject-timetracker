@@ -1,0 +1,31 @@
+login-comp{
+  h3 {
+    margin: 0px;
+  }
+  .row-margin-buffer {
+    margin-top:20px;
+    margin-bottom:20px;
+  }
+  div.custom-margin-1 {
+    margin: 0px 0px 0px 40px;
+  }
+  div.background {
+    background-image: linear-gradient(90deg, rgba(73,165,191,1), #FFFFFF);
+  }
+  div.transbox {
+    border-radius: 45px 45px 45px 45px;
+    -moz-border-radius: 45px 45px 45px 45px;
+    -webkit-border-radius: 45px 45px 45px 45px;
+    margin: 30px;
+    background-color: #ffffff;
+    border: 1px solid black;
+    opacity: 0.6;
+    filter: alpha(opacity=60); /* For IE8 and earlier */
+  }
+
+  div.transbox.form.h1 {
+    margin: 5%;
+    font-weight: bold;
+    color: #000000;
+  }
+}

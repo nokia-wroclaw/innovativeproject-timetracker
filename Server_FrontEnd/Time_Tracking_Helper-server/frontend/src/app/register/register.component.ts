@@ -31,7 +31,7 @@ export class RegisterComponent {
             if (this.readyState == 4 && this.status == 200) {
                 //document.getElementById("demo").innerHTML = xhttp.responseText;
                 if(xhttp.responseText == "ADDED") {
-                    document.getElementById("registerServerAnswer").innerHTML = "Registration successful";
+                    window.location.href = 'http://localhost:9000/login';
                 } else {
                     document.getElementById("registerServerAnswer").innerHTML = "Unsuccessful registration, please try again!";
                 }
