@@ -15,19 +15,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
     <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
-    <link rel="stylesheet" href="app.css">
+    <!--<link rel="stylesheet" href="app.css">-->
+    <link rel = "stylesheet" href = "css/bootstrap.min.css" />
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/tether/dist/js/tether.js"></script>
+    <script src="js/bootstrap.min.js" />
     <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
 </head>
 <body>
 
 
-<div ng-app="myApp">
-    <div ng-controller="EmmitStateController">
-        <button ng-click="changeEmissionState()">{{emissionState}}</button>
-        <p>Time resolution</p>
-        <input type="number"
-               ng-change="syncTimeResolution()" min="1" max="15" ng-model="timeResolution">
-        <button ng-click="redirect()">Go to website</button>
+<div ng-app="myApp" class="container" ng-controller="EmmitStateController">
+    <select ng-model="selection" ng-options="item for item in items" class="form-control"></select>
+    <div class="animate-switch-container" ng-switch on="selection">
+        <div class="animate-switch" ng-switch-when="Home">
+            <button ng-click="changeEmissionState()" class="btn btn-block">{{emissionState}}</button>
+            <button ng-click="redirect()" class="btn btn-block">Go to website</button>
+        </div>
+        <div class="animate-switch" ng-switch-when="Options"><p>Time resolution</p>
+            <div class="form-group">
+                <input type="number" class="form-control"
+                       ng-change="syncTimeResolution()" min="1" max="15" ng-model="timeResolution">
+            </div>
+            <form>
+                <div class="form-group">
+                    <label for="email">Email address:</label>
+                    <input type="email" class="form-control" id="email">
+                </div>
+                <div class="form-group">
+                    <label for="pwd">Password:</label>
+                    <input type="password" class="form-control" id="pwd">
+                </div>
+                <div class="checkbox">
+                    <label><input type="checkbox" ng-checked="isRemembered">Remember me</label>
+                </div>
+                <button type="submit" class="btn btn-block" ng-click="login()">Login login</button>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -39,7 +63,6 @@
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/angular-route/angular-route.js"></script>
 <script src="app.js"></script>
-
 <script src="index/indexController.js"></script>
 <script src="background/serverService.js"></script>
 <script src="index/storageService.js"></script>

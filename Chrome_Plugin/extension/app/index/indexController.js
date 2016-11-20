@@ -38,8 +38,17 @@ angular.module('myApp', [])
             storageService.setTimeRes($scope.timeResolution);
         };
 
+        $scope.login = function () {
+            //only storage, todo check if in database
+            //todo debug getting email and password
+            storageService.setEmailAndPassword($scope.emissionState, $scope.emissionState);
+        };
+
         $scope.redirect = function () {
             var newURL = "http://localhost:9000/users";
             chrome.tabs.create({url: newURL});
         };
+
+        $scope.items = ['Home', 'Options'];
+        $scope.selection = $scope.items[0];
     });
