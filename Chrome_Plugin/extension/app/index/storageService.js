@@ -23,6 +23,7 @@ angular.module('myApp').service('storageService', function () {
         this.sync();
     };
 
+    //todo make one function with getEmissionStateVar
     this.getEmissionState = function (cb) {
         chrome.storage.sync.get('emissionState', function (keys) {
             if (keys.emissionState) {

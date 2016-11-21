@@ -21,6 +21,7 @@ angular.module('myApp').service('serverService', function ($http, storageService
         var state = storageService.getEmissionStateVar();
         if (shouldSend(email, state)) {
             if (sending == null) {
+                //todo change to key session
                 loginParams = {
                     surname: "surname",
                     name: "name",
@@ -52,7 +53,7 @@ angular.module('myApp').service('serverService', function ($http, storageService
                   params: loginParams
               }
         ).then(function (response) {
-            console.log("response success");
+            console.log("response success", loginParams.email);
         }, function (response) {
             console.error("Connection error", response);
         });

@@ -3,6 +3,12 @@
 angular.module('myApp', [])
     .controller('EmmitStateController', function ($scope, storageService) {
 
+        $scope.options = {
+            timeResolution: "",
+            email: "",
+            password: ""
+        };
+
         $scope.getEmissionState = function () {
             storageService.getEmissionState(function (emissionState) {
                 $scope.emissionState = emissionState;
@@ -12,7 +18,7 @@ angular.module('myApp', [])
 
         $scope.getTimeInterval = function () {
             storageService.getTimeResolution(function (timeResolution) {
-                $scope.timeResolution = timeResolution;
+                $scope.options.timeResolution = timeResolution;
                 $scope.$apply();
             });
         };
@@ -35,13 +41,12 @@ angular.module('myApp', [])
         };
 
         $scope.syncTimeResolution = function () {
-            storageService.setTimeRes($scope.timeResolution);
+            storageService.setTimeRes($scope.options.timeResolution);
         };
 
         $scope.login = function () {
             //only storage, todo check if in database
-            //todo debug getting email and password
-            storageService.setEmailAndPassword($scope.emissionState, $scope.emissionState);
+            storageService.setEmailAndPassword($scope.options.email, $scope.options.password);
         };
 
         $scope.redirect = function () {
