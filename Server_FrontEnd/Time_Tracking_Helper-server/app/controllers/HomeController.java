@@ -79,7 +79,7 @@ public class HomeController extends Controller {
             User user = Json.fromJson(request().body().asJson(), User.class);
 			response = models.UserStorage.loginUser(user);
 			session("Login",response.login);
-	    	return ok("User "+response.login +" logged in");
+	    	return ok("User "+response.login +" logged in, name: "+ response.name+" surname: "+ response.surname);
 		} catch (Exception e) {
 			return ok("ERROR- Login not found");
 		}
