@@ -9,6 +9,5 @@ import {Component} from "@angular/core";
 export class IndexComponent {
     constructor() {
     }
-    
-    hello = () => "Hello!"
+    hello = () => localStorage.getItem('authToken');
 }

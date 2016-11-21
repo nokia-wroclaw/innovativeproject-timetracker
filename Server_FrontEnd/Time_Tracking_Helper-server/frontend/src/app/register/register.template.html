@@ -1,33 +1,73 @@
+<!--
 <div class="col-md-6 col-md-offset-3">
     <div [hidden]="submitted">
-        <h1>Register</h1>
-        <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
-            <div class="form-group">
-                <label for="login">Login</label>
-                <input type="text" class="form-control" required [(ngModel)] = "model.login" name = "login">
-            </div>
-            <div class="form-group">
-                <label for="pwd">Password</label>
-                <input type="password" class="form-control" required [(ngModel)] = "model.pwd" name = "pwd">
-            </div>
-            <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" class="form-control" required [(ngModel)] = "model.name" name = "name">
-            </div>
-            <div class="form-group">
-                <label for="surname">Surname</label>
-                <input type="text" class="form-control" required [(ngModel)] = "model.surname" name = "surname">
-            </div>
-            <div class="form-group">
-                <label for="email">E-mail</label>
-                <input type="text" class="form-control" required [(ngModel)] = "model.email" name = "email">
-            </div>
-            <button type="submit" class="btn btn-default" [disabled]="!registerForm.form.valid" (click) = "sendUser(registerForm);" >Submit</button>
-        </form>
+
     </div>
+    <!--
     <div [hidden]="!submitted">
-        <h2>Test: Podane dane - {{ model.name }}, {{ model.surname }}, {{ model.login }},
-            {{ model.email }}, {{ model.pwd }}</h2>
+         <h2>Test: Podane dane - {{ model.name }}, {{ model.surname }}, {{ model.login }},
+             {{ model.email }}, {{ model.pwd }}</h2>
+     </div>
+     -->
+ <!--    <div id="registerServerAnswer"></div>
+ </div>
+-->
+<div class="row row-margin-buffer">
+    <!--
+    <div class="col-md-3 custom-margin-1">
+        No account yet? <button type="submit" class = "btn btn-default" (click) = "changeToRegisterPage();">Register</button>
     </div>
-    <div id="registerServerAnswer"></div>
+    -->
+    <div class="col-md-3 custom-margin-1">
+        <h3 style="font-family:courier; color: rgb(73,165,191)">Time Tracking Helper</h3>
+    </div>
+</div>
+<div class = "row background">
+    <div class = "col-md-8">
+        <div class="col-md-4 transbox">
+            <div [hidden]="submitted">
+                <h1>Register</h1>
+                <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+                    <div class="form-group">
+                        <label for="login">Login</label>
+                        <input type="text" class="form-control" required [(ngModel)] = "model.login" name = "login">
+                    </div>
+                    <div class="form-group">
+                        <label for="pwd">Password</label>
+                        <input type="password" class="form-control" required [(ngModel)] = "model.pwd" name = "pwd">
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" required [(ngModel)] = "model.name" name = "name">
+                    </div>
+                    <div class="form-group">
+                        <label for="surname">Surname</label>
+                        <input type="text" class="form-control" required [(ngModel)] = "model.surname" name = "surname">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input type="text" class="form-control" required [(ngModel)] = "model.email" name = "email">
+                    </div>
+                    <button type="submit" class="btn btn-default" [disabled]="!registerForm.form.valid" (click) = "sendUser(registerForm);" >Submit</button>
+                </form>
+                <br>
+            </div>
+        </div>
+        <!--
+        <div [hidden]="!submitted">
+            <h2>Test: Podane dane - {{ model.login }}, {{ model.pwd }}</h2>
+        </div>
+        -->
+        <div id="loginServerAnswer"></div>
+    </div>
+</div>
+<div class = "row background">
+    <div class = "col-md-8 row-margin-buffer">
+        <div id="copyright">Copyright &copy; 2016</div>
+    </div>
+    <!--
+    <hr>
+    <footer>
+        <p>&copy; 2016 Time Tracking Helper</p>
+    </footer>-->
 </div>

@@ -1,6 +1,10 @@
 package models;
 
 import play.db.ebean.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.*;
 import play.data.validation.Constraints.Required;
 import com.avaje.ebean.Model;
@@ -16,6 +20,7 @@ public class User extends Model{
 	@Id
 	public Integer id;
 	@JsonProperty
+	@OneToMany(mappedBy = "user", cascade=CascadeType.ALL)
 	public String login;
 	@JsonProperty
 	public String password;
@@ -25,6 +30,7 @@ public class User extends Model{
 	public String surname;
 	@JsonProperty
 	public String email;
+
 
 	
     public User(String Login,String Password,String Name,String Surname, String Email) {
