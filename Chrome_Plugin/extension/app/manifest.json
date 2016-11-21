@@ -9,6 +9,6 @@
   "background": {
     "page": "background.html"
   },
-  "permissions" : ["notifications", "storage", "debugger", "background"],
+  "permissions" : ["notifications", "storage", "debugger", "background", "http://localhost:9000/"],
   "manifest_version" : 2
 }

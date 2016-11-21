@@ -1,48 +1,61 @@
 'use strict';
 
 var sending = null;
-var defaultIntervalTime = 1500; //on production set 15000
+var stateChecking = null;
+var statusCheckTime = 1500;
+var intervalTime = 1500; //on production set 15000
+var loginParams = null;
 angular.module('myApp').service('serverService', function ($http, storageService) {
 
-    this.startService = function (intervalTime) {
-        sending = setInterval(repeatSend, defaultIntervalTime);
+    this.startService = function () {
+        stateChecking = setInterval(checkState, statusCheckTime);
     };
 
-    this.stop = function () {
+    var stopServerSending = function () {
         clearInterval(sending);
     };
 
-    var repeatSend = function () {
-        storageService.getEmissionState(function (state) {
-            if (state == "START") {
-                stop();
-            } else {
-                send();
+    var checkState = function () {
+        var email = storageService.getEmail();
+        var password = storageService.getPassword();
+        var state = storageService.getEmissionStateVar();
+        if (shouldSend(email, state)) {
+            if (sending == null) {
+                //todo change to key session
+                loginParams = {
+                    surname: "surname",
+                    name: "name",
+                    login: "login",
+                    email: email,
+                    password: password
+                };
+                sending = setInterval(send, intervalTime);
             }
-        });
+        } else {
+            if (sending != null) {
+                stopServerSending();
+            }
+        }
+    };
+
+    var shouldSend = function (email, state) {
+        if (state == "END" && email != "") {
+            return true;
+        } else {
+            return false;
+        }
     };
 
     var send = function () {
         $http({
                   method: "POST",
                   url: "http://localhost:9000/addUser",
-                  params: {
-                      surname: "user",
-                      name: "pwd",
-                      login: "bka",
-                      email: "bla",
-                      password: "asd"
-                  }
+                  params: loginParams
               }
-        ).then(function mySuccess(response) {
-        }, function myError(response) {
+        ).then(function (response) {
+            console.log("response success", loginParams.email);
+        }, function (response) {
             console.error("Connection error", response);
-        });
-    };
-
-    var getTimeInterval = function () {
-        storageService.getTimeResolution(function (timeResolution) {
-            $scope.timeResolution = timeResolution;
         });
     };
 });
