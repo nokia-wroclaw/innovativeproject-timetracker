@@ -1,11 +1,10 @@
 import { Injectable } from "@angular/core";
-
 @Injectable()
 export class UserService {
     private loggedIn = false;
 
     constructor() {
-        //TODO: Tutaj czy istnieje token, jesli tak to loggedIn = true
+        //TODO: Tutaj czy istnieje token, jesli tak to loggedIn = true?
     }
 
     loginRequest(login: string, password: string) {
@@ -20,7 +19,16 @@ export class UserService {
         xhttp.onreadystatechange = function(){
             if (this.readyState == 4 && this.status == 200) {
                 //TODO: Tutaj localstorage lub cookie?
-                document.getElementById("loginServerAnswer").innerHTML = xhttp.responseText;
+                //TODO: If do nieudanego logowania
+                var strResponse = xhttp.responseText.toString();
+                if(strResponse.search("logged in") != -1) {
+                    var responseInfo = strResponse.split(" ");
+                    var mergedInfo = responseInfo[1]/*login*/ + " " + responseInfo[5]/*name*/ + " " + responseInfo[7]/*surname*/;
+
+                    localStorage.setItem('authToken', mergedInfo);
+                    document.getElementById("loginServerAnswer").innerHTML = xhttp.responseText;
+                    window.location.href = 'http://localhost:9000/';
+                }
             }
         };
         xhttp.send(params);
@@ -28,6 +36,9 @@ export class UserService {
 
     logoutRequest() {
         //TODO: Usuniecie ciasteczka lub localstorage?
+        localStorage.removeItem('authToken');
+        this.loggedIn = false;
+        location.reload();
     }
 
     isLoggedIn() {
