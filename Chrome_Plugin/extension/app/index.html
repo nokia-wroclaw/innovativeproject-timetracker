@@ -31,10 +31,10 @@
             <button ng-click="changeEmissionState()" class="btn btn-block">{{emissionState}}</button>
             <button ng-click="redirect()" class="btn btn-block">Go to website</button>
         </div>
-        <div class="animate-switch" ng-switch-when="Options"><p>Time resolution</p>
+        <div ng-switch-when="Options"><p>Time resolution</p>
             <div class="form-group">
                 <input type="number" class="form-control"
-                       ng-change="syncTimeResolution()" min="1" max="15" ng-model="options.timeResolution">
+                       ng-change="setTimeResolution()" min="1" max="15" ng-model="options.timeResolution">
             </div>
             <form>
                 <div class="form-group">
@@ -45,9 +45,9 @@
                     <label for="pwd">Password:</label>
                     <input type="password" class="form-control" id="pwd" ng-model="options.password">
                 </div>
-                <div class="checkbox">
+                <!--<div class="checkbox">
                     <label><input type="checkbox" ng-checked="isRemembered">Remember me</label>
-                </div>
+                </div>-->
                 <button type="submit" class="btn btn-block" ng-click="login()">Login login</button>
             </form>
         </div>

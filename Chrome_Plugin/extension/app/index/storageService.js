@@ -12,7 +12,7 @@ angular.module('myApp').service('storageService', function () {
         this.sync();
     };
 
-    this.setTimeRes = function (time) {
+    this.setTimeResolution = function (time) {
         _this.timeResolution = time;
         this.sync();
     };
@@ -23,9 +23,9 @@ angular.module('myApp').service('storageService', function () {
         this.sync();
     };
 
-    //todo make one function with getEmissionStateVar
     this.getEmissionState = function (cb) {
         chrome.storage.sync.get('emissionState', function (keys) {
+            console.log(keys);
             if (keys.emissionState) {
                 _this.emissionState = keys.emissionState;
             } else {
@@ -34,18 +34,6 @@ angular.module('myApp').service('storageService', function () {
             }
             cb(_this.emissionState);
         });
-    };
-
-    this.getEmissionStateVar = function () {
-        chrome.storage.sync.get('emissionState', function (keys) {
-            if (keys.emissionState) {
-                _this.emissionState = keys.emissionState;
-            } else {
-                _this.emissionState = "START";
-                _this.sync();
-            }
-        });
-        return _this.emissionState;
     };
 
     this.getTimeResolution = function (cb) {
@@ -61,26 +49,26 @@ angular.module('myApp').service('storageService', function () {
         });
     };
 
-    this.getEmail = function () {
+    this.getEmail = function (cb) {
         chrome.storage.sync.get('email', function (keys) {
             if (keys.email != null) {
                 _this.email = keys.email;
             }
+            console.log("returtning email", _this.email);
+            cb(_this.email);
         });
-        return _this.email;
     };
 
-    this.getPassword = function () {
+    this.getPassword = function (cb) {
         chrome.storage.sync.get('password', function (keys) {
             if (keys.password != null) {
                 _this.password = keys.password;
             }
+            cb(_this.password);
         });
-        return _this.password;
     };
 
     this.sync = function () {
-
         var obj = {
             'emissionState': _this.emissionState ,
             'timeResolution': _this.timeResolution,
