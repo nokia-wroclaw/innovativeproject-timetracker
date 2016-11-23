@@ -4,6 +4,7 @@ import { UserService } from "./user.service";
 @Component({
     selector: 'header-comp',
     templateUrl: 'header.template.html',
+    styleUrls: ["./_common.style.scss".toString()],
     providers: [UserService]
 })
 
