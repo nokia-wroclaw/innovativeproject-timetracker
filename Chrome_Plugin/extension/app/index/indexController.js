@@ -6,7 +6,8 @@ angular.module('myApp', [])
         $scope.options = {
             timeResolution: "",
             login: "",
-            password: ""
+            password: "",
+            isLogged: ""
         };
 
         $scope.items = ['Home', 'Options'];
@@ -26,8 +27,23 @@ angular.module('myApp', [])
             });
         };
 
+        $scope.getLoggedState = function () {
+            storageService.getLoggedState(function (isLogged) {
+                $scope.options.isLogged = isLogged;
+            });
+        };
+
+        $scope.getLogin = function () {
+            storageService.getLogin(function (login) {
+                $scope.options.login = login;
+                $scope.$apply();
+            });
+        };
+
         $scope.getEmissionState();
         $scope.getTimeResolution();
+        $scope.getLoggedState();
+        $scope.getLogin();
 
         $scope.changeEmissionState = function () {
             storageService.getEmissionState(function (emissionState) {
@@ -51,8 +67,15 @@ angular.module('myApp', [])
 
         $scope.login = function () {
             //only storage, todo check if in database
-            storageService.setLoginAndPassword($scope.options.login, $scope.options.password);
+            $scope.options.isLogged = true;
+            storageService.setLoginAndPassword($scope.options.login, $scope.options.password, true);
             chrome.runtime.sendMessage({"Login": $scope.options.login, "Password": $scope.options.password});
+        };
+
+        $scope.logout = function () {
+            $scope.options.isLogged = false;
+            storageService.setLoginAndPassword("", "", false);
+            chrome.runtime.sendMessage({"Login": "", "Password": ""});
         };
 
         $scope.redirect = function () {
