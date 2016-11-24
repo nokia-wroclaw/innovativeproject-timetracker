@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('myApp', [])
-    .controller('EmmitStateController', function ($scope, storageService) {
+    .controller('EmitStateController', function ($scope, storageService) {
 
         $scope.options = {
             timeResolution: "",
-            email: "",
+            login: "",
             password: ""
         };
 
@@ -51,8 +51,8 @@ angular.module('myApp', [])
 
         $scope.login = function () {
             //only storage, todo check if in database
-            storageService.setEmailAndPassword($scope.options.email, $scope.options.password);
-            chrome.runtime.sendMessage({"Login": $scope.options.email, "Password": $scope.options.password});
+            storageService.setLoginAndPassword($scope.options.login, $scope.options.password);
+            chrome.runtime.sendMessage({"Login": $scope.options.login, "Password": $scope.options.password});
         };
 
         $scope.redirect = function () {

@@ -24,7 +24,7 @@
 </head>
 <body>
 
-<div ng-app="myApp" class="container" ng-controller="EmmitStateController">
+<div ng-app="myApp" class="container" ng-controller="EmitStateController">
     <select ng-model="selection" ng-options="item for item in items" class="form-control"></select>
     <div ng-switch on="selection">
         <div ng-switch-when="Home">
@@ -38,8 +38,8 @@
             </div>
             <form>
                 <div class="form-group">
-                    <label for="email">Email address:</label>
-                    <input type="text" class="form-control" id="email" ng-model="options.email">
+                    <label for="login">Login:</label>
+                    <input type="text" class="form-control" id="login" ng-model="options.login">
                 </div>
                 <div class="form-group">
                     <label for="pwd">Password:</label>

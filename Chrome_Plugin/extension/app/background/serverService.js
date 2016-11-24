@@ -19,7 +19,7 @@ angular.module('myApp').service('serverService', function ($http, storageService
     };
 
     var getLogin = function () {
-        storageService.getEmail(function (storageLogin) {
+        storageService.getLogin(function (storageLogin) {
             sendingParams.login = storageLogin;
         });
     };

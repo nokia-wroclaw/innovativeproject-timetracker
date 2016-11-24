@@ -4,7 +4,7 @@ angular.module('myApp').service('storageService', function () {
     var _this = this;
     _this.emissionState = undefined;
     _this.timeResolution = undefined;
-    _this.email = undefined;
+    _this.login = undefined;
     _this.password = undefined;
 
     this.setEmissionState = function (state) {
@@ -17,8 +17,8 @@ angular.module('myApp').service('storageService', function () {
         this.sync();
     };
 
-    this.setEmailAndPassword = function (email, password) {
-        _this.email = email;
+    this.setLoginAndPassword = function (login, password) {
+        _this.login = login;
         _this.password = password;
         this.sync();
     };
@@ -49,13 +49,12 @@ angular.module('myApp').service('storageService', function () {
         });
     };
 
-    this.getEmail = function (cb) {
-        chrome.storage.sync.get('email', function (keys) {
-            if (keys.email != null) {
-                _this.email = keys.email;
+    this.getLogin = function (cb) {
+        chrome.storage.sync.get('login', function (keys) {
+            if (keys.login != null) {
+                _this.login = keys.login;
             }
-            console.log("returtning email", _this.email);
-            cb(_this.email);
+            cb(_this.login);
         });
     };
 
@@ -72,7 +71,7 @@ angular.module('myApp').service('storageService', function () {
         var obj = {
             'emissionState': _this.emissionState ,
             'timeResolution': _this.timeResolution,
-            'email': _this.email,
+            'login': _this.login,
             'password': _this.password
         };
         
