@@ -34,12 +34,12 @@ angular.module('myApp').service('serverService', function ($http, storageService
         getLogin();
         getEmissionState();
         getPassword();
-        setTimeout(function(){
+        setTimeout(function () {
             if (emissionState == "END" && sendingParams.login != "") {
                 /* after server change
 
-                sendingParams.date = getCurrentDate();
-                sendingParams.sendingState = "START" */
+                 sendingParams.date = getCurrentDate();
+                 sendingParams.sendingState = "START" */
 
                 sending = setInterval(send, intervalTime);
                 //sendingParams.sendingState = "CONTINUE";
@@ -70,7 +70,7 @@ angular.module('myApp').service('serverService', function ($http, storageService
     var processChange = function () {
         if (sending != null)
             clearInterval(sending);
-        if (emissionState == "START" && sendingParams.login != "") {
+        if (emissionState == "END" && sendingParams.login != "") {
             //sendingParams.sendingState = "START";
             sending = setInterval(send, intervalTime);
             //sendingParams.sendingState = "CONTINUE";
@@ -82,23 +82,23 @@ angular.module('myApp').service('serverService', function ($http, storageService
     };
 
     /*
-    after server implementation
+     after server implementation
 
-    var getCurrentDate = function () {
-        var currentDate = new Date();
-        return currentDate.getDate() + "/"
-            + (currentDate.getMonth()+1)  + "/"
-            + currentDate.getFullYear() + " @ "
-            + currentDate.getHours() + ":"
-            + currentDate.getMinutes();
-    };*/
+     var getCurrentDate = function () {
+     var currentDate = new Date();
+     return currentDate.getDate() + "/"
+     + (currentDate.getMonth()+1)  + "/"
+     + currentDate.getFullYear() + " @ "
+     + currentDate.getHours() + ":"
+     + currentDate.getMinutes();
+     };*/
 
     var send = function () {
         $http({
-                  method: "POST",
-                  url: "http://localhost:9000/addUser",
-                  params: sendingParams
-              }
+                method: "POST",
+                url: "http://localhost:9000/addUser",
+                params: sendingParams
+            }
         ).then(function (response) {
             console.log("response success");
         }, function (response) {

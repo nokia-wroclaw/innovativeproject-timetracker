@@ -1,6 +1,6 @@
 /* app css stylesheet */
 
-body {
+/*body {
   margin: 1em;
 }
 
@@ -17,4 +17,10 @@ a:hover {
 button {
   background-color: #FFBC73;
   color: #A65600;
+}*/
+
+body{
+  width:200px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
