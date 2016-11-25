@@ -19,9 +19,19 @@ GET        /assets/*file        controllers.Assets.versioned(path="/public", fil
 POST    	/addUser            controllers.HomeController.addUserController
 
 GET     /users						controllers.HomeController.getUsers
-# Kontroler POST sluzacy do zalogowania
+# Kontroler POST sluzacy do zalogowania strony
 POST    	/login				controllers.HomeController.loginController
-# Kontroler POST sluzacy do wylogowania
+# Kontroler POST sluzacy do wylogowania strony
 POST    	/logout				controllers.HomeController.logoutController
+# Kontroler POST sluzacy do zalogowania wtyczki
+POST    	/loginextension		controllers.HomeController.loginExtensionController
+# Kontroler POST sluzacy do wylogowania strony
+POST    	/logoutextension	controllers.HomeController.logoutExtensionController
+# Kontroler POST sluzacy do rejestrowania czasu pracy
+POST		/tracking			controllers.HomeController.tracking
+# Kontroler GET sluzacy do wyswietlenia danych dotyczacych uzytkownika
+POST		/userinfo			controllers.HomeController.sendData
 # Kontroler GET sprawdzający czy dany uzytkownik jest zalogowany
 GET     	/index2             controllers.HomeController.index2
+# Kontroler GET sluzacy do wyswietlenia timeline
+GET			/timeline			controllers.HomeController.timeline

@@ -47,6 +47,10 @@ public class HomeController extends Controller {
         return ok(register.render(""));
         
     }
+    public Result timeline(){
+    	String login=session("Login");
+    	return ok(timeline.render(login));
+    }
     /*
      * Method adding User to database
      * TODO- Do it better;
