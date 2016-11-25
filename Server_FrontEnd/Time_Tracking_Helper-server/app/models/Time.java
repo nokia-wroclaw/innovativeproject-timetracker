@@ -1,12 +1,20 @@
 package models;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.avaje.ebean.Model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Time {
+@Entity
+public class Time extends Model{
 	@Id
 	public Integer id;
 	@JsonProperty
@@ -45,4 +53,19 @@ public class Time {
     public String getEnd() {
         return end;
     }
+    
+	/*public static java.util.Date fromStringToDate(String stringDate){
+        DateFormat dateFrm = new SimpleDateFormat("dd/MM/yyyy@HH:mm");
+        
+        java.util.Date daterequest = null;
+		try {
+			daterequest = dateFrm.parse(stringDate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			System.out.println("COS Z DATA");
+			e.printStackTrace();
+		}
+		System.out.println(stringDate+ " "+ daterequest);
+		return daterequest;
+	}*/
 }

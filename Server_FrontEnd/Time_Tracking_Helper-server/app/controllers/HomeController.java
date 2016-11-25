@@ -8,7 +8,8 @@ import javax.inject.Inject;
 
 import com.avaje.ebean.Model;
 
-
+import models.Time;
+import models.Tracking;
 import models.User;
 import play.libs.Json;
 import play.data.Form;
@@ -100,6 +101,64 @@ public class HomeController extends Controller {
 			return ok("ERROR- Login not found");
 		}
     }
+    /*
+     * Action logging in User to system from Extension
+     */
+    public Result loginExtensionController(){
+    	User response;
+		try {
+            User user = Json.fromJson(request().body().asJson(), User.class);
+			response = models.UserStorage.loginUser(user);
+			session("LoginE",response.login);
+	    	return ok("User "+response.login +" logged in, name: "+ response.name+" surname: "+ response.surname);
+		} catch (Exception e) {
+			return ok("ERROR- Login not found");
+		}
+    }
+    /*
+     * Action logging out User to system from Extension
+     */
+    public Result logoutExtensionController(){
+    	User response;
+		try {
+            User user = Json.fromJson(request().body().asJson(), User.class);
+			response = models.UserStorage.logoutUser(user);
+			session().clear();
+	    	return ok("User "+response.login+" logged out");
+		} catch (Exception e) {
+			return ok("ERROR- Login not found");
+		}
+    }
+    /*
+     * Action enabling tracking work from extension
+     */
+    public Result tracking() {
+    	try{
+    		//System.out.println("JESTEM1");
+        	Tracking response = Json.fromJson(request().body().asJson(), Tracking.class);
+    		//System.out.println("JESTEM2");
+        	models.TimeStorage.track(response);
+            return ok("OK");	
+    	}catch (Exception e){
+    		e.printStackTrace();
+    		return ok("ERROR- Not added to database");
+    	}
+
+    }
+    /*
+     * Action sending Timeline to frontend
+     */
+    public Result sendData() {
+    	List<Time> response;
+		try {
+            Time nick = Json.fromJson(request().body().asJson(), Time.class);
+			response = models.TimeStorage.getData(nick);
+	    	return ok(toJson(response));
+		} catch (Exception e) {
+			return ok("ERROR");
+		}
+    }
+    
     public Result getUsers() {
         Model.Finder<Integer, User> finder = new Model.Finder<>(User.class);
         List<User> users = finder.all();

@@ -21,12 +21,9 @@ public class UserStorage{
      * @return: przekierowanie na strone glowna
      */
      public static String addUser(User user) throws Exception{
-    	 System.out.println("JESTEM TUTAJ");
          Model.Finder<Integer, User> finder = new Model.Finder<>(User.class);
          String log=user.login;
-         
          User equal=finder.where().eq("login",log).findUnique();
-         //System.out.println(equal.login+" "+equal.name+ " "+ equal.surname);
          if(equal!=null){
            System.out.println("Login already exist !");
            throw new Exception();
