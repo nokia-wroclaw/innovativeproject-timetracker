@@ -70,7 +70,7 @@ angular.module('myApp').service('serverService', function ($http, storageService
     var processChange = function () {
         if (sending != null)
             clearInterval(sending);
-        if (emissionState == "START" && sendingParams.login != "") {
+        if (emissionState == "END" && sendingParams.login != "") {
             //sendingParams.sendingState = "START";
             sending = setInterval(send, intervalTime);
             //sendingParams.sendingState = "CONTINUE";

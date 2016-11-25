@@ -10,9 +10,6 @@ angular.module('myApp', [])
             isLogged: ""
         };
 
-        $scope.items = ['Home', 'Options'];
-        $scope.selection = $scope.items[0];
-
         $scope.getEmissionState = function () {
             storageService.getEmissionState(function (emissionState) {
                 $scope.emissionState = emissionState;
@@ -46,18 +43,17 @@ angular.module('myApp', [])
         $scope.getLogin();
 
         $scope.changeEmissionState = function () {
-            storageService.getEmissionState(function (emissionState) {
-                if (emissionState == 'START') {
-                    storageService.setEmissionState('END');
-                    $scope.emissionState = 'END';
-                    $scope.$apply();
-                } else {
-                    storageService.setEmissionState('START');
-                    $scope.emissionState = 'START';
-                    $scope.$apply();
-                }
-            });
-            chrome.runtime.sendMessage({"EmissionState": $scope.emissionState});
+            if ($scope.emissionState == 'START') {
+                setEmissionState('END');
+            } else {
+                setEmissionState('START');
+            }
+        };
+
+        var setEmissionState = function (state) {
+            storageService.setEmissionState(state);
+            $scope.emissionState = state;
+            chrome.runtime.sendMessage({"EmissionState": state});
         };
 
         $scope.setTimeResolution = function () {
@@ -73,6 +69,7 @@ angular.module('myApp', [])
         };
 
         $scope.logout = function () {
+            setEmissionState('START');
             $scope.options.isLogged = false;
             storageService.setLoginAndPassword("", "", false);
             chrome.runtime.sendMessage({"Login": "", "Password": ""});
