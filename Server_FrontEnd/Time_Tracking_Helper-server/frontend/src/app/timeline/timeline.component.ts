@@ -27,7 +27,6 @@ export class TimelineComponent {
             {id: 5, content: 'item 5', start: '2013-04-25'},
             {id: 6, content: 'item 6', start: '2013-04-27'}
         ]);
-        alert("Kurwa");
         // Configuration for the Timeline
         var options = {};
 
