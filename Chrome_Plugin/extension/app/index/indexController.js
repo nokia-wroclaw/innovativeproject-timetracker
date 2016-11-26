@@ -4,7 +4,7 @@ angular.module('myApp', [])
     .controller('EmitStateController', function ($scope, storageService) {
 
         $scope.options = {
-            timeResolution: "",
+            //timeResolution: "",
             login: "",
             password: "",
             isLogged: ""
@@ -17,12 +17,12 @@ angular.module('myApp', [])
             });
         };
 
-        $scope.getTimeResolution = function () {
-            storageService.getTimeResolution(function (timeResolution) {
-                $scope.options.timeResolution = timeResolution;
-                $scope.$apply();
-            });
-        };
+        /*$scope.getTimeResolution = function () {
+         storageService.getTimeResolution(function (timeResolution) {
+         $scope.options.timeResolution = timeResolution;
+         $scope.$apply();
+         });
+         };*/
 
         $scope.getLoggedState = function () {
             storageService.getLoggedState(function (isLogged) {
@@ -38,7 +38,7 @@ angular.module('myApp', [])
         };
 
         $scope.getEmissionState();
-        $scope.getTimeResolution();
+        //$scope.getTimeResolution();
         $scope.getLoggedState();
         $scope.getLogin();
 
@@ -56,10 +56,10 @@ angular.module('myApp', [])
             chrome.runtime.sendMessage({"EmissionState": state});
         };
 
-        $scope.setTimeResolution = function () {
-            storageService.setTimeResolution($scope.options.timeResolution);
-            chrome.runtime.sendMessage({"TimeResolution": $scope.options.timeResolution});
-        };
+        /*$scope.setTimeResolution = function () {
+         storageService.setTimeResolution($scope.options.timeResolution);
+         chrome.runtime.sendMessage({"TimeResolution": $scope.options.timeResolution});
+         };*/
 
         $scope.login = function () {
             //only storage, todo check if in database
@@ -72,7 +72,7 @@ angular.module('myApp', [])
             setEmissionState('START');
             $scope.options.isLogged = false;
             storageService.setLoginAndPassword("", "", false);
-            chrome.runtime.sendMessage({"Login": "", "Password": ""});
+            chrome.runtime.sendMessage({"Logout": ""});
         };
 
         $scope.redirect = function () {
