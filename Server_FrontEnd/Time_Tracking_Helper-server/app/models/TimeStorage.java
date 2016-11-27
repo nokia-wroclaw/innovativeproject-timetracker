@@ -86,6 +86,18 @@ public class TimeStorage {
         	 * Mozliwe sytuacje tutaj: <15minut- update, else save
         	 * Dopisac
         	 */
+                  List<Time> tc= finder.where().eq("login", name).findList();
+        	Time temp=tc.get(tc.size()-1);
+                if(Integer.parseInt(temp.end.substring(14,16))%60+15>Integer.parseInt(daterequest.substring(14,16))){
+        		tc.get(tc.size()-1).setEnd(daterequest);
+        		tc.get(tc.size()-1).update();
+        	}
+        	else{
+        		if(Integer.parseInt(temp.end.substring(14,16))%60<Integer.parseInt(daterequest.substring(14,16))){
+        			Time record=new Time(name,daterequest,daterequest);
+                	record.save();
+        		}
+        	}
         	System.out.println("Continue");
         }
         if(state.equals("End")){
@@ -94,6 +106,9 @@ public class TimeStorage {
         	 * Czy jeszcze jakies sytuacje sa tutaj mozliwe?
         	 * 
         	 */
+                List<Time> te= finder.where().eq("login", name).findList();
+        	te.get(te.size()-1).setEnd(daterequest);
+    		te.get(te.size()-1).update();
         	System.out.println("End");
         }
 
