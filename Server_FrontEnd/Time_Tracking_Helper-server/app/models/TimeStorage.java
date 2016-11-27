@@ -58,6 +58,7 @@ public class TimeStorage {
         String pass=response.password;
         String daterequest=response.date;
         String state= response.state;
+        Model.Finder<Integer, Time> finder = new Model.Finder<>(Time.class);
         /*
          * Niżej skomentowane linijki służyły do konwersji ze String na Date
          * Jest problem z porownywaniem stringów "begin" i "end" z bazy danych (trzeba wybrac krotke z najmłodszą datą "end")
@@ -86,7 +87,7 @@ public class TimeStorage {
         	 * Mozliwe sytuacje tutaj: <15minut- update, else save
         	 * Dopisac
         	 */
-                  List<Time> tc= finder.where().eq("login", name).findList();
+                List<Time> tc= finder.where().eq("login", name).findList();
         	Time temp=tc.get(tc.size()-1);
                 if(Integer.parseInt(temp.end.substring(14,16))%60+15>Integer.parseInt(daterequest.substring(14,16))){
         		tc.get(tc.size()-1).setEnd(daterequest);
