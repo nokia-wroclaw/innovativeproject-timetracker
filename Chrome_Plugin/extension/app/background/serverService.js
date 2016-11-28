@@ -35,10 +35,10 @@ angular.module('myApp').service('serverService', function ($http, storageService
         getPassword();
         setTimeout(function () {
             if (emissionState == "END") {
-                sendingParams.sendingState = "Start";
+                sendingParams.state = "Start";
                 tracking = setInterval(track, intervalTime);
                 setTimeout(function () {
-                    sendingParams.sendingState = "Continue";
+                    sendingParams.state = "Continue";
                 }, 2000);
             }
         }, 2000);
@@ -64,16 +64,16 @@ angular.module('myApp').service('serverService', function ($http, storageService
 
     var changeTracking = function () {
         if (emissionState == "END") {
-            sendingParams.sendingState = "Start";
+            sendingParams.state = "Start";
             tracking = setInterval(track, intervalTime);
             setTimeout(function () {
-                sendingParams.sendingState = "Continue";
+                sendingParams.state = "Continue";
             }, 2000);
 
         } else {
-            if (sendingParams.sendingState != "End") {
+            if (sendingParams.state != "End") {
                 clearInterval(tracking);
-                sendingParams.sendingState = "End";
+                sendingParams.state = "End";
                 track();
             }
         }
