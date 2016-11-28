@@ -86,19 +86,44 @@ public class TimeStorage {
         	/*
         	 * Mozliwe sytuacje tutaj: <15minut- update, else save
         	 * Dopisac
-        	 */
+                 */
                 List<Time> tc= finder.where().eq("login", name).findList();
         	Time temp=tc.get(tc.size()-1);
-                if(Integer.parseInt(temp.end.substring(14,16))%60+15>Integer.parseInt(daterequest.substring(14,16))){
-        		tc.get(tc.size()-1).setEnd(daterequest);
-        		tc.get(tc.size()-1).update();
-        	}
-        	else{
-        		if(Integer.parseInt(temp.end.substring(14,16))%60<Integer.parseInt(daterequest.substring(14,16))){
-        			Time record=new Time(name,daterequest,daterequest);
-                	record.save();
-        		}
-        	}
+                if((Integer.parseInt(temp.end.substring(11,13))==Integer.parseInt(daterequest.substring(11,13)))||
+                (Integer.parseInt(temp.end.substring(11,13))==Integer.parseInt(daterequest.substring(11,13))-1)||
+                ((temp.end.substring(11,13).equals("23"))&&(daterequest.substring(11,13).equals("00")))){
+                        if(Integer.parseInt(temp.end.substring(11,13))==Integer.parseInt(daterequest.substring(11,13))){
+                               if(Integer.parseInt(temp.end.substring(14,16))+15>=Integer.parseInt(daterequest.substring(14,16))){
+        		               tc.get(tc.size()-1).setEnd(daterequest);
+        		               tc.get(tc.size()-1).update();
+        	               }
+                               else{
+                                       Time record=new Time(name,daterequest,daterequest);
+                	               record.save();
+                               }
+                        }
+                        else{
+                               if(Integer.parseInt(temp.end.substring(14,16))>=45){
+                                      if((Integer.parseInt(temp.end.substring(14,16))+15)%60>=Integer.parseInt(daterequest.substring(14,16))){
+        		                      tc.get(tc.size()-1).setEnd(daterequest);
+        		                      tc.get(tc.size()-1).update();
+        	                      }
+                                      else{
+                                               Time record=new Time(name,daterequest,daterequest);
+                	                       record.save();
+                                      }
+                              }
+                              else{
+        			  Time record=new Time(name,daterequest,daterequest);
+                	          record.save();
+                              }
+                 
+                       } 
+                }
+                else{  
+                       Time record=new Time(name,daterequest,daterequest);
+                       record.save();
+                }    
         	System.out.println("Continue");
         }
         if(state.equals("End")){
