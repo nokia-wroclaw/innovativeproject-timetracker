@@ -19,6 +19,7 @@ GET        /assets/*file        controllers.Assets.versioned(path="/public", fil
 POST    	/addUser            controllers.HomeController.addUserController
 
 GET     /users						controllers.HomeController.getUsers
+GET     /getusersinfo				controllers.HomeController.getUserinfo
 # Kontroler POST sluzacy do zalogowania strony
 POST    	/login				controllers.HomeController.loginController
 # Kontroler POST sluzacy do wylogowania strony

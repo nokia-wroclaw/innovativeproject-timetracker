@@ -168,5 +168,11 @@ public class HomeController extends Controller {
         List<User> users = finder.all();
         return ok(toJson(users));
     }
+    
+    public Result getUserinfo() {
+        Model.Finder<Integer, Time> finder = new Model.Finder<>(Time.class);
+        List<Time> users = finder.all();
+        return ok(toJson(users));
+    }
 
 }
