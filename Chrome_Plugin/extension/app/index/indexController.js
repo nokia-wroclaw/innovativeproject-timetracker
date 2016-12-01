@@ -3,13 +3,6 @@
 angular.module('myApp', [])
     .controller('EmitStateController', function ($scope, storageService, $http) {
 
-        $scope.options = {
-            //timeResolution: "",
-            login: "",
-            password: "",
-            isLogged: "",
-        };
-
         $scope.loginError = false;
 
         $scope.getEmissionState = function () {
@@ -19,28 +12,20 @@ angular.module('myApp', [])
             });
         };
 
-        /*$scope.getTimeResolution = function () {
-         storageService.getTimeResolution(function (timeResolution) {
-         $scope.options.timeResolution = timeResolution;
-         $scope.$apply();
-         });
-         };*/
-
         $scope.getLoggedState = function () {
             storageService.getLoggedState(function (isLogged) {
-                $scope.options.isLogged = isLogged;
+                $scope.isLogged = isLogged;
             });
         };
 
         $scope.getLogin = function () {
             storageService.getLogin(function (login) {
-                $scope.options.login = login;
+                $scope.login = login;
                 $scope.$apply();
             });
         };
 
         $scope.getEmissionState();
-        //$scope.getTimeResolution();
         $scope.getLoggedState();
         $scope.getLogin();
 
@@ -58,26 +43,21 @@ angular.module('myApp', [])
             chrome.runtime.sendMessage({"EmissionState": state});
         };
 
-        /*$scope.setTimeResolution = function () {
-         storageService.setTimeResolution($scope.options.timeResolution);
-         chrome.runtime.sendMessage({"TimeResolution": $scope.options.timeResolution});
-         };*/
-
-        $scope.login = function () {
+        $scope.signIn = function () {
             $http({
                     method: "POST",
                     url: "http://localhost:9000/loginextension",
                     data: {
-                        login: $scope.options.login,
-                        password: $scope.options.password
+                        login: $scope.login,
+                        password: $scope.password
                     }
                 }
             ).then(function (response) {
                 if (response.data != "ERROR- Login not found") {
-                    $scope.options.isLogged = true;
+                    $scope.isLogged = true;
                     $scope.loginError = false;
-                    storageService.setLoginAndPassword($scope.options.login, $scope.options.password, true);
-                    chrome.runtime.sendMessage({"Login": $scope.options.login, "Password": $scope.options.password});
+                    storageService.setLoginAndPassword($scope.login, $scope.password, true);
+                    chrome.runtime.sendMessage({"Login": $scope.login, "Password": $scope.password});
                 } else {
                     $scope.loginError = true;
                 }
@@ -86,18 +66,18 @@ angular.module('myApp', [])
             });
         };
 
-        $scope.logout = function () {
+        $scope.signOut = function () {
             $http({
                     method: "POST",
                     url: "http://localhost:9000/logoutextension",
                     data: {
-                        login: sendingParams.login,
-                        password: sendingParams.password
+                        login: $scope.login,
+                        password: $scope.password
                     }
                 }
             ).then(function (response) {
                 setEmissionState('START');
-                $scope.options.isLogged = false;
+                $scope.isLogged = false;
                 storageService.setLoginAndPassword("", "", false);
             }, function (response) {
                 console.error("Logout connection error", response);

@@ -9,7 +9,7 @@ var sendingParams = {
     state: ""
 };
 var emissionState = null;
-angular.module('myApp').service('serverService', function ($http, storageService) {
+angular.module('myApp').service('trackingService', function ($http, storageService) {
 
     var getEmissionState = function () {
         storageService.getEmissionState(function (state) {
@@ -51,8 +51,6 @@ angular.module('myApp').service('serverService', function ($http, storageService
                 emissionState = message.EmissionState;
                 changeTracking();
                 break;
-            /*case "TimeResolution":
-             break;*/
             case "Login":
                 sendingParams.login = message.Login;
                 sendingParams.password = message.Password;

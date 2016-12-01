@@ -3,7 +3,6 @@
 angular.module('myApp').service('storageService', function () {
     var _this = this;
     _this.emissionState = undefined;
-    //_this.timeResolution = undefined;
     _this.login = undefined;
     _this.password = undefined;
     _this.isLogged = false;
@@ -12,11 +11,6 @@ angular.module('myApp').service('storageService', function () {
         _this.emissionState = state;
         this.sync();
     };
-
-    /*this.setTimeResolution = function (time) {
-     _this.timeResolution = time;
-     this.sync();
-     };*/
 
     this.setLoginAndPassword = function (login, password, isLogged) {
         _this.login = login;
@@ -37,19 +31,6 @@ angular.module('myApp').service('storageService', function () {
             cb(_this.emissionState);
         });
     };
-
-    /*this.getTimeResolution = function (cb) {
-     chrome.storage.sync.get('timeResolution', function (keys) {
-     if (keys.timeResolution != null) {
-     _this.timeResolution = keys.timeResolution;
-     }
-     else {
-     _this.timeResolution = 1;
-     _this.sync();
-     }
-     cb(_this.timeResolution);
-     });
-     };*/
 
     this.getLogin = function (cb) {
         chrome.storage.sync.get('login', function (keys) {
@@ -81,7 +62,6 @@ angular.module('myApp').service('storageService', function () {
     this.sync = function () {
         var obj = {
             'emissionState': _this.emissionState,
-            //'timeResolution': _this.timeResolution,
             'login': _this.login,
             'password': _this.password,
             'isLogged': _this.isLogged
