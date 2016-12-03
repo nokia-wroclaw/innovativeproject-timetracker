@@ -92,7 +92,7 @@ angular.module('myApp').service('trackingService', function ($http, storageServi
         month = (month < 10) ? '0' + month: month;
         var hour = currentDate.getHours();
         hour = (hour < 10) ? '0' + hour: hour;
-        var minutes = currentDate.getHours();
+        var minutes = currentDate.getMinutes();
         minutes = (minutes < 10) ? '0' + minutes: minutes;
         return day + "/" + month + "/" + currentDate.getFullYear() + "@" + hour + ":" + minutes;
     };

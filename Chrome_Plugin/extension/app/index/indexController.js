@@ -93,8 +93,8 @@ angular.module('myApp', [])
         });
 
         port.onMessage.addListener(function (message) {
-            var key = Object.keys(message)[0];
-            if (key == 'emissionState') {
+            var keys = Object.keys(message);
+            if (keys.includes("emissionState")){
                 $scope.emissionState = message.emissionState;
                 $scope.$apply();
             }
