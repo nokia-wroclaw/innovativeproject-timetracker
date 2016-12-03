@@ -9,30 +9,42 @@ var sendingParams = {
     state: ""
 };
 var emissionState = null;
+var port = null;
 angular.module('myApp').service('trackingService', function ($http, storageService) {
 
-    var getEmissionState = function () {
-        storageService.getEmissionState(function (state) {
-            emissionState = state;
+    this.setPort = function (newPort) {
+        port = newPort;
+        port.onMessage.addListener(function (message) {
+            var keys = Object.keys(message);
+            if (keys.includes("emissionState")) {
+                emissionState = message.emissionState;
+                storageService.updateStorage({
+                    emissionState: message.emissionState
+                });
+                changeTracking();
+            }
+            if (keys.includes("login")) {
+                sendingParams.login = message.login;
+                sendingParams.password = message.password;
+                storageService.updateStorage({
+                    login: message.login,
+                    password: message.password,
+                    isLogged: message.isLogged
+                });
+            }
         });
     };
 
-    var getLogin = function () {
-        storageService.getLogin(function (storageLogin) {
-            sendingParams.login = storageLogin;
-        });
-    };
-
-    var getPassword = function () {
-        storageService.getPassword(function (storagePassword) {
-            sendingParams.password = storagePassword;
-        });
+    var getStorage = function () {
+        storageService.getStorage(function (keys) {
+            emissionState = keys.emissionState;
+            sendingParams.login = keys.login;
+            sendingParams.password = keys.password;
+        })
     };
 
     this.startService = function () {
-        getLogin();
-        getEmissionState();
-        getPassword();
+        getStorage();
         setTimeout(function () {
             if (emissionState == "END") {
                 sendingParams.state = "Start";
@@ -44,33 +56,28 @@ angular.module('myApp').service('trackingService', function ($http, storageServi
         }, 2000);
     };
 
-    this.processMessage = function (message) {
-        var key = Object.keys(message)[0];
-        switch (key) {
-            case "EmissionState":
-                emissionState = message.EmissionState;
-                changeTracking();
-                break;
-            case "Login":
-                sendingParams.login = message.Login;
-                sendingParams.password = message.Password;
-                break;
-            default:
-                console.log("Wrong key", key);
-        }
+    this.changeEmissionState = function (state) {
+        emissionState = state;
+        storageService.updateStorage({
+            emissionState: state
+        });
+        changeTracking();
     };
 
     var changeTracking = function () {
         if (emissionState == "END") {
-            sendingParams.state = "Start";
-            tracking = setInterval(track, intervalTime);
-            setTimeout(function () {
-                sendingParams.state = "Continue";
-            }, 2000);
+            if (tracking == null) {
+                sendingParams.state = "Start";
+                tracking = setInterval(track, intervalTime);
+                setTimeout(function () {
+                    sendingParams.state = "Continue";
+                }, 2000);
+            }
 
         } else {
             if (sendingParams.state != "End") {
                 clearInterval(tracking);
+                tracking = null;
                 sendingParams.state = "End";
                 track();
             }
@@ -79,11 +86,15 @@ angular.module('myApp').service('trackingService', function ($http, storageServi
 
     var getCurrentDate = function () {
         var currentDate = new Date();
-        return currentDate.getDate() + "/"
-            + (currentDate.getMonth() + 1) + "/"
-            + currentDate.getFullYear() + "@"
-            + currentDate.getHours() + ":"
-            + currentDate.getMinutes();
+        var day = currentDate.getDate();
+        day = (day < 10) ? '0' + day: day;
+        var month = currentDate.getMonth() + 1;
+        month = (month < 10) ? '0' + month: month;
+        var hour = currentDate.getHours();
+        hour = (hour < 10) ? '0' + hour: hour;
+        var minutes = currentDate.getHours();
+        minutes = (minutes < 10) ? '0' + minutes: minutes;
+        return day + "/" + month + "/" + currentDate.getFullYear() + "@" + hour + ":" + minutes;
     };
 
     var track = function () {
