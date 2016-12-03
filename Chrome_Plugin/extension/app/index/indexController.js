@@ -3,81 +3,55 @@
 angular.module('myApp', [])
     .controller('EmitStateController', function ($scope, storageService, $http) {
 
-        $scope.options = {
-            //timeResolution: "",
-            login: "",
-            password: "",
-            isLogged: "",
-        };
-
         $scope.loginError = false;
 
-        $scope.getEmissionState = function () {
-            storageService.getEmissionState(function (emissionState) {
-                $scope.emissionState = emissionState;
+        var getStorage = function () {
+            storageService.getStorage(function (keys) {
+                console.log(keys);
+                $scope.emissionState = keys.emissionState;
+                $scope.isLogged = keys.isLogged;
+                $scope.login = keys.login;
                 $scope.$apply();
-            });
+            })
         };
 
-        /*$scope.getTimeResolution = function () {
-         storageService.getTimeResolution(function (timeResolution) {
-         $scope.options.timeResolution = timeResolution;
-         $scope.$apply();
-         });
-         };*/
-
-        $scope.getLoggedState = function () {
-            storageService.getLoggedState(function (isLogged) {
-                $scope.options.isLogged = isLogged;
-            });
-        };
-
-        $scope.getLogin = function () {
-            storageService.getLogin(function (login) {
-                $scope.options.login = login;
-                $scope.$apply();
-            });
-        };
-
-        $scope.getEmissionState();
-        //$scope.getTimeResolution();
-        $scope.getLoggedState();
-        $scope.getLogin();
+        getStorage();
 
         $scope.changeEmissionState = function () {
             if ($scope.emissionState == 'START') {
-                setEmissionState('END');
+                port.postMessage({
+                    "emissionState": 'END'
+                });
+                $scope.emissionState = 'END';
+
             } else {
-                setEmissionState('START');
+                port.postMessage({
+                    "emissionState": 'START'
+                });
+                $scope.emissionState = 'START';
+
             }
         };
 
-        var setEmissionState = function (state) {
-            storageService.setEmissionState(state);
-            $scope.emissionState = state;
-            chrome.runtime.sendMessage({"EmissionState": state});
-        };
-
-        /*$scope.setTimeResolution = function () {
-         storageService.setTimeResolution($scope.options.timeResolution);
-         chrome.runtime.sendMessage({"TimeResolution": $scope.options.timeResolution});
-         };*/
-
-        $scope.login = function () {
+        $scope.signIn = function () {
+            console.log($scope.emissionState);
             $http({
                     method: "POST",
                     url: "http://localhost:9000/loginextension",
                     data: {
-                        login: $scope.options.login,
-                        password: $scope.options.password
+                        login: $scope.login,
+                        password: $scope.password
                     }
                 }
             ).then(function (response) {
                 if (response.data != "ERROR- Login not found") {
-                    $scope.options.isLogged = true;
+                    $scope.isLogged = true;
                     $scope.loginError = false;
-                    storageService.setLoginAndPassword($scope.options.login, $scope.options.password, true);
-                    chrome.runtime.sendMessage({"Login": $scope.options.login, "Password": $scope.options.password});
+                    port.postMessage({
+                        login: $scope.login,
+                        password: $scope.password,
+                        isLogged: true
+                    });
                 } else {
                     $scope.loginError = true;
                 }
@@ -86,19 +60,24 @@ angular.module('myApp', [])
             });
         };
 
-        $scope.logout = function () {
+        $scope.signOut = function () {
             $http({
                     method: "POST",
                     url: "http://localhost:9000/logoutextension",
                     data: {
-                        login: sendingParams.login,
-                        password: sendingParams.password
+                        login: $scope.login,
+                        password: $scope.password
                     }
                 }
             ).then(function (response) {
-                setEmissionState('START');
-                $scope.options.isLogged = false;
-                storageService.setLoginAndPassword("", "", false);
+                $scope.emissionState = 'START';
+                $scope.isLogged = false;
+                port.postMessage({
+                    "emissionState": 'START',
+                    "login": "",
+                    "password": "",
+                    "isLogged": false
+                });
             }, function (response) {
                 console.error("Logout connection error", response);
             });
@@ -108,4 +87,16 @@ angular.module('myApp', [])
             var newURL = "http://localhost:9000";
             chrome.tabs.create({url: newURL});
         };
+
+        var port = chrome.extension.connect({
+            name: "Popup-background communication"
+        });
+
+        port.onMessage.addListener(function (message) {
+            var keys = Object.keys(message);
+            if (keys.includes("emissionState")){
+                $scope.emissionState = message.emissionState;
+                $scope.$apply();
+            }
+        });
     });

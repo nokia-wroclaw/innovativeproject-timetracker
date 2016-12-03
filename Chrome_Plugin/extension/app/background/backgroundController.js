@@ -1,11 +1,11 @@
 angular.module('myApp', [])
-    .controller('BackgroundController', function ($scope, serverService) {
-        serverService.startService();
+    .controller('BackgroundController', function (trackingService, notificationService) {
 
-        chrome.runtime.onMessage.addListener(
-            function (message) {
-                console.log(message);
-                serverService.processMessage(message);
-            }
-        );
+        trackingService.startService();
+        notificationService.startService();
+
+        chrome.extension.onConnect.addListener(function(port) {
+            trackingService.setPort(port);
+            notificationService.setPort(port);
+        });
     });
