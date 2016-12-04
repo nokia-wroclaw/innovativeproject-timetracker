@@ -99,7 +99,6 @@ angular.module('myApp').service('trackingService', function ($http, storageServi
 
     var track = function () {
         sendingParams.date = getCurrentDate();
-        console.log(sendingParams);
         $http({
                 method: "POST",
                 url: "http://localhost:9000/tracking",

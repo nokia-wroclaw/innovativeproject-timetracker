@@ -7,7 +7,6 @@ angular.module('myApp', [])
 
         var getStorage = function () {
             storageService.getStorage(function (keys) {
-                console.log(keys);
                 $scope.emissionState = keys.emissionState;
                 $scope.isLogged = keys.isLogged;
                 $scope.login = keys.login;
@@ -34,7 +33,6 @@ angular.module('myApp', [])
         };
 
         $scope.signIn = function () {
-            console.log($scope.emissionState);
             $http({
                     method: "POST",
                     url: "http://localhost:9000/loginextension",

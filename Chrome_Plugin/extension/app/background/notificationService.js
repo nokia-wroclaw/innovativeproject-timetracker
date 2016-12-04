@@ -4,7 +4,7 @@ var emissionState = "";
 var shouldWorkTitle = "You should work now";
 var shouldNotWorkTitle = "You shouldn't work now";
 var shouldWork = false;
-var schedule = null;
+var schedule = [];
 var isLogged = false;
 angular.module('myApp')
     .service('notificationService', function ($http, trackingService, storageService) {
@@ -23,18 +23,18 @@ angular.module('myApp')
             setTimeout(function () {
                 var index = 0;
                 var currentDate = new Date();
-                var isWorking = (emissionState == "END") ? true : false;
+                var isWorking = (emissionState == "END");
                 for (index; index < schedule.length; ++index) {
                     if (currentDate < schedule[index].date) {
-                        shouldWork = (schedule[index].status == 'end') ? true : false;
+                        shouldWork = (schedule[index].status == 'end');
                         if (shouldWork != isWorking && isLogged)
                             createNotification();
                         setTimeout(checkSchedule, schedule[index].date.getTime() - currentDate.getTime());
                         break;
                     }
                 }
-                if (index == schedule.length) {
-                    shouldWork = (schedule[index - 1].status == 'end') ? false : true;
+                if (index == schedule.length && index != 0) {
+                    shouldWork = (schedule[index - 1].status == 'end');
                     if (shouldWork != isWorking && isLogged)
                         createNotification();
                     var midnight = new Date(Date.UTC(currentDate.getFullYear(), currentDate.getMonth(),
