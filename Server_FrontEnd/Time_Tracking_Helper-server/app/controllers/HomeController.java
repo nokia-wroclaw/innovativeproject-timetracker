@@ -51,6 +51,14 @@ public class HomeController extends Controller {
     	String login=session("Login");
     	return ok(timeline.render(login));
     }
+    public Result settings(){
+    	String login=session("Login");
+    	return ok(settings.render(login));
+    }
+    public Result schedule(){
+    	String login=session("Login");
+    	return ok(schedule.render(login));
+    }
     /*
      * Method adding User to database
      * TODO- Do it better;

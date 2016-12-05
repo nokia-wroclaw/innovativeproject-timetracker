@@ -17,7 +17,7 @@ GET        /assets/*file        controllers.Assets.versioned(path="/public", fil
 
 # Kontroler POST sluzacy do dodawania uzytkownika
 POST    	/addUser            controllers.HomeController.addUserController
-
+# Kontrolery do testow, w koncowej wersji usunac
 GET     /users						controllers.HomeController.getUsers
 GET     /getusersinfo				controllers.HomeController.getUserinfo
 # Kontroler POST sluzacy do zalogowania strony
@@ -36,3 +36,7 @@ POST		/userinfo			controllers.HomeController.sendData
 GET     	/index2             controllers.HomeController.index2
 # Kontroler GET sluzacy do wyswietlenia timeline
 GET			/timeline			controllers.HomeController.timeline
+# Kontroler GET sluzacy do wyswietlenia ustawien
+GET			/settings		controllers.HomeController.settings
+# Kontroler GET sluzacy do wyswietlenia harmonogramu
+GET			/schedule		controllers.HomeController.schedule
