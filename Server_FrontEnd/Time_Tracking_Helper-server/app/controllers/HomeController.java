@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import com.avaje.ebean.Model;
 
 import models.Time;
+import models.Time2;
 import models.Tracking;
 import models.User;
 import play.libs.Json;
@@ -161,12 +162,13 @@ public class HomeController extends Controller {
      * Action sending Timeline to frontend
      */
     public Result sendData() {
-    	List<Time> response;
+    	List<Time2> response;
 		try {
-            Time nick = Json.fromJson(request().body().asJson(), Time.class);
+            Time2 nick = Json.fromJson(request().body().asJson(), Time2.class);
 			response = models.TimeStorage.getData(nick);
 	    	return ok(toJson(response));
 		} catch (Exception e) {
+			e.printStackTrace();
 			return ok("ERROR");
 		}
     }
