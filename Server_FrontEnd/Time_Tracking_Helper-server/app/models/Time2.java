@@ -14,40 +14,44 @@ import com.avaje.ebean.Model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-public class Time extends Model{
+public class Time2 extends Model{
 	@Id
 	public Integer id;
 	@JsonProperty
 	@ManyToOne(cascade = CascadeType.ALL)
 	public String login;
 	@JsonProperty
-	public java.util.Date begin;
+	public String begin;
 	@JsonProperty
-	public java.util.Date end;
+	public String end;
 	
-	public Time (String login, Date begin, Date end){
+	public Time2 (String login, String begin, String end){
 		this.login=login;
 		this.begin=begin;
 		this.end=end;
 	}
-
+	
+	
     public void setLogin(String login) {
         this.login = login;
     }
+
     public String getLogin() {
         return login;
     }
-    public void setBegin(Date begin) {
+    public void setBegin(String begin) {
         this.begin = begin;
     }
 
-    public Date getBegin() {
+    public String getBegin() {
         return begin;
     }
-    public void setEnd(Date end) {
+    public void setEnd(String end) {
         this.end = end;
     }
-    public Date getEnd() {
+
+    public String getEnd() {
         return end;
     }
+    
 }

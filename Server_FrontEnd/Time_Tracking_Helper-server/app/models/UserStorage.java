@@ -11,9 +11,6 @@ import models.User;
 
 public class UserStorage{
 
-	
-    @Inject
-    private static FormFactory formFactory;
     
 	   /*
      *Metoda sluzaca do weryfikacji hasel i loginow
@@ -23,9 +20,8 @@ public class UserStorage{
      public static String addUser(User user) throws Exception{
          Model.Finder<Integer, User> finder = new Model.Finder<>(User.class);
          String log=user.login;
-         User equal=finder.where().eq("login",log).findUnique();
-         if(equal!=null){
-           System.out.println("Login already exist !");
+         User userdatabase=finder.where().eq("login",log).findUnique();
+         if(userdatabase!=null){
            throw new Exception();
          }else{
              user.save();
@@ -41,11 +37,11 @@ public class UserStorage{
          Model.Finder<Integer, User> finder = new Model.Finder<>(User.class);
          String login=user.login;
          String pass=user.password;
-         User equal=finder.where().eq("login",login).eq("password",pass).findUnique();
-         if(equal==null){
+         User userdatabase=finder.where().eq("login",login).eq("password",pass).findUnique();
+         if(userdatabase==null){
              throw new Exception();	 
          }else{
-             return equal;
+             return userdatabase;
          }
      	}        
      
@@ -57,16 +53,12 @@ public class UserStorage{
      public static User logoutUser(User user) throws Exception{
          Model.Finder<Integer, User> finder = new Model.Finder<>(User.class);
          String login=user.login;
-         //String pass=user.password;
-         //User equal=finder.where().eq("login",log).eq("password",pass).findUnique();
-         User equal=finder.where().eq("login",login).findUnique();
-         if(equal==null){
+         User userdatabase=finder.where().eq("login",login).findUnique();
+         if(userdatabase==null){
              throw new Exception();	 
          }else{
-
-             System.out.println("User name: "+equal.name+" User surname: "+equal.surname);
              user.update();   
-             return equal;
+             return userdatabase;
          }
    }
      
