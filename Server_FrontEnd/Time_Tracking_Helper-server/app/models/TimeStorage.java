@@ -1,7 +1,6 @@
 package models;
 
-
-import java.sql.Date;
+import java.util.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -69,16 +68,12 @@ public class TimeStorage {
         }
 
 	}
-	public static void track(Tracking response) {
-		System.out.println("Funkcja zastępcza, by nie wyrzucało błędów");
-	
-	}
 	/*
 	 * Funkcja służaca do uaktualniania czasu pracy w bazie danych
 	 * response- odpowiedz wyslana przez wtyczke
 	 * ODKOMENTOWAC I POPRAWIC-PODOBNIE JAK WYZEJ JEST ZROBIONY GETDATA
 	 */
-/*	public static void track(Tracking response) {
+	public static void track(Tracking response) {
         String name=response.login;
         String pass=response.password;
         String daterequest=response.date;
@@ -95,9 +90,9 @@ public class TimeStorage {
         //List<Time> time=finder.where().eq("login",name).findList();
         //Comparator<? super Time> c = null;
 		//time.sort(c);
- /*       if(state.equals("Start")){
+       if(state.equals("Start")){
         	System.out.println("START");
-        	Time record=new Time(name,daterequest,daterequest);
+        	Time record=new Time(name,fromStringToDate(daterequest),fromStringToDate(daterequest));
         	record.save();
         	/*
         	 * Dopisac reszte funkcji
@@ -106,49 +101,58 @@ public class TimeStorage {
         	 */
         	
         			
-  /*      }
+       }
         if(state.equals("Continue")){
         	/*
         	 * Mozliwe sytuacje tutaj: <15minut- update, else save
         	 * Dopisac
                  */
- /*               List<Time> tc= finder.where().eq("login", name).findList();
-        	Time temp=tc.get(tc.size()-1);
-                if((Integer.parseInt(temp.end.substring(11,13))==Integer.parseInt(daterequest.substring(11,13)))||
-                (Integer.parseInt(temp.end.substring(11,13))==Integer.parseInt(daterequest.substring(11,13))-1)||
-                ((temp.end.substring(11,13).equals("23"))&&(daterequest.substring(11,13).equals("00")))){
-                        if(Integer.parseInt(temp.end.substring(11,13))==Integer.parseInt(daterequest.substring(11,13))){
-                               if(Integer.parseInt(temp.end.substring(14,16))+15>=Integer.parseInt(daterequest.substring(14,16))){
-        		               tc.get(tc.size()-1).setEnd(daterequest);
-        		               tc.get(tc.size()-1).update();
-        	               }
-                               else{
-                                       Time record=new Time(name,daterequest,daterequest);
-                	               record.save();
-                               }
-                        }
-                        else{
-                               if(Integer.parseInt(temp.end.substring(14,16))>=45){
-                                      if((Integer.parseInt(temp.end.substring(14,16))+15)%60>=Integer.parseInt(daterequest.substring(14,16))){
-        		                      tc.get(tc.size()-1).setEnd(daterequest);
-        		                      tc.get(tc.size()-1).update();
-        	                      }
-                                      else{
-                                               Time record=new Time(name,daterequest,daterequest);
-                	                       record.save();
-                                      }
-                              }
-                              else{
-        			  Time record=new Time(name,daterequest,daterequest);
-                	          record.save();
-                              }
-                 
-                       } 
-                }
-                else{  
-                       Time record=new Time(name,daterequest,daterequest);
-                       record.save();
-                }    
+                List<Time> tc= finder.where().eq("login", name).findList();
+        	    Time temp=tc.get(tc.size()-1);
+        	    Date datereq=fromStringToDate(daterequest);
+        	    if((temp.end.getHours()==datereq.getHours())||(temp.end.getHours()+1==datereq.getHours())
+        	      ||((temp.end.getHours()==23)&&(datereq.getHours()==0)))
+        	    {
+        	    	if(temp.end.getHours()==datereq.getHours())
+        	    	{
+        	    		if(temp.end.getMinutes()+15>=datereq.getMinutes())
+        	    		{
+        	    			tc.get(tc.size()-1).setEnd(datereq);
+        	        		tc.get(tc.size()-1).update();
+        	    		}
+        	    		else
+        	    		{
+        	    			Time record=new Time(name,datereq,datereq);
+        	            	record.save();
+        	    		}
+        	    	}
+        	    	else
+        	    	{
+        	    		if(temp.end.getMinutes()>=45)
+        	    		{
+        	    			if((temp.end.getMinutes()+15)%60>=datereq.getMinutes())
+        	    			{
+        	    				tc.get(tc.size()-1).setEnd(datereq);
+            	        		tc.get(tc.size()-1).update();
+        	    			}
+        	    			else
+        	    			{
+        	    				Time record=new Time(name,datereq,datereq);
+            	            	record.save();
+        	    			}
+        	    		}
+        	    		else
+        	    		{
+        	    			Time record=new Time(name,datereq,datereq);
+        	            	record.save();
+        	    		}
+        	    	}
+        	    }
+        	    else
+        	    {
+        	    	Time record=new Time(name,datereq,datereq);
+	            	record.save();
+        	    }	 
         	System.out.println("Continue");
         }
         if(state.equals("End")){
@@ -157,14 +161,13 @@ public class TimeStorage {
         	 * Czy jeszcze jakies sytuacje sa tutaj mozliwe?
         	 * 
         	 */
- /*               List<Time> te= finder.where().eq("login", name).findList();
-        	te.get(te.size()-1).setEnd(daterequest);
+            List<Time> te= finder.where().eq("login", name).findList();
+        	te.get(te.size()-1).setEnd(fromStringToDate(daterequest));
     		te.get(te.size()-1).update();
         	System.out.println("End");
         }
 
-	}
-*/	
+	}	
 	public static java.util.Date fromStringToDate(String stringDate){
         DateFormat dateFrm = new SimpleDateFormat("dd/MM/yyyy@HH:mm");
         
@@ -186,3 +189,4 @@ public class TimeStorage {
 	}
 
 }
+
