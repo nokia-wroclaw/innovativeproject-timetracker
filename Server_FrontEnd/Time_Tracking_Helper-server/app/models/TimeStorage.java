@@ -44,7 +44,7 @@ public class TimeStorage {
             record10.save();
             Time record11=new Time("Wmblady",fromStringToDate("16/12/2016@07:30"),fromStringToDate("16/12/2016@13:30"));
             record11.save();  
-            Time record12=new Time("Wmblady",fromStringToDate("16/12/2016@14:00"),fromStringToDate("15/12/2016@16:00"));
+            Time record12=new Time("Wmblady",fromStringToDate("16/12/2016@14:00"),fromStringToDate("16/12/2016@16:00"));
             record12.save();  
         }
         if (t==null){
@@ -60,6 +60,7 @@ public class TimeStorage {
         		Time2 krotkamodyfikowana= new Time2(krotka.login,sbegin,send);
         		t2.add(krotkamodyfikowana);
         		iterator.next();
+        		i++;
         	}
     		return t2;       	
         }
