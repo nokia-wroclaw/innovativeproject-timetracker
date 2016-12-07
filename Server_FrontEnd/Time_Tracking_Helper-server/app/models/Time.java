@@ -30,12 +30,10 @@ public class Time extends Model{
 		this.begin=begin;
 		this.end=end;
 	}
-	
-	
+
     public void setLogin(String login) {
         this.login = login;
     }
-
     public String getLogin() {
         return login;
     }
@@ -49,23 +47,7 @@ public class Time extends Model{
     public void setEnd(Date end) {
         this.end = end;
     }
-
     public Date getEnd() {
         return end;
     }
-    
-	/*public static java.util.Date fromStringToDate(String stringDate){
-        DateFormat dateFrm = new SimpleDateFormat("dd/MM/yyyy@HH:mm");
-        
-        java.util.Date daterequest = null;
-		try {
-			daterequest = dateFrm.parse(stringDate);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			System.out.println("COS Z DATA");
-			e.printStackTrace();
-		}
-		System.out.println(stringDate+ " "+ daterequest);
-		return daterequest;
-	}*/
 }

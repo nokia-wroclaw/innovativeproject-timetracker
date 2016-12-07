@@ -5,7 +5,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -16,23 +15,13 @@ public class TimeStorage {
      * Funkcja zwracajaca dane dotyczace użytkownika nick
      */
 	public static List<Time2> getData(Time2 nick) throws Exception {
-		// TODO Auto-generated method stub
-        //Model.Finder<Integer, Time> finder = new Model.Finder<>(Time.class);
+
 		Model.Finder<Integer, Time> finder = new Model.Finder<>(Time.class);
         String name=nick.login;
-        System.out.println("BEFORE "+name+ " "+ nick.begin+ " "+ nick.end);
         java.util.Date date1=fromStringToDate(nick.begin);
         java.util.Date date2=fromStringToDate(nick.end);
-        /*String begin=fromDateToString(date1);
-        String end=fromDateToString(date2);
-        System.out.println("AFTER "+name+ " "+ begin+ " "+ end);*/
-        List<Time> t= finder.where().and().eq("login", name).findList();
-        t=finder.where().and().ge("begin", date1).le("end", date2).findList();
+        List<Time> t= finder.where().and().eq("login", name).ge("begin", date1).le("end", date2).findList();
         if(t.isEmpty()){
-            /*
-             * Ponizsze rekordy dodane, by Patrykowi sie nie nudzilo
-             * gdy metoda "track" zostanie zaimplementowana, usunac.
-             */
             Time record=new Time("Kruk07",fromStringToDate("12/12/2016@12:12"),fromStringToDate("12/12/2016@14:14"));
             record.save();
             Time record2=new Time("Wmblady",fromStringToDate("12/12/2016@11:54"),fromStringToDate("12/12/2016@15:34"));
@@ -48,7 +37,15 @@ public class TimeStorage {
             Time record7=new Time("Kruk07",fromStringToDate("13/12/2016@16:01"),fromStringToDate("13/12/2016@19:00"));
             record7.save();
             Time record8=new Time("Wmblady",fromStringToDate("13/12/2016@14:00"),fromStringToDate("13/12/2016@18:59"));
-            record8.save();     	
+            record8.save();
+            Time record9=new Time("Wmblady",fromStringToDate("14/12/2016@08:00"),fromStringToDate("14/12/2016@16:00"));
+            record9.save();  
+            Time record10=new Time("Wmblady",fromStringToDate("15/12/2016@09:00"),fromStringToDate("15/12/2016@17:30"));
+            record10.save();
+            Time record11=new Time("Wmblady",fromStringToDate("16/12/2016@07:30"),fromStringToDate("16/12/2016@13:30"));
+            record11.save();  
+            Time record12=new Time("Wmblady",fromStringToDate("16/12/2016@14:00"),fromStringToDate("15/12/2016@16:00"));
+            record12.save();  
         }
         if (t==null){
         	throw new Exception();
@@ -71,7 +68,6 @@ public class TimeStorage {
 	/*
 	 * Funkcja służaca do uaktualniania czasu pracy w bazie danych
 	 * response- odpowiedz wyslana przez wtyczke
-	 * ODKOMENTOWAC I POPRAWIC-PODOBNIE JAK WYZEJ JEST ZROBIONY GETDATA
 	 */
 	public static void track(Tracking response) {
         String name=response.login;
@@ -79,34 +75,12 @@ public class TimeStorage {
         String daterequest=response.date;
         String state= response.state;
         Model.Finder<Integer, Time> finder = new Model.Finder<>(Time.class);
-        /*
-         * Niżej skomentowane linijki służyły do konwersji ze String na Date
-         * Jest problem z porownywaniem stringów "begin" i "end" z bazy danych (trzeba wybrac krotke z najmłodszą datą "end")
-         * Wymyśl cos odpowiedniego
-         */
-        //java.util.Date daterequest= fromStringToDate(response.date);
-        //System.out.println(name+" "+ pass+" "+response.date+" "+daterequest+" "+state);
-        //Model.Finder<Integer, Time> finder = new Model.Finder<>(Time.class);
-        //List<Time> time=finder.where().eq("login",name).findList();
-        //Comparator<? super Time> c = null;
-		//time.sort(c);
+ 
        if(state.equals("Start")){
-        	System.out.println("START");
         	Time record=new Time(name,fromStringToDate(daterequest),fromStringToDate(daterequest));
         	record.save();
-        	/*
-        	 * Dopisac reszte funkcji
-        	 * Przeanalizowac mozliwe sytuacje przy stanie "Start"
-        	 * To wyżej to prowizorka, by strona mogla jakos cos testowac
-        	 */
-        	
-        			
        }
         if(state.equals("Continue")){
-        	/*
-        	 * Mozliwe sytuacje tutaj: <15minut- update, else save
-        	 * Dopisac
-                 */
                 List<Time> tc= finder.where().eq("login", name).findList();
         	    Time temp=tc.get(tc.size()-1);
         	    Date datereq=fromStringToDate(daterequest);
@@ -153,18 +127,11 @@ public class TimeStorage {
         	    	Time record=new Time(name,datereq,datereq);
 	            	record.save();
         	    }	 
-        	System.out.println("Continue");
         }
         if(state.equals("End")){
-        	/*
-        	 * Możliwe sytuacje- update, badz save, jak wyzej
-        	 * Czy jeszcze jakies sytuacje sa tutaj mozliwe?
-        	 * 
-        	 */
             List<Time> te= finder.where().eq("login", name).findList();
         	te.get(te.size()-1).setEnd(fromStringToDate(daterequest));
     		te.get(te.size()-1).update();
-        	System.out.println("End");
         }
 
 	}	
@@ -175,14 +142,13 @@ public class TimeStorage {
 		try {
 			daterequest = dateFrm.parse(stringDate);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			System.out.println("COS Z DATA");
 			e.printStackTrace();
 		}
 		return daterequest;
 	}
+
 	public static String fromDateToString(java.util.Date daterequest){
-		
         DateFormat dateFrm = new SimpleDateFormat("dd/MM/yyyy@HH:mm");
 		String	datestring= dateFrm.format(daterequest);
 		return datestring;
