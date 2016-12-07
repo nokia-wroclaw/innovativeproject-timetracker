@@ -18,7 +18,7 @@ export class HeaderComponent {
         this.userService.logoutRequest();
 
         //TODO: Delete this line when server will start to do it itself
-        window.location.href = 'http://localhost:9000/login';
+        window.location.href = '/login';
     }
 
     userName = () => localStorage.getItem('authToken').split(" ")[1];

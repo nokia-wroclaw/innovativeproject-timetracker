@@ -25,13 +25,13 @@ export class RegisterComponent {
             surname: regForm.value.surname,
             email: regForm.value.email
         });
-        xhttp.open("POST", "http://localhost:9000/addUser", true);
+        xhttp.open("POST", "/addUser", true);
         xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 //document.getElementById("demo").innerHTML = xhttp.responseText;
                 if(xhttp.responseText == "ADDED") {
-                    window.location.href = 'http://localhost:9000/login';
+                    window.location.href = '/login';
                 } else {
                     document.getElementById("registerServerAnswer").innerHTML = "Unsuccessful registration, please try again!";
                 }
@@ -41,7 +41,7 @@ export class RegisterComponent {
     }
     getUsers() {
         var xhttp = new XMLHttpRequest();
-        xhttp.open("GET", "http://localhost:9000/users", true);
+        xhttp.open("GET", "/users", true);
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 document.getElementById("registerServerAnswer").innerHTML = xhttp.responseText;

@@ -44,12 +44,10 @@ export class TimelineComponent {
         xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
         xhttp.onreadystatechange = function(){
             if (this.readyState == 4 && this.status == 200) {
-
                 var jsonResponse = JSON.parse(xhttp.responseText);
                 var container = document.getElementById('visualization');
                 var options = new Array();
                 var data = new Array();
-
 
                 //GATE FOR USER CHOICE IN DISPLAYING
                 var maxDaysInRow = 7;
