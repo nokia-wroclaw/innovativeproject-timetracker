@@ -8,7 +8,7 @@ angular.module('myApp').service('storageService', function () {
         isLogged: false
     };
 
-    var getInitialStorage = function() {
+    var loadStorage = function() {
         chrome.storage.sync.get(null, function (keys) {
             if (keys.emissionState)
                 storageElements.emissionState = keys.emissionState;
@@ -21,7 +21,7 @@ angular.module('myApp').service('storageService', function () {
         });
     };
 
-    getInitialStorage();
+    loadStorage();
 
     this.updateStorage = function (changes) {
         var keys = Object.keys(changes);

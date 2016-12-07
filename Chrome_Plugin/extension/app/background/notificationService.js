@@ -8,18 +8,19 @@ var schedule = [];
 var isLogged = false;
 angular.module('myApp')
     .service('notificationService', function ($http, trackingService, storageService) {
+        var _this = this;
 
         this.setPort = function (newPort) {
             port = newPort;
         };
 
         this.startService = function () {
-            getSchedule();
+            fetchSchedule();
             checkSchedule();
         };
 
         var checkSchedule = function () {
-            getStorage();
+            updateUserState();
             setTimeout(function () {
                 var index = 0;
                 var currentDate = new Date();
@@ -34,24 +35,24 @@ angular.module('myApp')
                     }
                 }
                 if (index == schedule.length && index != 0) {
-                    shouldWork = (schedule[index - 1].status == 'end');
+                    shouldWork = (schedule[index - 1].status == 'start');
                     if (shouldWork != isWorking && isLogged)
                         createNotification();
                     var midnight = new Date(Date.UTC(currentDate.getFullYear(), currentDate.getMonth(),
-                        currentDate.getDate() + 1) + currentDate.getTimezoneOffset() * 60 * 1000);
-                    setTimeout(this.startService, midnight.getTime() - currentDate.getTime());
+                            currentDate.getDate() + 1) + currentDate.getTimezoneOffset() * 60 * 1000);
+                    setTimeout(_this.startService, midnight.getTime() - currentDate.getTime());
                 }
             }, 500);
         };
 
-        var getStorage = function () {
+        var updateUserState = function () {
             storageService.getStorage(function (keys) {
                 emissionState = keys.emissionState;
                 isLogged = keys.isLogged;
             })
         };
 
-        var getSchedule = function () {
+        var fetchSchedule = function () {
             //get schedule for one day
             /*$http({
              method: "GET",
@@ -108,19 +109,24 @@ angular.module('myApp')
 
         chrome.notifications.onButtonClicked.addListener(function (notificationId, buttonIndex) {
             if (notificationId == myNotificationID) {
-                var state;
-                if (buttonIndex == 0) {
-                    state = 'END';
-                } else {
-                    state = 'START';
-                }
-                try {
-                    port.postMessage({'emissionState': state});
-                } catch (err) {
-                    console.log("not connected");
-                }
-                trackingService.changeEmissionState(state);
-                chrome.notifications.clear(myNotificationID);
+                updateUserState();
+                setTimeout(function () {
+                    if (isLogged) {
+                        var state;
+                        if (buttonIndex == 0) {
+                            state = 'END';
+                        } else {
+                            state = 'START';
+                        }
+                        try {
+                            port.postMessage({'emissionState': state});
+                        } catch (err) {
+                            console.log("not connected");
+                        }
+                        trackingService.changeEmissionState(state);
+                    }
+                    chrome.notifications.clear(myNotificationID);
+                }, 200);
             }
         });
     });
