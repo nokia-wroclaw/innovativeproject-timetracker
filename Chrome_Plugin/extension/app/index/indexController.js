@@ -7,6 +7,9 @@ angular.module('myApp', [])
 
         var getStorage = function () {
             storageService.getStorage(function (keys) {
+                if(keys.emissionState == 'END') {
+                    $('.switch').toggleClass("switchOn");
+                }
                 $scope.emissionState = keys.emissionState;
                 $scope.isLogged = keys.isLogged;
                 $scope.login = keys.login;
@@ -22,12 +25,14 @@ angular.module('myApp', [])
                     "emissionState": 'END'
                 });
                 $scope.emissionState = 'END';
+                $('.switch').toggleClass("switchOn");
 
             } else {
                 port.postMessage({
                     "emissionState": 'START'
                 });
                 $scope.emissionState = 'START';
+                $('.switch').toggleClass("switchOn");
 
             }
         };
@@ -68,6 +73,9 @@ angular.module('myApp', [])
                     }
                 }
             ).then(function (response) {
+                if($scope.emissionState != 'START'){
+                    $('.switch').toggleClass("switchOn");
+                }
                 $scope.emissionState = 'START';
                 $scope.isLogged = false;
                 port.postMessage({
@@ -93,6 +101,7 @@ angular.module('myApp', [])
         port.onMessage.addListener(function (message) {
             var keys = Object.keys(message);
             if (keys.includes("emissionState")){
+                $('.switch').toggleClass("switchOn");
                 $scope.emissionState = message.emissionState;
                 $scope.$apply();
             }

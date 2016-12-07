@@ -30,17 +30,20 @@
                        ng-model="password" ng-required="true">
             </div>
             <p ng-show="loginError">Incorrect login or password</p>
-            <button type="submit" class="btn btn-success btn-block"
+            <button type="submit" class="btn btn-primary btn-block"
                     ng-click="loginForm.$valid && signIn()">Sign in
             </button>
         </form>
     </div>
     <div ng-show="isLogged">
-        Welcome {{login}}!
+        <div class="header">
+            <div class="login">Welcome {{login}}!</div>
+           <div ng-click="changeEmissionState()" class="switch"></div>
+        </div>
         <div>
-            <button ng-click="changeEmissionState()" class="btn btn-block btn-success">{{emissionState}}</button>
-            <button ng-click="redirect()" class="btn btn-block btn-success">Go to website</button>
-            <button class="btn btn-block btn-success" ng-click="signOut()">Sign out</button>
+           <!-- <button ng-click="changeEmissionState()" class="btn btn-block btn-success">{{emissionState}}</button>-->
+            <button ng-click="redirect()" class="btn btn-block btn-primary btn-md">Go to website</button>
+            <button class="btn btn-block btn-primary btn-md" ng-click="signOut()">Sign out</button>
         </div>
     </div>
 </div>
