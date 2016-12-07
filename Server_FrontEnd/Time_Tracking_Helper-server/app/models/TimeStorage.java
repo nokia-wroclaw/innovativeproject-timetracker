@@ -20,8 +20,8 @@ public class TimeStorage {
         String name=nick.login;
         java.util.Date date1=fromStringToDate(nick.begin);
         java.util.Date date2=fromStringToDate(nick.end);
-        List<Time> t= finder.where().and().eq("login", name).ge("begin", date1).le("end", date2).findList();
-        if(t.isEmpty()){
+        List<Time> test=finder.all();
+        if(test.isEmpty()){
             Time record=new Time("Kruk07",fromStringToDate("12/12/2016@12:12"),fromStringToDate("12/12/2016@14:14"));
             record.save();
             Time record2=new Time("Wmblady",fromStringToDate("12/12/2016@11:54"),fromStringToDate("12/12/2016@15:34"));
@@ -46,7 +46,9 @@ public class TimeStorage {
             record11.save();  
             Time record12=new Time("Wmblady",fromStringToDate("16/12/2016@14:00"),fromStringToDate("16/12/2016@16:00"));
             record12.save();  
-        }
+        }        
+        List<Time> t= finder.where().and().eq("login", name).ge("begin", date1).le("end", date2).findList();
+
         if (t==null){
         	throw new Exception();
         }else{
