@@ -1,34 +1,32 @@
 'use strict';
 
 angular.module('myApp', [])
-    .controller('EmitStateController', function ($scope, storageService, $http) {
+    .controller('TrackingStateController', function ($scope, storageService, $http) {
 
         $scope.loginError = false;
 
-        var getStorage = function () {
+        var loadStorage = function () {
             storageService.getStorage(function (keys) {
-                $scope.emissionState = keys.emissionState;
+                $scope.isTracking = keys.isTracking;
                 $scope.isLogged = keys.isLogged;
                 $scope.login = keys.login;
                 $scope.$apply();
             })
         };
 
-        getStorage();
+        loadStorage();
 
-        $scope.changeEmissionState = function () {
-            if ($scope.emissionState == 'START') {
+        $scope.changeTrackingState = function () {
+            if ($scope.isTracking) {
                 port.postMessage({
-                    "emissionState": 'END'
+                    isTracking: false
                 });
-                $scope.emissionState = 'END';
-
+                $scope.isTracking = false;
             } else {
                 port.postMessage({
-                    "emissionState": 'START'
+                    isTracking: true
                 });
-                $scope.emissionState = 'START';
-
+                $scope.isTracking = true;
             }
         };
 
@@ -68,13 +66,13 @@ angular.module('myApp', [])
                     }
                 }
             ).then(function (response) {
-                $scope.emissionState = 'START';
+                $scope.isTracking = false;
                 $scope.isLogged = false;
                 port.postMessage({
-                    "emissionState": 'START',
-                    "login": "",
-                    "password": "",
-                    "isLogged": false
+                    isTracking: false,
+                    login: "",
+                    password: "",
+                    isLogged: false
                 });
             }, function (response) {
                 console.error("Logout connection error", response);
@@ -91,9 +89,8 @@ angular.module('myApp', [])
         });
 
         port.onMessage.addListener(function (message) {
-            var keys = Object.keys(message);
-            if (keys.includes("emissionState")){
-                $scope.emissionState = message.emissionState;
+            if (message.isTracking) {
+                $scope.isTracking = message.isTracking;
                 $scope.$apply();
             }
         });
