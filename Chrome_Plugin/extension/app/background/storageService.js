@@ -2,7 +2,7 @@
 
 angular.module('myApp').service('storageService', function () {
     var storageElements = {
-        emissionState: "START",
+        isTracking: false,
         login: "",
         password: "",
         isLogged: false
@@ -10,8 +10,8 @@ angular.module('myApp').service('storageService', function () {
 
     var loadStorage = function() {
         chrome.storage.sync.get(null, function (keys) {
-            if (keys.emissionState)
-                storageElements.emissionState = keys.emissionState;
+            if (keys.isTracking)
+                storageElements.isTracking = keys.isTracking;
             if (keys.login)
                 storageElements.login = keys.login;
             if (keys.password)
@@ -25,8 +25,8 @@ angular.module('myApp').service('storageService', function () {
 
     this.updateStorage = function (changes) {
         var keys = Object.keys(changes);
-        if (keys.includes("emissionState"))
-            storageElements.emissionState = changes.emissionState;
+        if (keys.includes("isTracking"))
+            storageElements.isTracking = changes.isTracking;
         if (keys.includes("login"))
             storageElements.login = changes.login;
         if (keys.includes("password"))

@@ -1,11 +1,11 @@
 var myNotificationID = null;
 var port = null;
-var emissionState = "";
+var schedule = [];
 var shouldWorkTitle = "You should work now";
 var shouldNotWorkTitle = "You shouldn't work now";
 var shouldWork = false;
-var schedule = [];
 var isLogged = false;
+var isTracking = false;
 angular.module('myApp')
     .service('notificationService', function ($http, trackingService, storageService) {
         var _this = this;
@@ -24,11 +24,10 @@ angular.module('myApp')
             setTimeout(function () {
                 var index = 0;
                 var currentDate = new Date();
-                var isWorking = (emissionState == "END");
                 for (index; index < schedule.length; ++index) {
                     if (currentDate < schedule[index].date) {
                         shouldWork = (schedule[index].status == 'end');
-                        if (shouldWork != isWorking && isLogged)
+                        if (shouldWork != isTracking && isLogged)
                             createNotification();
                         setTimeout(checkSchedule, schedule[index].date.getTime() - currentDate.getTime());
                         break;
@@ -36,7 +35,7 @@ angular.module('myApp')
                 }
                 if (index == schedule.length && index != 0) {
                     shouldWork = (schedule[index - 1].status == 'start');
-                    if (shouldWork != isWorking && isLogged)
+                    if (shouldWork != isTracking && isLogged)
                         createNotification();
                     var midnight = new Date(Date.UTC(currentDate.getFullYear(), currentDate.getMonth(),
                             currentDate.getDate() + 1) + currentDate.getTimezoneOffset() * 60 * 1000);
@@ -47,7 +46,7 @@ angular.module('myApp')
 
         var updateUserState = function () {
             storageService.getStorage(function (keys) {
-                emissionState = keys.emissionState;
+                isTracking = keys.isTracking;
                 isLogged = keys.isLogged;
             })
         };
@@ -90,7 +89,7 @@ angular.module('myApp')
 
         var createNotification = function () {
             chrome.notifications.create(
-                'isWorking', {
+                'isTracking', {
                     type: 'basic',
                     iconUrl: '../icon.png',
                     title: (shouldWork) ? shouldWorkTitle : shouldNotWorkTitle,
@@ -112,18 +111,13 @@ angular.module('myApp')
                 updateUserState();
                 setTimeout(function () {
                     if (isLogged) {
-                        var state;
-                        if (buttonIndex == 0) {
-                            state = 'END';
-                        } else {
-                            state = 'START';
-                        }
+                        var state = (buttonIndex == 0);
                         try {
-                            port.postMessage({'emissionState': state});
+                            port.postMessage({isTracking: state});
                         } catch (err) {
                             console.log("not connected");
                         }
-                        trackingService.changeEmissionState(state);
+                        trackingService.changeTrackingState(state);
                     }
                     chrome.notifications.clear(myNotificationID);
                 }, 200);

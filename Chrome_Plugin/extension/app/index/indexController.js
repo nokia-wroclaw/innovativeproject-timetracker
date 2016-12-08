@@ -1,16 +1,13 @@
 'use strict';
 
 angular.module('myApp', [])
-    .controller('EmitStateController', function ($scope, storageService, $http) {
+    .controller('TrackingStateController', function ($scope, storageService, $http) {
 
         $scope.loginError = false;
 
         var loadStorage = function () {
             storageService.getStorage(function (keys) {
-                if(keys.emissionState == 'END') {
-                    $('.switch').toggleClass("switchOn");
-                }
-                $scope.emissionState = keys.emissionState;
+                $scope.isTracking = keys.isTracking;
                 $scope.isLogged = keys.isLogged;
                 $scope.login = keys.login;
                 $scope.$apply();
@@ -19,21 +16,17 @@ angular.module('myApp', [])
 
         loadStorage();
 
-        $scope.changeEmissionState = function () {
-            if ($scope.emissionState == 'START') {
+        $scope.changeTrackingState = function () {
+            if ($scope.isTracking) {
                 port.postMessage({
-                    "emissionState": 'END'
+                    isTracking: false
                 });
-                $scope.emissionState = 'END';
-                $('.switch').toggleClass("switchOn");
-
+                $scope.isTracking = false;
             } else {
                 port.postMessage({
-                    "emissionState": 'START'
+                    isTracking: true
                 });
-                $scope.emissionState = 'START';
-                $('.switch').toggleClass("switchOn");
-
+                $scope.isTracking = true;
             }
         };
 
@@ -73,16 +66,13 @@ angular.module('myApp', [])
                     }
                 }
             ).then(function (response) {
-                if($scope.emissionState != 'START'){
-                    $('.switch').toggleClass("switchOn");
-                }
-                $scope.emissionState = 'START';
+                $scope.isTracking = false;
                 $scope.isLogged = false;
                 port.postMessage({
-                    "emissionState": 'START',
-                    "login": "",
-                    "password": "",
-                    "isLogged": false
+                    isTracking: false,
+                    login: "",
+                    password: "",
+                    isLogged: false
                 });
             }, function (response) {
                 console.error("Logout connection error", response);
@@ -99,9 +89,8 @@ angular.module('myApp', [])
         });
 
         port.onMessage.addListener(function (message) {
-            if (message.emissionState){
-                $('.switch').toggleClass("switchOn");
-                $scope.emissionState = message.emissionState;
+            if (message.isTracking) {
+                $scope.isTracking = message.isTracking;
                 $scope.$apply();
             }
         });

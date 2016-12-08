@@ -8,18 +8,19 @@ var sendingParams = {
     date: "",
     state: "End"
 };
-var emissionState = null;
+var isTracking = null;
 var port = null;
 angular.module('myApp').service('trackingService', function ($http, storageService) {
 
     this.setPort = function (newPort) {
         port = newPort;
         port.onMessage.addListener(function (message) {
+            console.log(message);
             var keys = Object.keys(message);
-            if (keys.includes("emissionState")) {
-                emissionState = message.emissionState;
+            if (keys.includes("isTracking")) {
+                isTracking = message.isTracking;
                 storageService.updateStorage({
-                    emissionState: message.emissionState
+                    isTracking: message.isTracking
                 });
                 changeTracking();
             }
@@ -37,7 +38,7 @@ angular.module('myApp').service('trackingService', function ($http, storageServi
 
     var updateUserState = function () {
         storageService.getStorage(function (keys) {
-            emissionState = keys.emissionState;
+            isTracking = keys.isTracking;
             sendingParams.login = keys.login;
             sendingParams.password = keys.password;
         })
@@ -46,7 +47,7 @@ angular.module('myApp').service('trackingService', function ($http, storageServi
     this.startService = function () {
         updateUserState();
         setTimeout(function () {
-            if (emissionState == "END") {
+            if (isTracking) {
                 sendingParams.state = "Start";
                 tracking = setInterval(track, intervalTime);
                 setTimeout(function () {
@@ -56,16 +57,16 @@ angular.module('myApp').service('trackingService', function ($http, storageServi
         }, 2000);
     };
 
-    this.changeEmissionState = function (state) {
-        emissionState = state;
+    this.changeTrackingState = function (state) {
+        isTracking = state;
         storageService.updateStorage({
-            emissionState: state
+            isTracking: state
         });
         changeTracking();
     };
 
     var changeTracking = function () {
-        if (emissionState == "END") {
+        if (isTracking) {
             if (tracking == null) {
                 sendingParams.state = "Start";
                 tracking = setInterval(track, intervalTime);

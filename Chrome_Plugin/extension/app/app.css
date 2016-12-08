@@ -1,112 +1,87 @@
-/* app css stylesheet */
-
-/*body {
-  margin: 1em;
+body {
+    width: 250px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: 0;
+    border: 0;
+    color: #ffffff;
+    background-color: #080b35;
 }
 
-a, p {
-  text-decoration: none;
-  color: #A65600
+.header {
+    height: 70px;
+    top: 70px;
+    padding-top: 15px;
+    padding-bottom: 10px;
 }
 
-a:hover {
-  background-color: #FFBC73;
-  color: #A65600;
+.login {
+    margin-top: 5px;
+    color: #ffffff;
+    height: 50px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 19px;
+    top: 50px;
+    float: left;
+    padding-left: 5px;
+    padding-right: 10px;
 }
 
-button {
-  background-color: #FFBC73;
-  color: #A65600;
-}*/
-
-body{
-  width:250px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  margin: 0;
-  border: 0;
-  color: #ffffff;
-  background-color: #080b35;
-}
-
-.header{
-  height: 70px;
-  top: 70px;
-  padding-top: 15px;
-  padding-bottom: 10px;
-}
-.login{
-  margin-top: 5px;
-  color: #ffffff;
-  height: 50px;
-  text-align: center;
-  font-weight: bold;
-  font-size: 19px;
-  top: 50px;
-  float: left;
-  padding-left: 5px;
-  padding-right: 10px;
-}
-.switch{
-  float: left;
-  width: 70px;
-  height: 32px;
-  background: #E5E5E5;
-  z-index: 0;
-  margin: 0;
-  padding: 0;
-  line-height: 32px;
-  appearance: none;
-  border: #666666;
-  cursor: pointer;
-  position: relative;
-  border-radius:16px; //IE 11
--moz-border-radius:16px; //Mozilla
--webkit-border-radius:16px; //Chrome and Safari
+.switch {
+    float: left;
+    width: 70px;
+    height: 32px;
+    background: #E5E5E5;
+    z-index: 0;
+    margin: 0;
+    padding: 0;
+    line-height: 32px;
+    appearance: none;
+    border: #666666;
+    cursor: pointer;
+    position: relative;
+    -webkit-border-radius: 16px;
 }
 
 .switch:before {
-  content: 'OFF';
-  text-align: right;
-  color: #666666;
-  position: absolute;
-  left: 8px;
-  top: 1px;
-  width: 61px;
-  height: 30px;
-  background: #f3f3f3;
-  z-index: 1;
-  border-radius:16px; //IE 11
--moz-border-radius:16px; //Mozilla
--webkit-border-radius:16px; //Chrome and Safari
+    content: 'OFF';
+    text-align: right;
+    color: #666666;
+    position: absolute;
+    left: 8px;
+    top: 1px;
+    width: 61px;
+    height: 30px;
+    background: #f3f3f3;
+    z-index: 1;
+    -webkit-border-radius: 16px;
 }
 
-.switch:after
-{
-  content: ' ';
-  height: 29px;
-  width: 31px;
-  border-radius: 28px;
-  z-index: 2;
-  background: #8c8c8c;
-  position: absolute;
-  -webkit-transition-duration: 300ms;
-  transition-duration: 300ms;
-  top: 1px;
-  left: 1px;
-  -webkit-box-shadow: 0 2px 5px #999999;
-  box-shadow: 0 2px 5px #999999;
+.switch:after {
+    content: ' ';
+    height: 29px;
+    width: 31px;
+    border-radius: 28px;
+    z-index: 2;
+    background: #8c8c8c;
+    position: absolute;
+    -webkit-transition-duration: 300ms;
+    transition-duration: 300ms;
+    top: 1px;
+    left: 1px;
+    -webkit-box-shadow: 0 2px 5px #999999;
+    box-shadow: 0 2px 5px #999999;
 }
 
-.switchOn , .switchOn:before
-{
-  content: 'ON';
-  text-align: left;
-  color: #FFFFFF;
-  background: #38c8d9 !important;
+.switchOn, .switchOn:before {
+    content: 'ON';
+    text-align: left;
+    color: #FFFFFF;
+    background: #38c8d9 !important;
 }
-.switchOn:after
-{
-  left: 38px !important;
-  background: #ffffff !important;
+
+.switchOn:after {
+    left: 38px !important;
+    background: #ffffff !important;
 }
