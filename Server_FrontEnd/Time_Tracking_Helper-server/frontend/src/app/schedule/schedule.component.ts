@@ -1,6 +1,8 @@
 import { Component } from "@angular/core";
 import { User } from "../_common/user";
 import { UserService } from "../_common/user.service";
+import { NgForm } from "@angular/forms";
+
 @Component({
     selector: 'schedule-comp',
     templateUrl: 'schedule.template.html',
@@ -9,33 +11,119 @@ import { UserService } from "../_common/user.service";
 })
 
 export class ScheduleComponent {
+
+    submitted = false;
     userService = new UserService();
-    countFields = [0, 0, 0, 0, 0, 0, 0];
     days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+
+    /*Two-dimensional array that holds information which inputs are displayed */
+    displayedInputs = [[false, false, false, false, false, false, false, false],
+        [false, false, false, false, false, false, false, false],
+        [false, false, false, false, false, false, false, false],
+        [false, false, false, false, false, false, false, false],
+        [false, false, false, false, false, false, false, false],
+        [false, false, false, false, false, false, false, false],
+        [false, false, false, false, false, false, false, false]];
+
     constructor() {
     }
 
-    addInput(day:number) {
-        var fieldName1= "field-" + this.days[day] + this.countFields[day];
-        this.countFields[day] += 1;
-        var fieldName2= "field-" + this.days[day] + this.countFields[day];
-        this.countFields[day] += 1;
-
-        document.getElementById('fields-'+this.days[day]).innerHTML+=
-            '<div id="'+fieldName1+'"><input type="time" name="'+fieldName1+'" size="5" /> - ' +
-            '<input type="time" name="'+fieldName2+'" size="5"/></div> ';
-
+    onSubmit() {
+        this.submitted = true;
     }
 
-    remInput(day:number) {
-        if(this.countFields[day] < 2)
+    sendSchedule(scheduleForm:NgForm) {
+        var inputValue = (<HTMLInputElement>document.getElementById("field_monday00")).value;
+
+       /*holds string that will be send to server as json*/
+        var sendingStr = "[";
+
+        /*holds information if every input is correct*/
+        var validTimeFormat = true;
+        var i = 0; var j = 0;
+
+        while(i < 7) {
+            /*If day doesn't have any inputs*/
+            if(this.displayedInputs[i][0] == false) {
+                sendingStr += "{\"day\": " + "\""+ this.days[i] +"\"" + ", \"end\": \"00:00\"}";
+            }
+            else {
+
+                while(this.displayedInputs[i][j] != false && j < 8 && validTimeFormat == true) {
+                    sendingStr += "{\"day\": " + "\""+ this.days[i] +"\"" + ", ";
+                    inputValue = (<HTMLInputElement>document.getElementById("field_"+this.days[i]+j+"0")).value;
+                    if(this.checkValue(inputValue) == false) {
+                        validTimeFormat = false;
+                    }
+                    sendingStr += "\"begin\": " + "\""+ inputValue + "\"";
+
+                    inputValue = (<HTMLInputElement>document.getElementById("field_"+this.days[i]+j+"1")).value;
+                    this.checkValue(inputValue);
+                    sendingStr += ", \"end\": " + "\"" + inputValue + "\"" +  "}";
+
+                    if(j+1 < 8 && this.displayedInputs[i][j+1] != false)
+                        sendingStr += ", ";
+                    j++;
+                }
+            }
+
+            if(i+1 < 7)
+                sendingStr += ", ";
+
+            j = 0;
+            i++;
+        }
+        sendingStr += "]";
+
+
+        if(validTimeFormat == false) {
+            document.getElementById("schedule-info").innerHTML = "Invalid time format!";
             return;
-        this.countFields[day] -= 2;
-        var fieldName1= "field-" + this.days[day] + this.countFields[day];
+        }
 
-        var el = document.getElementById(fieldName1);
-        el.parentNode.removeChild(el);
+        //UNCOMMENT WHEN SERVER READY
 
+        /*var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", "/scheduleinfo", true);
+        xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("schedule-info").innerHTML = "Successful updated!" + inputValue;
+            }
+        }
+        xhttp.send(sendingStr);
+        */
+
+        //TODO: REMOVE
+        document.getElementById("schedule-info").innerHTML = sendingStr;
+    }
+
+    /*Checks if value is in HH:MM 24h format*/
+    checkValue(val:String) {
+        var regex = val.match(/^([01]?\d|2[0-3]):?([0-5]\d)/i);
+        if (regex != null)
+            return true;
+        return false;
+    }
+
+    /*Displays next pair of inputs for specific day (max 8 pairs)*/
+    addInput(day:number) {
+        var i = 0;
+        while(this.displayedInputs[day][i] != false && i < 8) {
+            i++;
+        }
+        this.displayedInputs[day][i] = true;
+        document.getElementById('fields-'+this.days[day]+i).style.display = "inline";
+    }
+
+    /*Hide one pair of inputs for specific day*/
+    remInput(day:number) {
+        var i = 7;
+        while(this.displayedInputs[day][i] != true && i > 0) {
+            i--;
+        }
+        this.displayedInputs[day][i] = false;
+        document.getElementById('fields-'+this.days[day]+i).style.display = "none";
     }
 
 }

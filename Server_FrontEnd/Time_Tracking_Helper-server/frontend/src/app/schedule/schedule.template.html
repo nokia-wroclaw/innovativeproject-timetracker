@@ -2,52 +2,312 @@
 <menu-comp></menu-comp>
 
 <div class ="container">
-    <h3>Description..</h3>
-    <form (ngSubmit)="onSubmit()">
+
+    <div id="schedule-info"></div>
+    <form (ngSubmit)="onSubmit()" #scheduleForm="ngForm">
 
         <div class ="row">
             Monday:
-            <div id="fields-monday" ></div>
+            <div id="fields-monday" >
+                <div id="fields-monday0" style="display: none">
+                    <input type="time" id="field_monday00" name="field_monday00" size="5" />-
+                    <input type="time" id="field_monday01" name="field_monday01" size="5" />
+                </div>
+                <div id="fields-monday1" style="display: none">
+                    <input type="time" id="field_monday10" name="field_monday10" size="5" />-
+                    <input type="time" id="field_monday11" name="field_monday11" size="5" />
+                </div>
+                <div id="fields-monday2" style="display: none">
+                    <input type="time" id="field_monday20" name="field_monday20" size="5" />-
+                    <input type="time" id="field_monday21" name="field_monday21" size="5" />
+                </div>
+                <div id="fields-monday3" style="display: none">
+                    <input type="time" id="field_monday30" name="field_monday30" size="5" />-
+                    <input type="time" id="field_monday31" name="field_monday31" size="5" />
+                </div>
+                <div id="fields-monday4" style="display: none">
+                    <input type="time" id="field_monday40" name="field_monday40" size="5" />-
+                    <input type="time" id="field_monday41" name="field_monday41" size="5" />
+                </div>
+                <div id="fields-monday5" style="display: none">
+                    <input type="time" id="field_monday50" name="field_monday50" size="5" />-
+                    <input type="time" id="field_monday51" name="field_monday51" size="5" />
+                </div>
+                <div id="fields-monday6" style="display: none">
+                    <input type="time" id="field_monday60" name="field_monday60" size="5" />-
+                    <input type="time" id="field_monday61" name="field_monday61" size="5" />
+                </div>
+                <div id="fields-monday7" style="display: none">
+                    <input type="time" id="field_monday70" name="field_monday70" size="5" />-
+                    <input type="time" id="field_monday71" name="field_monday71" size="5" />
+                </div>
+                <div id="fields-monday8" style="display: none">
+                    <input type="time" id="field_monday80" name="field_monday80" size="5" />
+                    <input type="time" id="field_monday81" name="field_monday81" size="5" />
+                </div>
+            </div>
             <div id="plus-button-monday"><button type="button" (click) = "addInput(0)">+</button></div>
             <div id="minus-button-monday"><button type="button" (click) = "remInput(0)">-</button></div>
         </div>
         <div class ="row">
             Tuesday:
-            <div id="fields-tuesday"></div>
+            <div id="fields-tuesday" >
+                <div id="fields-tuesday0" style="display: none">
+                    <input type="time" id="field_tuesday00" name="field_tuesday00" size="5" />-
+                    <input type="time" id="field_tuesday01" name="field_tuesday01" size="5" />
+                </div>
+                <div id="fields-tuesday1" style="display: none">
+                    <input type="time" id="field_tuesday10" name="field_tuesday10" size="5" />-
+                    <input type="time" id="field_tuesday11" name="field_tuesday11" size="5" />
+                </div>
+                <div id="fields-tuesday2" style="display: none">
+                    <input type="time" id="field_tuesday20" name="field_tuesday20" size="5" />-
+                    <input type="time" id="field_tuesday21" name="field_tuesday21" size="5" />
+                </div>
+                <div id="fields-tuesday3" style="display: none">
+                    <input type="time" id="field_tuesday30" name="field_tuesday30" size="5" />-
+                    <input type="time" id="field_tuesday31" name="field_tuesday31" size="5" />
+                </div>
+                <div id="fields-tuesday4" style="display: none">
+                    <input type="time" id="field_tuesday40" name="field_tuesday40" size="5" />-
+                    <input type="time" id="field_tuesday41" name="field_tuesday41" size="5" />
+                </div>
+                <div id="fields-tuesday5" style="display: none">
+                    <input type="time" id="field_tuesday50" name="field_tuesday50" size="5" />-
+                    <input type="time" id="field_tuesday51" name="field_tuesday51" size="5" />
+                </div>
+                <div id="fields-tuesday6" style="display: none">
+                    <input type="time" id="field_tuesday60" name="field_tuesday60" size="5" />-
+                    <input type="time" id="field_tuesday61" name="field_tuesday61" size="5" />
+                </div>
+                <div id="fields-tuesday7" style="display: none">
+                    <input type="time" id="field_tuesday70" name="field_tuesday70" size="5" />-
+                    <input type="time" id="field_tuesday71" name="field_tuesday71" size="5" />
+                </div>
+                <div id="fields-tuesday8" style="display: none">
+                    <input type="time" id="field_tuesday80" name="field_tuesday80" size="5" />
+                    <input type="time" id="field_tuesday81" name="field_tuesday81" size="5" />
+                </div>
+            </div>
             <div id="plus-button-tuesday"><button type="button" (click) = "addInput(1)">+</button></div>
             <div id="minus-button-tuesday"><button type="button" (click) = "remInput(1)">-</button></div>
         </div>
         <div class ="row">
             Wednesday:
-            <div id="fields-wednesday"></div>
+            <div id="fields-wednesday" >
+                <div id="fields-wednesday0" style="display: none">
+                    <input type="time" id="field_wednesday00" name="field_wednesday00" size="5" />-
+                    <input type="time" id="field_wednesday01" name="field_wednesday01" size="5" />
+                </div>
+                <div id="fields-wednesday1" style="display: none">
+                    <input type="time" id="field_wednesday10" name="field_wednesday10" size="5" />-
+                    <input type="time" id="field_wednesday11" name="field_wednesday11" size="5" />
+                </div>
+                <div id="fields-wednesday2" style="display: none">
+                    <input type="time" id="field_wednesday20" name="field_wednesday20" size="5" />-
+                    <input type="time" id="field_wednesday21" name="field_wednesday21" size="5" />
+                </div>
+                <div id="fields-wednesday3" style="display: none">
+                    <input type="time" id="field_wednesday30" name="field_wednesday30" size="5" />-
+                    <input type="time" id="field_wednesday31" name="field_wednesday31" size="5" />
+                </div>
+                <div id="fields-wednesday4" style="display: none">
+                    <input type="time" id="field_wednesday40" name="field_wednesday40" size="5" />-
+                    <input type="time" id="field_wednesday41" name="field_wednesday41" size="5" />
+                </div>
+                <div id="fields-wednesday5" style="display: none">
+                    <input type="time" id="field_wednesday50" name="field_wednesday50" size="5" />-
+                    <input type="time" id="field_wednesday51" name="field_wednesday51" size="5" />
+                </div>
+                <div id="fields-wednesday6" style="display: none">
+                    <input type="time" id="field_wednesday60" name="field_wednesday60" size="5" />-
+                    <input type="time" id="field_wednesday61" name="field_wednesday61" size="5" />
+                </div>
+                <div id="fields-wednesday7" style="display: none">
+                    <input type="time" id="field_wednesday70" name="field_wednesday70" size="5" />-
+                    <input type="time" id="field_wednesday71" name="field_wednesday71" size="5" />
+                </div>
+                <div id="fields-wednesday8" style="display: none">
+                    <input type="time" id="field_wednesday80" name="field_wednesday80" size="5" />
+                    <input type="time" id="field_wednesday81" name="field_wednesday81" size="5" />
+                </div>
+            </div>
             <div id="plus-button-wednesday"><button type="button" (click) = "addInput(2)">+</button></div>
             <div id="minus-button-wednesday"><button type="button" (click) = "remInput(2)">-</button></div>
         </div>
         <div class ="row">
             Thursday:
-            <div id="fields-thursday"></div>
+            <div id="fields-thursday" >
+                <div id="fields-thursday0" style="display: none">
+                    <input type="time" id="field_thursday00" name="field_thursday00" size="5" />-
+                    <input type="time" id="field_thursday01" name="field_thursday01" size="5" />
+                </div>
+                <div id="fields-thursday1" style="display: none">
+                    <input type="time" id="field_thursday10" name="field_thursday10" size="5" />-
+                    <input type="time" id="field_thursday11" name="field_thursday11" size="5" />
+                </div>
+                <div id="fields-thursday2" style="display: none">
+                    <input type="time" id="field_thursday20" name="field_thursday20" size="5" />-
+                    <input type="time" id="field_thursday21" name="field_thursday21" size="5" />
+                </div>
+                <div id="fields-thursday3" style="display: none">
+                    <input type="time" id="field_thursday30" name="field_thursday30" size="5" />-
+                    <input type="time" id="field_thursday31" name="field_thursday31" size="5" />
+                </div>
+                <div id="fields-thursday4" style="display: none">
+                    <input type="time" id="field_thursday40" name="field_thursday40" size="5" />-
+                    <input type="time" id="field_thursday41" name="field_thursday41" size="5" />
+                </div>
+                <div id="fields-thursday5" style="display: none">
+                    <input type="time" id="field_thursday50" name="field_thursday50" size="5" />-
+                    <input type="time" id="field_thursday51" name="field_thursday51" size="5" />
+                </div>
+                <div id="fields-thursday6" style="display: none">
+                    <input type="time" id="field_thursday60" name="field_thursday60" size="5" />-
+                    <input type="time" id="field_thursday61" name="field_thursday61" size="5" />
+                </div>
+                <div id="fields-thursday7" style="display: none">
+                    <input type="time" id="field_thursday70" name="field_thursday70" size="5" />-
+                    <input type="time" id="field_thursday71" name="field_thursday71" size="5" />
+                </div>
+                <div id="fields-thursday8" style="display: none">
+                    <input type="time" id="field_thursday80" name="field_thursday80" size="5" />
+                    <input type="time" id="field_thursday81" name="field_thursday81" size="5" />
+                </div>
+            </div>
             <div id="plus-button-thursday"><button type="button" (click) = "addInput(3)">+</button></div>
             <div id="minus-button-thursday"><button type="button" (click) = "remInput(3)">-</button></div>
         </div>
         <div class ="row">
             Friday:
-            <div id="fields-friday"></div>
+            <div id="fields-friday" >
+                <div id="fields-friday0" style="display: none">
+                    <input type="time" id="field_friday00" name="field_friday00" size="5" />-
+                    <input type="time" id="field_friday01" name="field_friday01" size="5" />
+                </div>
+                <div id="fields-friday1" style="display: none">
+                    <input type="time" id="field_friday10" name="field_friday10" size="5" />-
+                    <input type="time" id="field_friday11" name="field_friday11" size="5" />
+                </div>
+                <div id="fields-friday2" style="display: none">
+                    <input type="time" id="field_friday20" name="field_friday20" size="5" />-
+                    <input type="time" id="field_friday21" name="field_friday21" size="5" />
+                </div>
+                <div id="fields-friday3" style="display: none">
+                    <input type="time" id="field_friday30" name="field_friday30" size="5" />-
+                    <input type="time" id="field_friday31" name="field_friday31" size="5" />
+                </div>
+                <div id="fields-friday4" style="display: none">
+                    <input type="time" id="field_friday40" name="field_friday40" size="5" />-
+                    <input type="time" id="field_friday41" name="field_friday41" size="5" />
+                </div>
+                <div id="fields-friday5" style="display: none">
+                    <input type="time" id="field_friday50" name="field_friday50" size="5" />-
+                    <input type="time" id="field_friday51" name="field_friday51" size="5" />
+                </div>
+                <div id="fields-friday6" style="display: none">
+                    <input type="time" id="field_friday60" name="field_friday60" size="5" />-
+                    <input type="time" id="field_friday61" name="field_friday61" size="5" />
+                </div>
+                <div id="fields-friday7" style="display: none">
+                    <input type="time" id="field_friday70" name="field_friday70" size="5" />-
+                    <input type="time" id="field_friday71" name="field_friday71" size="5" />
+                </div>
+                <div id="fields-friday8" style="display: none">
+                    <input type="time" id="field_friday80" name="field_friday80" size="5" />
+                    <input type="time" id="field_friday81" name="field_friday81" size="5" />
+                </div>
+            </div>
             <div id="plus-button-friday"><button type="button" (click) = "addInput(4)">+</button></div>
             <div id="minus-button-friday"><button type="button" (click) = "remInput(4)">-</button></div>
         </div>
         <div class ="row">
             Saturday:
-            <div id="fields-saturday"></div>
+            <div id="fields-saturday" >
+                <div id="fields-saturday0" style="display: none">
+                    <input type="time" id="field_saturday00" name="field_saturday00" size="5" />-
+                    <input type="time" id="field_saturday01" name="field_saturday01" size="5" />
+                </div>
+                <div id="fields-saturday1" style="display: none">
+                    <input type="time" id="field_saturday10" name="field_saturday10" size="5" />-
+                    <input type="time" id="field_saturday11" name="field_saturday11" size="5" />
+                </div>
+                <div id="fields-saturday2" style="display: none">
+                    <input type="time" id="field_saturday20" name="field_saturday20" size="5" />-
+                    <input type="time" id="field_saturday21" name="field_saturday21" size="5" />
+                </div>
+                <div id="fields-saturday3" style="display: none">
+                    <input type="time" id="field_saturday30" name="field_saturday30" size="5" />-
+                    <input type="time" id="field_saturday31" name="field_saturday31" size="5" />
+                </div>
+                <div id="fields-saturday4" style="display: none">
+                    <input type="time" id="field_saturday40" name="field_saturday40" size="5" />-
+                    <input type="time" id="field_saturday41" name="field_saturday41" size="5" />
+                </div>
+                <div id="fields-saturday5" style="display: none">
+                    <input type="time" id="field_saturday50" name="field_saturday50" size="5" />-
+                    <input type="time" id="field_saturday51" name="field_saturday51" size="5" />
+                </div>
+                <div id="fields-saturday6" style="display: none">
+                    <input type="time" id="field_saturday60" name="field_saturday60" size="5" />-
+                    <input type="time" id="field_saturday61" name="field_saturday61" size="5" />
+                </div>
+                <div id="fields-saturday7" style="display: none">
+                    <input type="time" id="field_saturday70" name="field_saturday70" size="5" />-
+                    <input type="time" id="field_saturday71" name="field_saturday71" size="5" />
+                </div>
+                <div id="fields-saturday8" style="display: none">
+                    <input type="time" id="field_saturday80" name="field_saturday80" size="5" />
+                    <input type="time" id="field_saturday81" name="field_saturday81" size="5" />
+                </div>
+            </div>
             <div id="plus-button-saturday"><button type="button" (click) = "addInput(5)">+</button></div>
             <div id="minus-button-saturday"><button type="button" (click) = "remInput(5)">-</button></div>
         </div>
         <div class ="row">
             Sunday:
-            <div id="fields-sunday"></div>
+            <div id="fields-sunday" >
+                <div id="fields-sunday0" style="display: none">
+                    <input type="time" id="field_sunday00" name="field_sunday00" size="5" />-
+                    <input type="time" id="field_sunday01" name="field_sunday01" size="5" />
+                </div>
+                <div id="fields-sunday1" style="display: none">
+                    <input type="time" id="field_sunday10" name="field_sunday10" size="5" />-
+                    <input type="time" id="field_sunday11" name="field_sunday11" size="5" />
+                </div>
+                <div id="fields-sunday2" style="display: none">
+                    <input type="time" id="field_sunday20" name="field_sunday20" size="5" />-
+                    <input type="time" id="field_sunday21" name="field_sunday21" size="5" />
+                </div>
+                <div id="fields-sunday3" style="display: none">
+                    <input type="time" id="field_sunday30" name="field_sunday30" size="5" />-
+                    <input type="time" id="field_sunday31" name="field_sunday31" size="5" />
+                </div>
+                <div id="fields-sunday4" style="display: none">
+                    <input type="time" id="field_sunday40" name="field_sunday40" size="5" />-
+                    <input type="time" id="field_sunday41" name="field_sunday41" size="5" />
+                </div>
+                <div id="fields-sunday5" style="display: none">
+                    <input type="time" id="field_sunday50" name="field_sunday50" size="5" />-
+                    <input type="time" id="field_sunday51" name="field_sunday51" size="5" />
+                </div>
+                <div id="fields-sunday6" style="display: none">
+                    <input type="time" id="field_sunday60" name="field_sunday60" size="5" />-
+                    <input type="time" id="field_sunday61" name="field_sunday61" size="5" />
+                </div>
+                <div id="fields-sunday7" style="display: none">
+                    <input type="time" id="field_sunday70" name="field_sunday70" size="5" />-
+                    <input type="time" id="field_sunday71" name="field_sunday71" size="5" />
+                </div>
+                <div id="fields-sunday8" style="display: none">
+                    <input type="time" id="field_sunday80" name="field_sunday80" size="5" />
+                    <input type="time" id="field_sunday81" name="field_sunday81" size="5" />
+                </div>
+            </div>
             <div id="plus-button-sunday"><button type="button" (click) = "addInput(6)">+</button></div>
             <div id="minus-button-sunday"><button type="button" (click) = "remInput(6)">-</button></div>
         </div>
-        <button type="submit" class="btn btn-success schedule-button" (click) = "sendSchedule()">Submit</button>
+        <button type="submit" class="btn btn-success schedule-button" (click) = "sendSchedule(scheduleForm)">Submit</button>
     </form>
 
 </div>
