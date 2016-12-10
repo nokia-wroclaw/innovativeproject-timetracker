@@ -12,7 +12,8 @@ var entry = {
     login: ['./loginEntry.ts'],
     index: ['./indexEntry.ts'],
     register: ['./registerEntry.ts'],
-    timeline: ['./timelineEntry.ts']
+    timeline: ['./timelineEntry.ts'],
+    schedule: ['./scheduleEntry.ts']
 };
 
 var config = {

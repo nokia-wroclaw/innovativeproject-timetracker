@@ -1,0 +1,53 @@
+<header-comp></header-comp>
+<menu-comp></menu-comp>
+
+<div class ="container">
+    <h3>Description..</h3>
+    <form (ngSubmit)="onSubmit()">
+
+        <div class ="row">
+            Monday:
+            <div id="fields-monday" ></div>
+            <div id="plus-button-monday"><button type="button" (click) = "addInput(0)">+</button></div>
+            <div id="minus-button-monday"><button type="button" (click) = "remInput(0)">-</button></div>
+        </div>
+        <div class ="row">
+            Tuesday:
+            <div id="fields-tuesday"></div>
+            <div id="plus-button-tuesday"><button type="button" (click) = "addInput(1)">+</button></div>
+            <div id="minus-button-tuesday"><button type="button" (click) = "remInput(1)">-</button></div>
+        </div>
+        <div class ="row">
+            Wednesday:
+            <div id="fields-wednesday"></div>
+            <div id="plus-button-wednesday"><button type="button" (click) = "addInput(2)">+</button></div>
+            <div id="minus-button-wednesday"><button type="button" (click) = "remInput(2)">-</button></div>
+        </div>
+        <div class ="row">
+            Thursday:
+            <div id="fields-thursday"></div>
+            <div id="plus-button-thursday"><button type="button" (click) = "addInput(3)">+</button></div>
+            <div id="minus-button-thursday"><button type="button" (click) = "remInput(3)">-</button></div>
+        </div>
+        <div class ="row">
+            Friday:
+            <div id="fields-friday"></div>
+            <div id="plus-button-friday"><button type="button" (click) = "addInput(4)">+</button></div>
+            <div id="minus-button-friday"><button type="button" (click) = "remInput(4)">-</button></div>
+        </div>
+        <div class ="row">
+            Saturday:
+            <div id="fields-saturday"></div>
+            <div id="plus-button-saturday"><button type="button" (click) = "addInput(5)">+</button></div>
+            <div id="minus-button-saturday"><button type="button" (click) = "remInput(5)">-</button></div>
+        </div>
+        <div class ="row">
+            Sunday:
+            <div id="fields-sunday"></div>
+            <div id="plus-button-sunday"><button type="button" (click) = "addInput(6)">+</button></div>
+            <div id="minus-button-sunday"><button type="button" (click) = "remInput(6)">-</button></div>
+        </div>
+        <button type="submit" class="btn btn-success schedule-button" (click) = "sendSchedule()">Submit</button>
+    </form>
+
+</div>
