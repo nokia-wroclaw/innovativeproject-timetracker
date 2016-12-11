@@ -5,10 +5,11 @@ angular.module('myApp').service('storageService', function () {
         isTracking: false,
         login: "",
         password: "",
-        isLogged: false
+        isLogged: false,
+        reminder: 0
     };
 
-    var loadStorage = function() {
+    var loadStorage = function () {
         chrome.storage.sync.get(null, function (keys) {
             if (keys.isTracking)
                 storageElements.isTracking = keys.isTracking;
@@ -18,6 +19,8 @@ angular.module('myApp').service('storageService', function () {
                 storageElements.password = keys.password;
             if (keys.isLogged)
                 storageElements.isLogged = keys.isLogged;
+            if (keys.reminder)
+                storageElements.reminder = keys.reminder;
         });
     };
 
@@ -33,6 +36,8 @@ angular.module('myApp').service('storageService', function () {
             storageElements.password = changes.password;
         if (keys.includes("isLogged"))
             storageElements.isLogged = changes.isLogged;
+        if (keys.includes("reminder"))
+            storageElements.reminder = changes.reminder;
         this.sync();
     };
 

@@ -1,11 +1,18 @@
 body {
     width: 250px;
+    height: 250px;
     padding-top: 10px;
     padding-bottom: 10px;
     margin: 0;
     border: 0;
     color: #ffffff;
     background-color: #080b35;
+}
+
+#sel1 {
+    background-color: #0088cc;
+    color: #FFF;
+    margin-bottom: 5px;
 }
 
 .header {

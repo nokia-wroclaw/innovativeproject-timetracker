@@ -10,11 +10,28 @@ angular.module('myApp', [])
                 $scope.isTracking = keys.isTracking;
                 $scope.isLogged = keys.isLogged;
                 $scope.login = keys.login;
+                $scope.selectedReminder = {id: keys.reminder};
                 $scope.$apply();
             })
         };
 
         loadStorage();
+
+        $scope.reminderOptions = [
+            {id: 5, name: '5 minutes'},
+            {id: 10, name: "10 minutes"},
+            {id: 15, name: "15 minutes"},
+            {id: 30, name: "30 minutes"},
+            {id: 60, name: "1 hour"},
+            {id: 120, name: "2 hours"},
+            {id: 0, name: "never"}
+        ];
+
+        $scope.changeReminderTime = function () {
+            port.postMessage({
+                reminder: $scope.selectedReminder.id
+            });
+        };
 
         $scope.changeTrackingState = function () {
             if ($scope.isTracking) {
@@ -89,7 +106,7 @@ angular.module('myApp', [])
         });
 
         port.onMessage.addListener(function (message) {
-            if (message.isTracking) {
+            if (Object.keys(message).includes("isTracking")) {
                 $scope.isTracking = message.isTracking;
                 $scope.$apply();
             }
