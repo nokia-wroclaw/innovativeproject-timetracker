@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { User } from "../_common/user.ts";
+import { User } from "../_common/user";
 import {FormsModule, NgForm} from "@angular/forms";
 
 @Component({
@@ -54,5 +54,8 @@ export class RegisterComponent {
         return JSON.stringify(this.model);
     }
     constructor() {
+    }
+    changeToLoginPage(){
+        window.location.href = 'http://localhost:9000/login';
     }
 }

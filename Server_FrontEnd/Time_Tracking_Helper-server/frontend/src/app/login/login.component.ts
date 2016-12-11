@@ -44,5 +44,7 @@ export class LoginComponent {
     changeToRegisterPage() {
         window.location.href = 'http://localhost:9000/register';
     }
-
+    changeToLoginPage(){
+        window.location.href = 'http://localhost:9000/login';
+    }
 }

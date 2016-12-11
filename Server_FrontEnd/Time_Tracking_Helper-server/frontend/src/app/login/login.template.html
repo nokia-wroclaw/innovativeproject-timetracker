@@ -1,11 +1,12 @@
-<div class="header-container">
+<div class="header-container" (click)="changeToLoginPage()">
+    <img src="../../images/icon.png"/>
     <h3 class="custom-header">Time Tracking Helper</h3>
 </div>
 
 <div class="background">
     <div class="col-md-12">
         <div class="transbox">
-            <div class="login-container" [hidden]="submitted">
+            <div class="login-container">
                 <h1>Login</h1>
                 <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
                     <div class="form-group">
@@ -16,7 +17,9 @@
                         <label for="pwd">Password</label>
                         <input type="password" class="form-control" required [(ngModel)] = "model.pwd" name = "pwd">
                     </div>
-                    <button type="submit" class="btn btn-success login-button" [disabled]="!loginForm.form.valid" (click) = "sendLoginRequest(loginForm);">Log in</button>
+                    <div class="login-error" [hidden]="!submitted">Incorrect login or password
+                    </div>
+                    <button type="submit" class="btn btn-primary login-button" [disabled]="!loginForm.form.valid" (click) = "sendLoginRequest(loginForm);">Log in</button>
                 </form>
                 <br>
             </div>
