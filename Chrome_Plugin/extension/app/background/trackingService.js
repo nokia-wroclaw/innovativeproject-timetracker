@@ -15,7 +15,6 @@ angular.module('myApp').service('trackingService', function ($http, storageServi
     this.setPort = function (newPort) {
         port = newPort;
         port.onMessage.addListener(function (message) {
-            console.log(message);
             var keys = Object.keys(message);
             if (keys.includes("isTracking")) {
                 isTracking = message.isTracking;

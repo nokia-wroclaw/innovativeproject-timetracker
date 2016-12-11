@@ -8,12 +8,14 @@
     <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
     <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="bower_components/bootstrap-select/dist/css/bootstrap-select.min.css"/>
+    <link rel="stylesheet" href="app.css">
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/tether/dist/js/tether.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"/>
     <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
-    <link rel="stylesheet" href="app.css">
+    <script src="bower_components/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
 </head>
 <body>
 
@@ -37,6 +39,12 @@
         <div class="header">
             <div class="login">Welcome {{login}}!</div>
             <div ng-click="changeTrackingState()" class="switch" ng-class="isTracking ? 'switchOn' : ''"></div>
+        </div>
+        <div>
+            <p>Off-schedule reminder</p>
+            <select class="form-control" id="sel1" ng-model="selectedReminder" ng-change="changeReminderTime()"
+                    ng-options="option.name for option in reminderOptions track by option.id">
+            </select>
         </div>
         <div>
             <button ng-click="redirect()" class="btn btn-block btn-primary btn-md">Go to website</button>
