@@ -3,6 +3,16 @@
 
 # --- !Ups
 
+create table schedule (
+  id                            integer not null,
+  login                         varchar(255),
+  day                           varchar(255),
+  begin                         time,
+  end                           time,
+  constraint pk_schedule primary key (id)
+);
+create sequence schedule_seq;
+
 create table time (
   id                            integer not null,
   login                         varchar(255),
@@ -41,6 +51,9 @@ create sequence user_seq;
 
 
 # --- !Downs
+
+drop table if exists schedule;
+drop sequence if exists schedule_seq;
 
 drop table if exists time;
 drop sequence if exists time_seq;

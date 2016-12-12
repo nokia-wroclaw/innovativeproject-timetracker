@@ -7,6 +7,12 @@ import java.util.List;
 import javax.inject.Inject;
 
 import com.avaje.ebean.Model;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import exceptions.ScheduleDayNotFoundException;
+import exceptions.ScheduleNotFoundException;
+import models.Schedule;
 
 import models.Time;
 import models.Time2;
@@ -46,8 +52,11 @@ public class HomeController extends Controller {
     }
     public Result schedule(){
     	String login=session("Login");
+    	List<Schedule> schedule2 = models.ScheduleStorage.getSchedule(login);
+    	ok(toJson(schedule2));
     	return ok(schedule.render(login));
     }
+
     /*
      * Method adding User to database
      * TODO- Do it better;
@@ -156,6 +165,50 @@ public class HomeController extends Controller {
 			return ok("ERROR");
 		}
     }
+    public Result setschedule(){
+    	String login=session("Login");
+    	try{
+    		JsonNode json=request().body().asJson();
+    		models.ScheduleStorage.setSchedule(json,login);
+        	return ok("OK");
+    	}catch(Exception ex){
+    		ex.printStackTrace();
+    		return ok("ERROR");
+    	}
+
+    }
+    public Result getschedule(){
+    	String login=session("Login");
+    	String day="";
+				try {
+		    		JsonNode json=request().body().asJson();
+		    		day=json.findPath("day").textValue();
+					List<Schedule> listSchedule = models.ScheduleStorage.getSchedule(login, day);
+		        	return ok(toJson(listSchedule));
+				} catch (ScheduleNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					System.out.println("ScheduleNotFoundException");
+				    ObjectNode result = Json.newObject();
+					return ok(result);
+				} catch (ScheduleDayNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					System.out.println("ScheduleDayNotFoundException");
+				    ObjectNode result = Json.newObject();
+				    result.put("id", 0);
+				    result.put("login", login);
+				    result.put("day", day);
+				    result.put("end", "00:00:00");
+					return ok(result);
+				}
+
+
+
+    	
+
+    }
+    
 
     public Result getUsers() {
         Model.Finder<Integer, User> finder = new Model.Finder<>(User.class);
@@ -168,5 +221,4 @@ public class HomeController extends Controller {
         List<Time> users = finder.all();
         return ok(toJson(users));
     }
-
 }
