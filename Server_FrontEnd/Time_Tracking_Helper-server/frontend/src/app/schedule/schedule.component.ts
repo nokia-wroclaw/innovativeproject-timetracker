@@ -41,13 +41,10 @@ export class ScheduleComponent {
         /*holds information if every input is correct*/
         var validTimeFormat = true;
         var i = 0; var j = 0;
-
+        var i2 = 0;
         while(i < 7) {
-            /*If day doesn't have any inputs*/
-            if(this.displayedInputs[i][0] == false) {
-                sendingStr += "{\"day\": " + "\""+ this.days[i] +"\"" + ", \"end\": \"00:00\"}";
-            }
-            else {
+            /*If day does have any inputs*/
+            if(this.displayedInputs[i][0] == true) {
 
                 while(this.displayedInputs[i][j] != false && j < 8 && validTimeFormat == true) {
                     sendingStr += "{\"day\": " + "\""+ this.days[i] +"\"" + ", ";
@@ -65,10 +62,15 @@ export class ScheduleComponent {
                         sendingStr += ", ";
                     j++;
                 }
+                i2 = i+1;
+                while(i2 < 7) {
+                    if(this.displayedInputs[i2][0] == true) {
+                        sendingStr += ", ";
+                        break;
+                    }
+                    i2++;
+                }
             }
-
-            if(i+1 < 7)
-                sendingStr += ", ";
 
             j = 0;
             i++;
@@ -83,19 +85,21 @@ export class ScheduleComponent {
 
         //UNCOMMENT WHEN SERVER READY
 
-        /*var xhttp = new XMLHttpRequest();
-        xhttp.open("POST", "/scheduleinfo", true);
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", "/setschedule", true);
         xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("schedule-info").innerHTML = "Successful updated!" + inputValue;
+                //document.getElementById("schedule-info").innerHTML = "Successful updated!" + inputValue;
+                document.getElementById("schedule-info").innerHTML = sendingStr + " <br>" +  xhttp.responseText;
+                xhttp.responseText
             }
         }
         xhttp.send(sendingStr);
-        */
+
 
         //TODO: REMOVE
-        document.getElementById("schedule-info").innerHTML = sendingStr;
+        //document.getElementById("schedule-info").innerHTML = sendingStr;
     }
 
     /*Checks if value is in HH:MM 24h format*/
