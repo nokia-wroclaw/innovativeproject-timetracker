@@ -1,10 +1,19 @@
 <div class="col-md-12">
-    <nav class="horizontal-menu">
-        <ul>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/"><span class="glyphicon glyphicon-hourglass"></span> Time Tracking Helper</a>
+            </div>
+            <ul class="nav navbar-nav">
             <li><a href="/">Group Management</a></li>
             <li><a href="/timeline">Work Timeline</a></li>
             <li><a href="/">Work Schedule</a></li>
             <li><a href="/">User Settings</a></li>
         </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/"><span class="glyphicon glyphicon-user"></span> {{userName()}} </a></li>
+                <li><a href="#" (click) = "logout();"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+            </ul>
+        </div>
     </nav>
 </div>

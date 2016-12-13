@@ -3,7 +3,7 @@
 
 <div class="col-md-12">
     <div class = "transbox">
-        <div class="timelineSettings-container" [hidden]="submitted">
+        <div class="timelineSettings-container" >
             <form (ngSubmit)="onSubmit()" #timelineSettingsForm="ngForm">
                 <div class="row">
                     <div class="form-group col-xs-6">
@@ -15,12 +15,13 @@
                         <input type="date" value = "2016-12-13" class="form-control" required [(ngModel)] = "model.toDate" name = "toDate">
                     </div>
                 </div>
-                <button type="submit" class="btn btn-success timeline-button" [disabled]="!timelineSettingsForm.form.valid" (click) = "getTimeline(timelineSettingsForm)" >Submit</button>
+                <button type="submit" class="btn btn-primary timeline-button" [disabled]="!timelineSettingsForm.form.valid" (click) = "getTimeline(timelineSettingsForm)" >Submit</button>
             </form>
             <br>
+
         </div>
     </div>
-
     <div id="serverAnswer"></div>
-    <div class = "col-md-12" id="visualization"></div>
+    <div class = "vis-timeline" id="visualization"></div>
+
 </div>

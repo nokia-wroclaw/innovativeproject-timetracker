@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { TimelineSettings } from "../_common/timelineSettings.ts";
+import { TimelineSettings } from "../_common/timelineSettings";
 import {FormsModule, NgForm} from "@angular/forms";
 import "vis/dist/vis.css";
 var vis = require("vis/dist/vis.js");

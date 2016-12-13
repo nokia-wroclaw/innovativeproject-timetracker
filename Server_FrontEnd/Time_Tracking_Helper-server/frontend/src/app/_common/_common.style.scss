@@ -1,10 +1,25 @@
 .header-container {
   text-align: center;
-  margin-top: 30px;
+  margin-top: 70px;
   margin-bottom: 30px;
   .custom-header {
     margin: 0px;
+    font-size: 32px;
+    font-weight: bold;
     font-family:courier;
     color: rgb(73,165,191);
   }
+}
+
+.header-container:hover {
+  cursor: pointer;
+}
+
+.col-md-12 {
+  background-color: #21314a;
+}
+
+.vis-timeline {
+  margin-top: 30px !important;
+  background-color: #ffffff !important;
 }
