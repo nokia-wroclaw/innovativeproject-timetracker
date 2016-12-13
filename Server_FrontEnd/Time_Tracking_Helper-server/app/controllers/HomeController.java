@@ -165,6 +165,9 @@ public class HomeController extends Controller {
 			return ok("ERROR");
 		}
     }
+    /*
+     * Action to set schedule for front
+     */
     public Result setschedule(){
     	String login=session("Login");
     	try{
@@ -177,23 +180,23 @@ public class HomeController extends Controller {
     	}
 
     }
+    /*
+     * Action to get schedule for extension
+     */
     public Result getschedule(){
-    	String login=session("Login");
-    	String day="";
+    	//String login=session("LoginE");
+		JsonNode json=request().body().asJson();
+    	String login=json.findPath("login").textValue();
+    	String day=json.findPath("day").textValue();
+		
 				try {
-		    		JsonNode json=request().body().asJson();
-		    		day=json.findPath("day").textValue();
 					List<Schedule> listSchedule = models.ScheduleStorage.getSchedule(login, day);
 		        	return ok(toJson(listSchedule));
 				} catch (ScheduleNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 					System.out.println("ScheduleNotFoundException");
 				    ObjectNode result = Json.newObject();
 					return ok(result);
 				} catch (ScheduleDayNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 					System.out.println("ScheduleDayNotFoundException");
 				    ObjectNode result = Json.newObject();
 				    result.put("id", 0);
@@ -202,11 +205,6 @@ public class HomeController extends Controller {
 				    result.put("end", "00:00:00");
 					return ok(result);
 				}
-
-
-
-    	
-
     }
     
 
