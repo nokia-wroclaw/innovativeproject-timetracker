@@ -41,6 +41,10 @@
             <div ng-click="changeTrackingState()" class="switch" ng-class="isTracking ? 'switchOn' : ''"></div>
         </div>
         <div>
+            Today you've worked {{workedToday.hours}}:{{workedToday.minutes}}<br>
+            This month you've worked {{workedThisMonth.hours}}:{{workedThisMonth.minutes}}
+        </div>
+        <div>
             <p>Off-schedule reminder</p>
             <select class="form-control" id="sel1" ng-model="selectedReminder" ng-change="changeReminderTime()"
                     ng-options="option.name for option in reminderOptions track by option.id">
