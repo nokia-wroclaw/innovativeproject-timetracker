@@ -23,11 +23,11 @@ angular.module('myApp', [])
             }, function (response) {
                 console.error("Worked time fetching error", response);
             });*/
-            //sample
-            $scope.workedToday.hours = 5;
-            $scope.workedToday.minutes = 5;
-            $scope.workedThisMonth.hours = 25;
-            $scope.workedThisMonth.minutes = 5;
+            //example
+            $scope.workedToday.hours = ("00" + 5).slice(-2);
+            $scope.workedToday.minutes = ("00" + 5).slice(-2);
+            $scope.workedThisMonth.hours = ("00" + 25).slice(-2); //to change (three digits)
+            $scope.workedThisMonth.minutes = ("00" + 5).slice(-2);
             if ($scope.isTracking)
                 timer = setInterval(updateTimer, timerDelay);
             $scope.$apply();

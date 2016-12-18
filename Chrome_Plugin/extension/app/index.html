@@ -40,9 +40,21 @@
             <div class="login">Welcome {{login}}!</div>
             <div ng-click="changeTrackingState()" class="switch" ng-class="isTracking ? 'switchOn' : ''"></div>
         </div>
-        <div>
-            Today you've worked {{workedToday.hours}}:{{workedToday.minutes}}<br>
-            This month you've worked {{workedThisMonth.hours}}:{{workedThisMonth.minutes}}
+        <div class="row">
+            <div class="col-xs-10">
+                Today you've worked
+            </div>
+            <div>
+                {{workedToday.hours}}:{{workedToday.minutes}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-10">
+                This month you've worked
+            </div>
+            <div>
+                {{workedThisMonth.hours}}:{{workedThisMonth.minutes}}
+            </div>
         </div>
         <div>
             <p>Off-schedule reminder</p>
