@@ -1,9 +1,37 @@
 'use strict';
 
+var timer = 0;
+var timerDelay = 60000;
 angular.module('myApp', [])
     .controller('TrackingStateController', function ($scope, storageService, $http) {
 
         $scope.loginError = false;
+        $scope.workedToday = {
+            hours: 0,
+            minutes: 0
+        };
+        $scope.workedThisMonth = {
+            hours: 0,
+            minutes: 0
+        };
+
+        var fetchWorkedTime = function () {
+            /*$http({
+                //TODO
+            }).then(function (response) {
+                //TODO
+            }, function (response) {
+                console.error("Worked time fetching error", response);
+            });*/
+            //example
+            $scope.workedToday.hours = ("00" + 5).slice(-2);
+            $scope.workedToday.minutes = ("00" + 5).slice(-2);
+            $scope.workedThisMonth.hours = ("00" + 25).slice(-2); //to change (three digits)
+            $scope.workedThisMonth.minutes = ("00" + 5).slice(-2);
+            if ($scope.isTracking)
+                timer = setInterval(updateTimer, timerDelay);
+            $scope.$apply();
+        };
 
         var loadStorage = function () {
             storageService.getStorage(function (keys) {
@@ -15,7 +43,22 @@ angular.module('myApp', [])
             })
         };
 
+        var updateTimer = function () {
+            $scope.workedToday.minutes += 1;
+            if ($scope.workedToday.minutes == 60) {
+                $scope.workedToday.minutes = 0;
+                $scope.workedToday.hours += 1;
+            }
+            $scope.workedThisMonth.minutes += 1;
+            if ($scope.workedThisMonth.hours == 60) {
+                $scope.workedThisMonth.minutes = 0;
+                $scope.workedThisMonth.hours += 1;
+            }
+            $scope.$apply();
+        };
+
         loadStorage();
+        setTimeout(fetchWorkedTime, 100);
 
         $scope.reminderOptions = [
             {id: 5, name: '5 minutes'},
@@ -39,11 +82,13 @@ angular.module('myApp', [])
                     isTracking: false
                 });
                 $scope.isTracking = false;
+                clearInterval(timer);
             } else {
                 port.postMessage({
                     isTracking: true
                 });
                 $scope.isTracking = true;
+                timer = setInterval(updateTimer, timerDelay);
             }
         };
 
@@ -84,6 +129,7 @@ angular.module('myApp', [])
                 }
             ).then(function (response) {
                 $scope.isTracking = false;
+                clearInterval(timer);
                 $scope.isLogged = false;
                 port.postMessage({
                     isTracking: false,
@@ -108,6 +154,10 @@ angular.module('myApp', [])
         port.onMessage.addListener(function (message) {
             if (Object.keys(message).includes("isTracking")) {
                 $scope.isTracking = message.isTracking;
+                if ($scope.isTracking)
+                    timer = setInterval(updateTimer, timerDelay);
+                else
+                    clearInterval(timer);
                 $scope.$apply();
             }
         });

@@ -13,7 +13,7 @@
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/tether/dist/js/tether.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"/>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
     <script src="bower_components/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
 </head>
@@ -39,6 +39,22 @@
         <div class="header">
             <div class="login">Welcome {{login}}!</div>
             <div ng-click="changeTrackingState()" class="switch" ng-class="isTracking ? 'switchOn' : ''"></div>
+        </div>
+        <div class="row">
+            <div class="col-xs-10">
+                Today you've worked
+            </div>
+            <div>
+                {{workedToday.hours}}:{{workedToday.minutes}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-10">
+                This month you've worked
+            </div>
+            <div>
+                {{workedThisMonth.hours}}:{{workedThisMonth.minutes}}
+            </div>
         </div>
         <div>
             <p>Off-schedule reminder</p>
