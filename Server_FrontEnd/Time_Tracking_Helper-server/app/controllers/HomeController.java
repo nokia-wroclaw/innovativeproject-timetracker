@@ -15,8 +15,7 @@ import exceptions.ScheduleNotFoundException;
 import models.Schedule;
 
 import models.Time;
-import models.Time2;
-import models.Tracking;
+import models.TimeStorage;
 import models.User;
 import play.libs.Json;
 import play.data.Form;
@@ -145,8 +144,8 @@ public class HomeController extends Controller {
      */
     public Result tracking() {
     	try{
-        	Tracking response = Json.fromJson(request().body().asJson(), Tracking.class);
-        	models.TimeStorage.track(response);
+    		JsonNode json=request().body().asJson();
+        	models.TimeStorage.track(json);
             return ok("OK");	
     	}catch (Exception e){
     		e.printStackTrace();
@@ -158,11 +157,11 @@ public class HomeController extends Controller {
      * Action sending Timeline to frontend
      */
     public Result sendData() {
-    	List<Time2> response;
+
 		try {
-            Time2 nick = Json.fromJson(request().body().asJson(), Time2.class);
-			response = models.TimeStorage.getData(nick);
-	    	return ok(toJson(response));
+    		JsonNode json=request().body().asJson();
+			List<TimeStorage> result = models.TimeStorage.getData(json);
+	    	return ok(toJson(result));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ok("ERROR");

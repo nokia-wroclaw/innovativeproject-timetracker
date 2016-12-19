@@ -9,17 +9,50 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.avaje.ebean.Model;
+import com.fasterxml.jackson.databind.JsonNode;
 
 public class TimeStorage {
+
+	
+	String name;
+	String begin;
+	String end;
+	
+	public TimeStorage(String name,String begin,String end){
+		this.name=name;
+		this.begin=begin;
+		this.end=end;
+	}
+    public void setName(String login) {
+        this.name = login;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setBegin(String begin) {
+        this.begin = begin;
+    }
+
+    public String getBegin() {
+        return begin;
+    }
+    public void setEnd(String end) {
+        this.end = end;
+    }
+    public String getEnd() {
+        return end;
+    }
+    
     /*
      * Funkcja zwracajaca dane dotyczace użytkownika nick
      */
-	public static List<Time2> getData(Time2 nick) throws Exception {
+    
+	public static List<TimeStorage> getData(JsonNode json) throws Exception {
 
 		Model.Finder<Integer, Time> finder = new Model.Finder<>(Time.class);
-        String name=nick.login;
-        java.util.Date date1=fromStringToDate(nick.begin);
-        java.util.Date date2=fromStringToDate(nick.end);
+        String name=json.findValue("login").textValue();
+        java.util.Date date1=fromStringToDate(json.findValue("begin").textValue());
+        java.util.Date date2=fromStringToDate(json.findValue("end").textValue());
         List<Time> test=finder.all();
         if(test.isEmpty()){
             Time record=new Time("Kruk07",fromStringToDate("12/12/2016@12:12"),fromStringToDate("12/12/2016@14:14"));
@@ -54,12 +87,12 @@ public class TimeStorage {
         }else{
         	Iterator<Time> iterator = t.iterator();
         	int i=0;
-        	List<Time2> t2 = new ArrayList<Time2>();
+        	List<TimeStorage> t2 = new ArrayList<TimeStorage>();
         	while(iterator.hasNext()){
         		Time krotka = t.get(i);
         		String sbegin=fromDateToString(krotka.begin);
         		String send=fromDateToString(krotka.end);
-        		Time2 krotkamodyfikowana= new Time2(krotka.login,sbegin,send);
+        		TimeStorage krotkamodyfikowana= new TimeStorage(krotka.login,sbegin,send);
         		t2.add(krotkamodyfikowana);
         		iterator.next();
         		i++;
@@ -72,11 +105,11 @@ public class TimeStorage {
 	 * Funkcja służaca do uaktualniania czasu pracy w bazie danych
 	 * response- odpowiedz wyslana przez wtyczke
 	 */
-	public static void track(Tracking response) {
-        String name=response.login;
-        String pass=response.password;
-        String daterequest=response.date;
-        String state= response.state;
+	public static void track(JsonNode json) {
+        String name=json.findValue("login").textValue();
+        String pass=json.findValue("password").textValue();
+        String daterequest=json.findValue("date").textValue();
+        String state= json.findValue("state").textValue();
         Model.Finder<Integer, Time> finder = new Model.Finder<>(Time.class);
  
        if(state.equals("Start")){

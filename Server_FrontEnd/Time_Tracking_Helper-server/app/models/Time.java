@@ -31,6 +31,7 @@ public class Time extends Model{
 		this.end=end;
 	}
 
+
     public void setLogin(String login) {
         this.login = login;
     }
