@@ -3,6 +3,22 @@
 
 # --- !Ups
 
+create table privileges (
+  id                            integer not null,
+  userfrom                      varchar(255),
+  userto                        varchar(255),
+  constraint pk_privileges primary key (id)
+);
+create sequence privileges_seq;
+
+create table request (
+  id                            integer not null,
+  userfrom                      varchar(255),
+  userto                        varchar(255),
+  constraint pk_request primary key (id)
+);
+create sequence request_seq;
+
 create table schedule (
   id                            integer not null,
   login                         varchar(255),
@@ -35,6 +51,12 @@ create sequence user_seq;
 
 
 # --- !Downs
+
+drop table if exists privileges;
+drop sequence if exists privileges_seq;
+
+drop table if exists request;
+drop sequence if exists request_seq;
 
 drop table if exists schedule;
 drop sequence if exists schedule_seq;
