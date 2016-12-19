@@ -56,7 +56,10 @@ public class HomeController extends Controller {
     	ok(toJson(schedule2));
     	return ok(schedule.render(login));
     }
-
+    public Result privileges(){
+    	String login=session("Login");
+    	return ok(privileges.render(login));
+    }
     /*
      * Method adding User to database
      * TODO- Do it better;

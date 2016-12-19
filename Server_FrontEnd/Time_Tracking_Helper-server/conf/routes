@@ -40,6 +40,8 @@ GET			/timeline			controllers.HomeController.timeline
 GET			/settings		controllers.HomeController.settings
 # Kontroler GET sluzacy do wyswietlenia harmonogramu
 GET			/schedule		controllers.HomeController.schedule
+# Kontroler GET sluzacy do wyswietlenia uprawnien
+GET			/privileges		controllers.HomeController.privileges
 # Kontroler POST sluzacy do odebrania harmonogramu i zapisania go w bazie
 POST		/setschedule		controllers.HomeController.setschedule
 # Kontroler POST sluzacy do pobrania harmonogramu dla danego użytkownika i danego dnia
