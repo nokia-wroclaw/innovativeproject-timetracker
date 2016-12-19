@@ -1,0 +1,85 @@
+<header-comp></header-comp>
+<menu-comp></menu-comp>
+
+<button type="button" (click) = "changePartView(1)">My privileges</button><button type="button" (click) = "changePartView(2)">Others privileges</button>
+
+<div id="firstPrivilegesPart" [hidden]="firstPrivilegesPartView">
+    <h3>Users that You requested for adding</h3>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Cancel</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of invitationsTable; let i = index">
+            <td>{{item[0]}}</td>
+            <td>{{item[1]}}</td>
+            <td><button>&#10008;</button></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Users that You added</h3>
+    <form>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Estimated hours</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of accInvitationsTable; let i = index">
+                    <td>{{item[0]}}</td>
+                    <td>{{item[1]}}</td>
+                    <td><input type="number" value = "{{item[2]}}"></td>
+                    <td><button>&#10008;</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+
+</div>
+
+<div id="secondPrivilegesPart" [hidden]="secondPrivilegesPartView">
+    <h3>Users that requested for adding You</h3>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Decision</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of othersInvitationsTable; let i = index">
+            <td>{{item[0]}}</td>
+            <td>{{item[1]}}</td>
+            <td><button>&#10004;</button><button>&#10008;</button></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Users that added You</h3>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of othersAccInvitationsTable; let i = index">
+            <td>{{item[0]}}</td>
+            <td>{{item[1]}}</td>
+            <td><button>&#10008;</button></td>
+        </tr>
+        </tbody>
+    </table>
+</div>

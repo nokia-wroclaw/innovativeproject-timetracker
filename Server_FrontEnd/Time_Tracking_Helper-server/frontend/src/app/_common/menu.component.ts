@@ -26,7 +26,7 @@ export class MenuComponent {
     userSurname = () => localStorage.getItem('authToken').split(" ")[2];
 
     changeToTimelinePage(){
-        window.location.href = 'http://localhost:9000/';
+        window.location.href = '/';
     }
 
 }

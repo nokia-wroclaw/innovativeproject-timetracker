@@ -34,8 +34,6 @@ export class IndexComponent {
             timelineForm.value.toDate.split("-")[0] + "@23:59";
 
         var params = JSON.stringify({
-            //login: localStorage.getItem('authToken').split(" ")[0],
-            login: "Kruk07",
             begin: fromDateStr,
             end: toDateStr
         });

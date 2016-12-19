@@ -13,7 +13,8 @@ var entry = {
     index: ['./indexEntry.ts'],
     register: ['./registerEntry.ts'],
     timeline: ['./timelineEntry.ts'],
-    schedule: ['./scheduleEntry.ts']
+    schedule: ['./scheduleEntry.ts'],
+    privileges: ['./privilegesEntry.ts']
 };
 
 var config = {
