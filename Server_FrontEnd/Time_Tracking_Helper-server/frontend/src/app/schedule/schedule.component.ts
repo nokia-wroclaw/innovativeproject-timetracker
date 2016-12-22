@@ -43,18 +43,23 @@ export class ScheduleComponent {
         var i = 0; var j = 0;
         var i2 = 0;
         while(i < 7) {
+
             /*If day does have any inputs*/
             if(this.displayedInputs[i][0] == true) {
 
                 while(this.displayedInputs[i][j] != false && j < 8 && validTimeFormat == true) {
                     sendingStr += "{\"day\": " + "\""+ this.days[i] +"\"" + ", ";
                     inputValue = (<HTMLInputElement>document.getElementById("field_"+this.days[i]+j+"0")).value;
+                    /*disabled input*/
+                    document.getElementById("field_"+this.days[i]+j+"0").setAttribute('disabled','disabled');
                     if(this.checkValue(inputValue) == false) {
                         validTimeFormat = false;
                     }
                     sendingStr += "\"begin\": " + "\""+ inputValue + "\"";
 
                     inputValue = (<HTMLInputElement>document.getElementById("field_"+this.days[i]+j+"1")).value;
+                    /*disabled input*/
+                    document.getElementById("field_"+this.days[i]+j+"1").setAttribute('disabled','disabled');
                     this.checkValue(inputValue);
                     sendingStr += ", \"end\": " + "\"" + inputValue + "\"" +  "}";
 
@@ -98,6 +103,7 @@ export class ScheduleComponent {
         xhttp.send(sendingStr);
 
 
+
         //TODO: REMOVE
         //document.getElementById("schedule-info").innerHTML = sendingStr;
     }
@@ -118,16 +124,25 @@ export class ScheduleComponent {
         }
         this.displayedInputs[day][i] = true;
         document.getElementById('fields-'+this.days[day]+i).style.display = "inline";
+        document.getElementById('fields-'+this.days[day]+'-span'+i).style.display = "inline";
     }
 
     /*Hide one pair of inputs for specific day*/
-    remInput(day:number) {
-        var i = 7;
-        while(this.displayedInputs[day][i] != true && i > 0) {
-            i--;
+    remInput(day:number,i:number) {
+        while(i < 7 && this.displayedInputs[day][i] == true) {
+            (<HTMLInputElement>document.getElementById("field_"+this.days[day]+i+"0")).value=(<HTMLInputElement>document.getElementById("field_"+this.days[day]+(i+1)+"0")).value;;
+            (<HTMLInputElement>document.getElementById("field_"+this.days[day]+i+"1")).value=(<HTMLInputElement>document.getElementById("field_"+this.days[day]+(i+1)+"1")).value;;
+            i++;
         }
+        i--;
         this.displayedInputs[day][i] = false;
         document.getElementById('fields-'+this.days[day]+i).style.display = "none";
+        document.getElementById('fields-'+this.days[day]+'-span'+i).style.display = "none";
+    }
+
+    switch(day:number,i:number) {
+        document.getElementById("field_"+this.days[day]+i+"0").removeAttribute("disabled");
+        document.getElementById("field_"+this.days[day]+i+"1").removeAttribute("disabled");
     }
 
 }

@@ -1,5 +1,98 @@
 schedule-comp{
+  .schedule-header {
+    padding: 5px;
+    font-size: 28px;
+  }
+
+  .schedule-container {
+    background-color: #080b35;
+    color: #ffffff;
+    text-align: center;
+    font-family:courier;
+    font-size: 22px;
+    border: 1px solid rgba(0, 0, 0, 0.18);
+    margin-bottom: 10px;
+    margin-top: 10px;
+    border-radius: 22px;
+    padding-bottom: 5px;
+  }
+
+  .transbox {
+    font-weight: bold;
+    width: 65%;
+    margin: 0 auto;
+  }
+
+  .row {
+    background-color: #21314a;
+    padding: 5px;
+    margin: 5px;
+    text-align: left;
+    font-weight: normal;
+
+  }
+
+  .glyphicon {
+    padding-top: 5px;
+    padding-right: 5px;
+  }
+
+  .glyphicon-plus-sign:hover {
+    cursor: pointer;
+  }
+
+  .glyphicon-pencil {
+    color: #b5ddf5 !important;
+  }
+
+  .glyphicon-pencil:hover {
+    cursor: pointer;
+  }
+  .glyphicon-trash {
+    color: #a94442 !important;
+  }
+
+  .glyphicon-trash:hover {
+    cursor: pointer;
+  }
+
+  .span-icon {
+    background-color:  rgb(73,165,191);
+    float: left;
+    width: 50%;
+    text-align: right;
+    }
 
 
+  .row-text {
+    background-color:  rgb(73,165,191);
+    width: 50%;
+    float:left;
+    padding-top: 6px;
+    padding-left: 5px;
+    }
+
+  .row-content {
+    clear: both;
+    padding: 5px;
+    font-size: 20px;
+    color: #000000;
+
+  }
+  .row-content-time {
+    float: left;
+    width: 50%;
+    text-align: left;
+    padding-left: 5px;
+    padding-top: 5px;
+  }
+
+  .row-content-option {
+    float: left;
+    width: 50%;
+    text-align: right;
+    padding-left: 5px;
+    padding-top: 5px;
+  }
 
 }
