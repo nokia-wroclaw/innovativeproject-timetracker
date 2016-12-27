@@ -12,6 +12,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import exceptions.ScheduleDayNotFoundException;
 import exceptions.ScheduleNotFoundException;
+import models.Privileges;
+import models.Request;
 import models.Schedule;
 
 import models.Time;
@@ -207,6 +209,50 @@ public class HomeController extends Controller {
 				    result.put("end", "00:00:00");
 					return ok(result);
 				}
+    }
+    public Result sendPaR() {
+		JsonNode json=request().body().asJson();
+    	String type=json.findPath("type").textValue();
+    	String login=json.findPath("login").textValue();
+    	String userlogin=session("Login");
+    	if (type.contains("add")){
+        	String result=models.RequestStorage.addRequest(userlogin,login);
+        	return ok(result);			
+    	}else if(type.contains("decline")){
+        	String result=models.RequestStorage.deleteRequest(userlogin,login);
+        	return ok(result);
+    	}else if(type.contains("accept")){
+        	String result=models.PrivilegesStorage.addPrivileges(userlogin,login);
+        	return ok(result);
+    	}else if(type.contains("delete")){
+        	String result=models.PrivilegesStorage.deletePrivileges(userlogin,login);
+        	return ok(result);
+    	}else{
+    		return ok("WRONG TYPE OF REQUEST");
+    	}
+
+    }
+    
+    public Result getPaR() {
+		JsonNode json=request().body().asJson();
+    	String type=json.findPath("type").textValue();
+    	String login =session("Login");
+    	if (type.contains("privilegesyou")){
+        	List<Privileges> result=models.PrivilegesStorage.getYou(login);
+        	return ok(toJson(result));		
+    	}else if (type.contains("privilegesother")){
+        	List<Privileges> result=models.PrivilegesStorage.getOther(login);
+        	return ok(toJson(result));		
+    	}else  if(type.contains("requestyou")){
+        	List<Request> result=models.RequestStorage.getYou(login);
+        	return ok(toJson(result));
+    	}else  if (type.contains("requestother")){
+        	List<Request> result=models.RequestStorage.getOther(login);
+        	return ok(toJson(result));		
+    	}else {
+    		return ok("ERROR TYPE");
+    	}
+
     }
     
 

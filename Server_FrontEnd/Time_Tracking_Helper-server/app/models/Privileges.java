@@ -31,13 +31,13 @@ public class Privileges extends Model{
     public void setuserfrom(String userfrom) {
         this.userfrom = userfrom;
     }
-    public String getuserfrom() {
+    public String getUserfrom() {
         return userfrom;
     }
     public void setuserto(String userto) {
         this.userto = userto;
     }
-    public String getuserto() {
+    public String getUserto() {
         return userto;
     }
 }

@@ -46,3 +46,8 @@ GET			/privileges		controllers.HomeController.privileges
 POST		/setschedule		controllers.HomeController.setschedule
 # Kontroler POST sluzacy do pobrania harmonogramu dla danego użytkownika i danego dnia
 POST		/getschedule		controllers.HomeController.getschedule
+# Kontroler POST sluzacy do obsługi systemu zaproszen
+POST		/sendprivelegesandrequests		controllers.HomeController.sendPaR
+# Kontroler GET sluzacy do wyświetlenia zawartosci tabel Priveleges i Request
+POST		/getprivelegesandrequests		controllers.HomeController.getPaR
+
