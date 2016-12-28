@@ -5,7 +5,9 @@ import java.io.*;
 import java.sql.Time;
 import java.util.ArrayList;
 
+import org.apache.poi.hssf.record.CFRuleBase;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.PatternFormatting;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.RegionUtil;
 import org.apache.poi.xssf.usermodel.*;
@@ -13,12 +15,6 @@ import org.apache.poi.xssf.usermodel.*;
 public class ExcelGenerator {
     private XSSFWorkbook workbook;
     private ArrayList<XSSFSheet> sheets;
-    private XSSFCellStyle headerStyle;
-    private XSSFCellStyle dateStyle;
-    private XSSFCellStyle dayStyle;
-    private XSSFCellStyle expectedStyle;
-    private XSSFCellStyle totalStyle;
-    private XSSFCellStyle summaryStyle;
 
     public ExcelGenerator() {
         workbook = new XSSFWorkbook();
@@ -65,7 +61,7 @@ public class ExcelGenerator {
         return region;
     }
 
-    private void createHeaderRow(XSSFSheet sheet) {
+    private void createHeaderRow(XSSFSheet sheet, XSSFCellStyle headerStyle) {
         XSSFRow headRow = sheet.getRow(1);
 
         XSSFCell cell = headRow.createCell(3);
@@ -99,7 +95,7 @@ public class ExcelGenerator {
         }
     }
 
-    private void createDateColumn(XSSFSheet sheet) {
+    private void createDateColumn(XSSFSheet sheet, XSSFCellStyle dateStyle) {
         for (int rowIndex = 2; rowIndex < 9; rowIndex++) {
             XSSFRow row = sheet.getRow(rowIndex);
             row.createCell(0).setCellStyle(dateStyle);
@@ -116,7 +112,7 @@ public class ExcelGenerator {
         }
     }
 
-    private void createDayColumn(XSSFSheet sheet) {
+    private void createDayColumn(XSSFSheet sheet, XSSFCellStyle dayStyle) {
         String weekDays[] = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
         for (int rowIndex = 2; rowIndex < 9; rowIndex++) {
             XSSFRow row = sheet.getRow(rowIndex);
@@ -131,7 +127,7 @@ public class ExcelGenerator {
         }
     }
 
-    private void createExpectedColumn(XSSFSheet sheet) {
+    private void createExpectedColumn(XSSFSheet sheet, XSSFCellStyle expectedStyle) {
         for (int rowIndex = 2; rowIndex < 10; rowIndex++) {
             XSSFRow row = sheet.getRow(rowIndex);
             row.createCell(3).setCellStyle(expectedStyle);
@@ -139,7 +135,7 @@ public class ExcelGenerator {
         sheet.getRow(9).getCell(3).setCellFormula("SUM(D3:D9)");
     }
 
-    private void createTotalColumn(XSSFSheet sheet) {
+    private void createTotalColumn(XSSFSheet sheet, XSSFCellStyle totalStyle) {
         for (int rowIndex = 2; rowIndex < 10; rowIndex++) {
             XSSFRow row = sheet.getRow(rowIndex);
             XSSFCell cell = row.createCell(4);
@@ -168,7 +164,7 @@ public class ExcelGenerator {
         }
     }
 
-    private void createSummary(XSSFSheet sheet) {
+    private void createSummary(XSSFSheet sheet, XSSFCellStyle summaryStyle) {
         String names[] = {"Extra", "Previous", "New"};
         String formulas[] = {"E10-D10", "0", "SUM(C10:C11)"}; //todo change 'previous' formula
         for (int i = 0; i < names.length; i++) {
@@ -231,6 +227,38 @@ public class ExcelGenerator {
         sheet.addMergedRegion(new CellRangeAddress(30, 30, 2, 4));
     }
 
+    private void createConditionalFormattingRules(XSSFSheet sheet) {
+        SheetConditionalFormatting sheetCF = sheet.getSheetConditionalFormatting();
+
+        ConditionalFormattingRule nokiaRule =
+                sheetCF.createConditionalFormattingRule(CFRuleBase.ComparisonOperator.EQUAL, "\"n\"");
+
+        XSSFColor nokiaColor = new XSSFColor(new Color(112, 48, 160));
+
+        FontFormatting nokiaFont = nokiaRule.createFontFormatting();
+        nokiaFont.setFontColorIndex(IndexedColors.BLUE.index);
+        nokiaFont.setFontColor(nokiaColor);
+
+        PatternFormatting nokiaPattern = nokiaRule.createPatternFormatting();
+        nokiaPattern.setFillBackgroundColor(nokiaColor);
+
+        ConditionalFormattingRule homeRule =
+                sheetCF.createConditionalFormattingRule(CFRuleBase.ComparisonOperator.EQUAL, "\"h\"");
+
+        XSSFColor homeColor = new XSSFColor(new Color(255, 173, 48));
+
+        FontFormatting homeFont = homeRule.createFontFormatting();
+        homeFont.setFontColorIndex(IndexedColors.ORANGE.index);
+        homeFont.setFontColor(homeColor);
+
+        PatternFormatting homePattern = homeRule.createPatternFormatting();
+        homePattern.setFillBackgroundColor(homeColor);
+
+        CellRangeAddress[] regions = {new CellRangeAddress(2, 8, 5, 109)};
+        sheetCF.addConditionalFormatting(regions, nokiaRule);
+        sheetCF.addConditionalFormatting(regions, homeRule);
+    }
+
     private void createTemplateSheet(String sheetName) {
         XSSFSheet sheet = workbook.createSheet(sheetName);
         sheets.add(sheet);
@@ -243,35 +271,35 @@ public class ExcelGenerator {
 
         XSSFColor headerColor = new XSSFColor(new Color(255, 234, 102));
         String headerFormat = "hh:mm";
-        headerStyle = createStyle(headerColor, headerFormat);
-        createHeaderRow(sheet);
+        XSSFCellStyle headerStyle = createStyle(headerColor, headerFormat);
+        createHeaderRow(sheet, headerStyle);
 
         XSSFColor dateColor = new XSSFColor(new Color(252, 213, 181));
         String dateFormat = "d.mm;@";
-        dateStyle = createStyle(dateColor, dateFormat);
-        createDateColumn(sheet);
+        XSSFCellStyle dateStyle = createStyle(dateColor, dateFormat);
+        createDateColumn(sheet, dateStyle);
 
         XSSFColor dayColor = new XSSFColor(new Color(255, 193, 102));
         String dayFormat = "";
-        dayStyle = createStyle(dayColor, dayFormat);
-        createDayColumn(sheet);
+        XSSFCellStyle dayStyle = createStyle(dayColor, dayFormat);
+        createDayColumn(sheet, dayStyle);
 
-        expectedStyle = dayStyle;
-        createExpectedColumn(sheet);
+        XSSFCellStyle expectedStyle = dayStyle;
+        createExpectedColumn(sheet, expectedStyle);
 
         XSSFColor totalColor = dayColor;
         String totalFormat = "0.00";
-        totalStyle = createStyle(totalColor, totalFormat);
-        createTotalColumn(sheet);
+        XSSFCellStyle totalStyle = createStyle(totalColor, totalFormat);
+        createTotalColumn(sheet, totalStyle);
 
         createReportingArea(sheet);
 
-        summaryStyle = createSummaryStyle();
-        createSummary(sheet);
+        XSSFCellStyle summaryStyle = createSummaryStyle();
+        createSummary(sheet, summaryStyle);
 
         createLegend(sheet);
 
-        //todo create conditional formatting rule
+        createConditionalFormattingRules(sheet);
     }
 
     public void generateExcel() {
