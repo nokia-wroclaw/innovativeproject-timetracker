@@ -3,13 +3,28 @@
 
 <button type="button" (click) = "changePartView(1)">My privileges</button><button type="button" (click) = "changePartView(2)">Others privileges</button>
 
+<div id="test"></div>
+
 <div id="firstPrivilegesPart" [hidden]="firstPrivilegesPartView">
+
+    <div class="privilegesAddForm-container">
+        <form (ngSubmit)="onSubmit()" #privilegesAddForm="ngForm">
+            <div class="form-group">
+                <label for="login">Login</label>
+                <input type="text" class="form-control" required [(ngModel)] = "model.login" name = "login"  value = "">
+            </div>
+            <button type="submit" class="btn btn-primary privileges-button" [disabled]="!privilegesAddForm.form.valid" (click) = "addPrivRequest(privilegesAddForm)" >Submit</button>
+        </form>
+    </div>
+
+
     <h3>Users that You requested for adding</h3>
     <table class="table">
         <thead>
         <tr>
             <th>Name</th>
             <th>Surname</th>
+            <th>Nick</th>
             <th>Cancel</th>
         </tr>
         </thead>
@@ -17,7 +32,8 @@
         <tr *ngFor="let item of invitationsTable; let i = index">
             <td>{{item[0]}}</td>
             <td>{{item[1]}}</td>
-            <td><button>&#10008;</button></td>
+            <td>{{item[2]}}</td>
+            <td><button type="button" (click)="sendPrivReq('decline', 'privReq', item[2]);" >&#10008;</button></td>
         </tr>
         </tbody>
     </table>
@@ -29,7 +45,9 @@
                 <tr>
                     <th>Name</th>
                     <th>Surname</th>
+                    <th>Nick</th>
                     <th>Estimated hours</th>
+                    <th>Confirm</th>
                     <th>Delete</th>
                 </tr>
             </thead>
@@ -37,8 +55,10 @@
                 <tr *ngFor="let item of accInvitationsTable; let i = index">
                     <td>{{item[0]}}</td>
                     <td>{{item[1]}}</td>
-                    <td><input type="number" value = "{{item[2]}}"></td>
-                    <td><button>&#10008;</button></td>
+                    <td>{{item[2]}}</td>
+                    <td><input type="number" value = "{{item[3]}}"></td>
+                    <td><button type="button">&#10004;</button></td>
+                    <td><button type="button" (click)="sendPrivReq('delete', 'privList', item[2]);">&#10008;</button></td>
                 </tr>
             </tbody>
         </table>
@@ -53,6 +73,7 @@
         <tr>
             <th>Name</th>
             <th>Surname</th>
+            <th>Nick</th>
             <th>Decision</th>
         </tr>
         </thead>
@@ -60,7 +81,9 @@
         <tr *ngFor="let item of othersInvitationsTable; let i = index">
             <td>{{item[0]}}</td>
             <td>{{item[1]}}</td>
-            <td><button>&#10004;</button><button>&#10008;</button></td>
+            <td>{{item[2]}}</td>
+            <td><button type="button" (click)="sendPrivReq('accept', 'othersPrivReq', item[2]);">&#10004;</button>
+                <button type="button" (click)="sendPrivReq('decline', 'othersPrivReq', item[2]);">&#10008;</button></td>
         </tr>
         </tbody>
     </table>
@@ -71,6 +94,7 @@
         <tr>
             <th>Name</th>
             <th>Surname</th>
+            <th>Nick</th>
             <th>Delete</th>
         </tr>
         </thead>
@@ -78,7 +102,8 @@
         <tr *ngFor="let item of othersAccInvitationsTable; let i = index">
             <td>{{item[0]}}</td>
             <td>{{item[1]}}</td>
-            <td><button>&#10008;</button></td>
+            <td>{{item[2]}}</td>
+            <td><button type="button" (click)="sendPrivReq('delete', 'othersPrivList', item[2]);">&#10008;</button></td>
         </tr>
         </tbody>
     </table>
