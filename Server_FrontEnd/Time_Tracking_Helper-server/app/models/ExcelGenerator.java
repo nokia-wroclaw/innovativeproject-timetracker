@@ -1,9 +1,13 @@
-package com.company;
+package models;
 
 import java.awt.Color;
 import java.io.*;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.List;
+
+import models.TimeStorage;
+import models.Schedule;
 
 import org.apache.poi.hssf.record.CFRuleBase;
 import org.apache.poi.ss.usermodel.*;
@@ -16,7 +20,7 @@ public class ExcelGenerator {
     private XSSFWorkbook workbook;
     private ArrayList<XSSFSheet> sheets;
 
-    public ExcelGenerator() {
+    public ExcelGenerator(String begin, String end, List<Schedule> weeklySchedule, List<TimeStorage> timeline) {
         workbook = new XSSFWorkbook();
         sheets = new ArrayList<>();
     }
@@ -309,7 +313,7 @@ public class ExcelGenerator {
 
     private void saveExcel() {
         try {
-            String filename = "NewExcelFile.xlsx";
+            String filename = "app//NewExcelFile.xlsx";
             FileOutputStream fileOut = new FileOutputStream(filename);
             workbook.write(fileOut);
             fileOut.close();
