@@ -8,6 +8,7 @@ public class PrivilegesStorage {
 
 	public static List<Privileges> getYou(String login) {
 		Model.Finder<Integer, Privileges> finder = new Model.Finder<>(Privileges.class);
+		
 		List<Privileges> t1 = finder.where().eq("userfrom", login).findList();
 		return t1;
 	}
@@ -20,13 +21,9 @@ public class PrivilegesStorage {
 	
 	
 	public static String addPrivileges(String userlogin, String login) {
-		Model.Finder<Integer, Privileges> finder3 = new Model.Finder<>(Privileges.class);
-		List<Privileges> t3 = finder3.where().and().eq("userfrom", userlogin).eq("userto", login).findList();
-		if(t3.isEmpty()==false){
-			return "PRIVILEGE ALREADY IN DATABASE";
-		}
+
 		Model.Finder<Integer, Request> finder = new Model.Finder<>(Request.class);
-		Request t2= finder.where().and().eq("userfrom", userlogin).eq("userto", login).findUnique();
+		Request t2= finder.where().and().eq("userfrom", login).eq("userto", userlogin).findUnique();
 
 		t2.delete();
 		Privileges toadd=new Privileges(userlogin,login);
@@ -35,12 +32,35 @@ public class PrivilegesStorage {
 
 	}
 	
-	public static String deletePrivileges(String userlogin, String login){
+	public static String deleteFromPrivileges(String userlogin, String login){
 		Model.Finder<Integer, Privileges> finder = new Model.Finder<>(Privileges.class);
 		Privileges t2= finder.where().and().eq("userfrom", userlogin).eq("userto", login).findUnique();
 		t2.delete();
 		return "DELETED";
 
 	}
+
+	public static String deleteToPrivileges(String userlogin, String login) {
+		Model.Finder<Integer, Privileges> finder = new Model.Finder<>(Privileges.class);
+		Privileges t2= finder.where().and().eq("userfrom", login).eq("userto", userlogin).findUnique();
+		t2.delete();
+		return "DELETED";
+	}
+
+	public static String setEstimated(String userlogin, String login, String number) {
+		
+		Model.Finder<Integer, Privileges> finder = new Model.Finder<>(Privileges.class);
+		Privileges t1 = finder.where().and().eq("userfrom", login).eq("userto", userlogin).findUnique();
+		if (t1==null){
+			return "ERROR";
+		}
+		t1.setEstimatedHours(Integer.parseInt(number));
+		t1.update();
+		
+		
+		return "OK";
+	}
+
+
 
 }

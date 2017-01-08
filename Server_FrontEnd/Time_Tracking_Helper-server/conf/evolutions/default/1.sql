@@ -7,6 +7,7 @@ create table privileges (
   id                            integer not null,
   userfrom                      varchar(255),
   userto                        varchar(255),
+  estimated_hours               integer,
   constraint pk_privileges primary key (id)
 );
 create sequence privileges_seq;

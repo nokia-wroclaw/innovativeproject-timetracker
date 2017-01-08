@@ -216,16 +216,28 @@ public class HomeController extends Controller {
     	String login=json.findPath("login").textValue();
     	String userlogin=session("Login");
     	if (type.contains("add")){
+    		//użytkownik A wysyla zaproszenie do użytkownika B
         	String result=models.RequestStorage.addRequest(userlogin,login);
         	return ok(result);			
     	}else if(type.contains("decline")){
+    		//użytkownik A cofa zaproszenie do użytkownika B
         	String result=models.RequestStorage.deleteRequest(userlogin,login);
         	return ok(result);
-    	}else if(type.contains("accept")){
+    	}else if(type.contains("acceptrequest")){
+    		//użytkownik B akceptuje zaproszenie użytkownika A
         	String result=models.PrivilegesStorage.addPrivileges(userlogin,login);
         	return ok(result);
-    	}else if(type.contains("delete")){
-        	String result=models.PrivilegesStorage.deletePrivileges(userlogin,login);
+    	}else if(type.contains("decrequest")){
+    		//użytkownik B odrzuca zaproszenie użytkownika A
+        	String result=models.RequestStorage.declinePrivileges(userlogin,login);
+        	return ok(result);
+    	}else if(type.contains("deletefrom")){
+    		//użytkownik B usuwa z dostępu użytkownika A
+        	String result=models.PrivilegesStorage.deleteFromPrivileges(userlogin,login);
+        	return ok(result);
+    	}else if(type.contains("deleteto")){
+    		//użytkownik A usuwa z dostępu użytkownika B
+        	String result=models.PrivilegesStorage.deleteToPrivileges(userlogin,login);
         	return ok(result);
     	}else{
     		return ok("WRONG TYPE OF REQUEST");
@@ -251,6 +263,21 @@ public class HomeController extends Controller {
         	return ok(toJson(result));		
     	}else {
     		return ok("ERROR TYPE");
+    	}
+    }
+    public Result setEstimatedHours(){
+    	//number- liczba estimated hours
+    	//login- login użytkownika, któremu zmieniamy estimated hours
+    	String userlogin=session("Login");
+    	try{
+    		JsonNode json=request().body().asJson();
+        	String number=json.findPath("number").textValue();
+        	String login=json.findPath("login").textValue();
+        	String result=models.PrivilegesStorage.setEstimated(userlogin,login,number);
+        	return ok(result);
+    	}catch(Exception ex){
+    		ex.printStackTrace();
+    		return ok("ERROR");
     	}
 
     }

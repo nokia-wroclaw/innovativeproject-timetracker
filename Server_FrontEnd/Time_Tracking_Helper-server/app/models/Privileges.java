@@ -21,10 +21,13 @@ public class Privileges extends Model{
 	public String userfrom;
 	@JsonProperty
 	public String userto;
+	@JsonProperty
+	public Integer estimatedHours;
 
 	public Privileges (String userfrom, String userto){
 		this.userfrom=userfrom;
 		this.userto=userto;
+		this.estimatedHours=0;
 	}
 
 
@@ -39,5 +42,11 @@ public class Privileges extends Model{
     }
     public String getUserto() {
         return userto;
+    }
+    public void setEstimatedHours(int estimatedHours) {
+        this.estimatedHours = estimatedHours;
+    }
+    public int getEstimatedHours() {
+        return estimatedHours;
     }
 }

@@ -48,6 +48,7 @@ POST		/setschedule		controllers.HomeController.setschedule
 POST		/getschedule		controllers.HomeController.getschedule
 # Kontroler POST sluzacy do obsługi systemu zaproszen
 POST		/sendprivelegesandrequests		controllers.HomeController.sendPaR
-# Kontroler GET sluzacy do wyświetlenia zawartosci tabel Priveleges i Request
+# Kontroler POST sluzacy do wyświetlenia zawartosci tabel Priveleges i Request
 POST		/getprivelegesandrequests		controllers.HomeController.getPaR
-
+# Kontroler POST sluzacy do ustawienia estimatedHours użytkownikowi
+POST		/setestimated		controllers.HomeController.setEstimatedHours
