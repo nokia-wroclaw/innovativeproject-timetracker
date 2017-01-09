@@ -30,7 +30,7 @@ POST    	/loginextension		controllers.HomeController.loginExtensionController
 POST    	/logoutextension	controllers.HomeController.logoutExtensionController
 # Kontroler POST sluzacy do rejestrowania czasu pracy
 POST		/tracking			controllers.HomeController.tracking
-# Kontroler GET sluzacy do wyswietlenia danych dotyczacych uzytkownika
+# Kontroler POST sluzacy do wyswietlenia danych dotyczacych uzytkownika
 POST		/userinfo			controllers.HomeController.sendData
 # Kontroler GET sprawdzający czy dany uzytkownik jest zalogowany
 GET     	/index2             controllers.HomeController.index2
@@ -52,3 +52,5 @@ POST		/sendprivelegesandrequests		controllers.HomeController.sendPaR
 POST		/getprivelegesandrequests		controllers.HomeController.getPaR
 # Kontroler POST sluzacy do ustawienia estimatedHours użytkownikowi
 POST		/setestimated		controllers.HomeController.setEstimatedHours
+# Kontroler POST służący do wygenerowania excela dla danego użytkownika i danego przedziału czasowego
+POST        /excel              controllers.HomeController.generateExcel

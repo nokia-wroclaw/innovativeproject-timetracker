@@ -1,5 +1,5 @@
-import { Component } from "@angular/core";
-import { TimelineSettings } from "../_common/timelineSettings";
+import {Component} from "@angular/core";
+import {TimelineSettings} from "../_common/timelineSettings";
 import {FormsModule, NgForm} from "@angular/forms";
 import "vis/dist/vis.css";
 var vis = require("vis/dist/vis.js");
@@ -41,7 +41,7 @@ export class IndexComponent {
 
         xhttp.open("POST", "/userinfo", true);
         xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-        xhttp.onreadystatechange = function(){
+        xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 var jsonResponse = JSON.parse(xhttp.responseText);
                 var container = document.getElementById('visualization');
@@ -52,8 +52,10 @@ export class IndexComponent {
                 var maxDaysInRow = 7;
 
                 //start-end date for a one row
-                var dateStart = new Date();;
-                var dateEnd = new Date();;
+                var dateStart = new Date();
+                ;
+                var dateEnd = new Date();
+                ;
 
                 //How many rows prepared already
                 var j = 0;
@@ -73,19 +75,19 @@ export class IndexComponent {
 
                 /*need to create first dateStart and dateEnd*/
                 reverseDate = jsonResponse[0].begin.split("@")[0];
-                if(jsonResponse.length >= 1) {
+                if (jsonResponse.length >= 1) {
 
                     dateStart = new Date(reverseDate.split("/")[2] + '-'
                         + reverseDate.split("/")[1] + '-'
                         + reverseDate.split("/")[0]);
                     dateEnd = new Date();
-                    dateEnd.setDate(dateStart.getDate() + (maxDaysInRow-1));
+                    dateEnd.setDate(dateStart.getDate() + (maxDaysInRow - 1));
                     options.push({min: dateStart.toDateString() + ' 00:00', max: dateEnd.toDateString() + ' 23:59'});
                     data.push(new vis.DataSet(options[j]));
-                    j = j+1;
+                    j = j + 1;
                 }
                 /*for every received "work signal" */
-                for(var i=0; i<jsonResponse.length; i++) {
+                for (var i = 0; i < jsonResponse.length; i++) {
 
                     reverseDate = jsonResponse[i].begin.split("@")[0];
                     actualCheckingDateBegin = new Date(reverseDate.split("/")[2] + '-'
@@ -100,17 +102,20 @@ export class IndexComponent {
                     diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
                     /*if start of received "work signal" has a date that exceeds max days in one row - create new row*/
-                    if(diffDays >= maxDaysInRow) {
+                    if (diffDays >= maxDaysInRow) {
 
                         reverseDate = jsonResponse[i].begin.split("@")[0];
                         dateStart = new Date(reverseDate.split("/")[2] + '-'
                             + reverseDate.split("/")[1] + '-'
                             + reverseDate.split("/")[0]);
                         dateEnd = new Date();
-                        dateEnd.setDate(dateStart.getDate() + maxDaysInRow-1);
-                        options.push({min: dateStart.toDateString() + ' 00:00', max: dateEnd.toDateString() + ' 23:59'});
+                        dateEnd.setDate(dateStart.getDate() + maxDaysInRow - 1);
+                        options.push({
+                            min: dateStart.toDateString() + ' 00:00',
+                            max: dateEnd.toDateString() + ' 23:59'
+                        });
                         data.push(new vis.DataSet(options[j]));
-                        j = j+1;
+                        j = j + 1;
 
                     } else {
 
@@ -118,16 +123,16 @@ export class IndexComponent {
                         diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
                         /*if start of received "work signal" has a date that exceeds max days in one row - split it into 2 rows*/
-                        if(diffDays >= maxDaysInRow) {
+                        if (diffDays >= maxDaysInRow) {
 
                             actualCheckingDateTmp = new Date(actualCheckingDateEnd.getMonth(),
                                 actualCheckingDateEnd.getDay(),
                                 actualCheckingDateEnd.getFullYear());
 
                             /*count how many days cant fit into actual row*/
-                            while(diffDays >= maxDaysInRow) {
+                            while (diffDays >= maxDaysInRow) {
                                 howManyDaysToCut += 1;
-                                actualCheckingDateTmp = new Date(   actualCheckingDateEnd.getMonth(),
+                                actualCheckingDateTmp = new Date(actualCheckingDateEnd.getMonth(),
                                     (actualCheckingDateEnd.getDay() - howManyDaysToCut),
                                     actualCheckingDateEnd.getFullYear());
 
@@ -136,20 +141,28 @@ export class IndexComponent {
                             }
                             howManyDaysToCut = 0;
 
-                            dateEnd = new Date(dateStart.getMonth(), dateStart.getDay()+6, dateStart.getFullYear());
-                            options.push({min: actualCheckingDateBegin.toDateString() + ' 00:00',
-                                max: actualCheckingDateTmp.toDateString() + ' 23:59'});
-                            j = j+1;
-                            data[j-1].add([{id: i, content: ' ',
+                            dateEnd = new Date(dateStart.getMonth(), dateStart.getDay() + 6, dateStart.getFullYear());
+                            options.push({
+                                min: actualCheckingDateBegin.toDateString() + ' 00:00',
+                                max: actualCheckingDateTmp.toDateString() + ' 23:59'
+                            });
+                            j = j + 1;
+                            data[j - 1].add([{
+                                id: i, content: ' ',
                                 start: actualCheckingDateBegin.toDateString() + ' ' + jsonResponse[i].begin.split("@")[1],
-                                end: actualCheckingDateTmp.toDateString() + ' 23:59'}]);
+                                end: actualCheckingDateTmp.toDateString() + ' 23:59'
+                            }]);
 
-                            options.push({min: actualCheckingDateTmp.toDateString() + ' 00:00',
-                                max: actualCheckingDateEnd.toDateString() + ' 23:59'});
-                            j = j+1;
-                            data[j-1].add([{id: i, content: ' ',
+                            options.push({
+                                min: actualCheckingDateTmp.toDateString() + ' 00:00',
+                                max: actualCheckingDateEnd.toDateString() + ' 23:59'
+                            });
+                            j = j + 1;
+                            data[j - 1].add([{
+                                id: i, content: ' ',
                                 start: actualCheckingDateTmp.toDateString() + ' 00:01',
-                                end: actualCheckingDateEnd.toDateString() + ' ' + jsonResponse[i].end.split("@")[1]}]);
+                                end: actualCheckingDateEnd.toDateString() + ' ' + jsonResponse[i].end.split("@")[1]
+                            }]);
 
                             dateStart = new Date(actualCheckingDateTmp.getMonth(),
                                 actualCheckingDateTmp.getDay(),
@@ -157,20 +170,58 @@ export class IndexComponent {
 
                         } else {
 
-                            data[j-1].add([{id: i, content: ' ',
+                            data[j - 1].add([{
+                                id: i, content: ' ',
                                 start: actualCheckingDateBegin.toDateString() + ' ' + jsonResponse[i].begin.split("@")[1],
-                                end: actualCheckingDateEnd.toDateString() + ' ' + jsonResponse[i].end.split("@")[1]}]);
+                                end: actualCheckingDateEnd.toDateString() + ' ' + jsonResponse[i].end.split("@")[1]
+                            }]);
                         }
                     }
 
                 }
                 /*display created rows*/
-                for(var k = 0; k < j; k++) {
+                for (var k = 0; k < j; k++) {
                     var timeline = new vis.Timeline(container, data[k], options[k]);
                 }
 
             }
 
+        };
+        xhttp.send(params);
+    }
+
+    generationModel = new TimelineSettings('Kruk07', "2016-12-12", "2016-12-13");
+    generated = false;
+
+    onGenerate() {
+        this.generated = true;
+    }
+
+    getExcel(timelineForm: NgForm) {
+        var xhttp = new XMLHttpRequest();
+
+        var fromDateStr = timelineForm.value.fromDate.split("-")[2] + "/" +
+            timelineForm.value.fromDate.split("-")[1] + "/" +
+            timelineForm.value.fromDate.split("-")[0] + "@00:00";
+
+        var toDateStr = timelineForm.value.toDate.split("-")[2] + "/" +
+            timelineForm.value.toDate.split("-")[1] + "/" +
+            timelineForm.value.toDate.split("-")[0] + "@23:59";
+
+        var params = JSON.stringify({
+            login: "Kruk07",
+            begin: fromDateStr,
+            end: toDateStr
+        });
+
+        xhttp.open("POST", "/excel", true);
+        xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+        xhttp.onreadystatechange = function () {
+            if(xhttp.readyState === XMLHttpRequest.DONE && xhttp.status === 200) {
+                console.log("Generation successful");
+            } else {
+                //console.log(xhttp.responseText);
+            }
         };
         xhttp.send(params);
     }
