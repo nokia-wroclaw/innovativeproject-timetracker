@@ -223,7 +223,6 @@ public class HomeController extends Controller {
         }
     }
 
-
     public Result getUsers() {
         Model.Finder<Integer, User> finder = new Model.Finder<>(User.class);
         List<User> users = finder.all();
@@ -238,19 +237,14 @@ public class HomeController extends Controller {
 
     public Result generateExcel() {
         JsonNode json = request().body().asJson();
-        //String login = session("Login");
+        String login = session("Login");
         //String login = "Kruk07";
-        String login = json.findPath("login").textValue();
-        String begin = json.findPath("begin").textValue();
-        String end = json.findPath("end").textValue();
+        //String login = json.findPath("login").textValue();
+        String begin = "1481328000000";//json.findPath("begin").textValue();
+        String end = "1481673540000";//json.findPath("end").textValue();
         List<Schedule> weeklySchedule = models.ScheduleStorage.getSchedule(login);
-        List<TimeStorage> timeline = null;
-        try {
-            timeline = models.TimeStorage.getData(json);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        ExcelGenerator generator = new ExcelGenerator(begin, end, weeklySchedule, timeline);
+        List<Time> timeline = models.TimeStorage.getTimeline(login, begin, end);
+        ExcelGenerator generator = new ExcelGenerator(weeklySchedule, timeline);
         generator.generateExcel();
         return ok("excel generated");
     }

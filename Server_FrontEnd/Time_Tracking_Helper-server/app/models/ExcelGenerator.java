@@ -2,11 +2,13 @@ package models;
 
 import java.awt.Color;
 import java.io.*;
-import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Calendar;
 import java.util.ArrayList;
 import java.util.List;
 
-import models.TimeStorage;
+import models.Time;
 import models.Schedule;
 
 import org.apache.poi.hssf.record.CFRuleBase;
@@ -18,11 +20,25 @@ import org.apache.poi.xssf.usermodel.*;
 
 public class ExcelGenerator {
     private XSSFWorkbook workbook;
-    private ArrayList<XSSFSheet> sheets;
+    private List<Schedule> weeklySchedule;
+    private List<Time> timeline;
 
-    public ExcelGenerator(String begin, String end, List<Schedule> weeklySchedule, List<TimeStorage> timeline) {
+    public ExcelGenerator(List<Schedule> weeklySchedule, List<Time> timeline) {
+        this.weeklySchedule = weeklySchedule;
+        this.timeline = timeline;
+        for (Time storage : timeline)
+            System.out.println(storage.getLogin() + " " + storage.getBegin() + " " + storage.getEnd());
         workbook = new XSSFWorkbook();
-        sheets = new ArrayList<>();
+    }
+
+    //walidacja poprawności danych - TODO serwer + strona
+    //tzn. begin < end oraz zakresy na siebie nie nachodzą
+    private double countExpectedTime(String weekDay) {
+        double expectedTime = 0.0;
+        for (Schedule schedule : weeklySchedule)
+            if (schedule.getDay().equals(weekDay))
+                expectedTime += (schedule.end.getTime() - schedule.begin.getTime()) / (1000.0 * 60 * 60);
+        return expectedTime;
     }
 
     private XSSFCellStyle createStyle(XSSFColor color, String format) {
@@ -86,7 +102,7 @@ public class ExcelGenerator {
             int lastMergedColumnIndex = 8 + (hour - firstHour) * 4;
 
             cell = headRow.createCell(firstMergedColumnIndex);
-            Time time = new Time((hour - 1) * 60 * 60 * 1000);
+            Date time = new Date((hour - 1) * 60 * 60 * 1000);
             cell.setCellValue(time);
             cell.setCellStyle(headerStyle);
 
@@ -103,16 +119,6 @@ public class ExcelGenerator {
         for (int rowIndex = 2; rowIndex < 9; rowIndex++) {
             XSSFRow row = sheet.getRow(rowIndex);
             row.createCell(0).setCellStyle(dateStyle);
-            //XSSFCell cell = row.createCell(0);
-//            cell.setCellStyle(dateStyle);
-//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//            try {
-//                Date dateWithoutTime = sdf.parse(sdf.format(new Date()));
-//                System.out.println(dateWithoutTime);
-//                cell.setCellValue(dateWithoutTime);
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
         }
     }
 
@@ -132,11 +138,19 @@ public class ExcelGenerator {
     }
 
     private void createExpectedColumn(XSSFSheet sheet, XSSFCellStyle expectedStyle) {
-        for (int rowIndex = 2; rowIndex < 10; rowIndex++) {
-            XSSFRow row = sheet.getRow(rowIndex);
-            row.createCell(3).setCellStyle(expectedStyle);
+        //na razie weeklySchedule wszedzie taki sam wiec dodajemy go do templatki
+        String weekDays[] = {"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"};
+        XSSFCell cell;
+        int rowExcelOffset = 2;
+        for (int dayIndex = 0; dayIndex < 7; dayIndex++) {
+            XSSFRow row = sheet.getRow(dayIndex + rowExcelOffset);
+            cell = row.createCell(3);
+            cell.setCellStyle(expectedStyle);
+            cell.setCellValue(countExpectedTime(weekDays[dayIndex]));
         }
-        sheet.getRow(9).getCell(3).setCellFormula("SUM(D3:D9)");
+        cell = sheet.getRow(9).createCell(3);
+        cell.setCellStyle(expectedStyle);
+        cell.setCellFormula("SUM(D3:D9)");
     }
 
     private void createTotalColumn(XSSFSheet sheet, XSSFCellStyle totalStyle) {
@@ -170,7 +184,7 @@ public class ExcelGenerator {
 
     private void createSummary(XSSFSheet sheet, XSSFCellStyle summaryStyle) {
         String names[] = {"Extra", "Previous", "New"};
-        String formulas[] = {"E10-D10", "0", "SUM(C10:C11)"}; //todo change 'previous' formula
+        String formulas[] = {"E10-D10", "0", "SUM(C10:C11)"};
         for (int i = 0; i < names.length; i++) {
             XSSFRow row = sheet.getRow(9 + i);
 
@@ -265,7 +279,6 @@ public class ExcelGenerator {
 
     private void createTemplateSheet(String sheetName) {
         XSSFSheet sheet = workbook.createSheet(sheetName);
-        sheets.add(sheet);
 
         for (int rowIndex = 1; rowIndex < 12; rowIndex++)
             sheet.createRow(rowIndex);
@@ -279,7 +292,7 @@ public class ExcelGenerator {
         createHeaderRow(sheet, headerStyle);
 
         XSSFColor dateColor = new XSSFColor(new Color(252, 213, 181));
-        String dateFormat = "d.mm;@";
+        String dateFormat = "dd.mm;@";
         XSSFCellStyle dateStyle = createStyle(dateColor, dateFormat);
         createDateColumn(sheet, dateStyle);
 
@@ -288,12 +301,12 @@ public class ExcelGenerator {
         XSSFCellStyle dayStyle = createStyle(dayColor, dayFormat);
         createDayColumn(sheet, dayStyle);
 
-        XSSFCellStyle expectedStyle = dayStyle;
+        XSSFColor expectedColor = dayColor;
+        String expectedFormat = "0.00";
+        XSSFCellStyle expectedStyle = createStyle(expectedColor, expectedFormat);
         createExpectedColumn(sheet, expectedStyle);
 
-        XSSFColor totalColor = dayColor;
-        String totalFormat = "0.00";
-        XSSFCellStyle totalStyle = createStyle(totalColor, totalFormat);
+        XSSFCellStyle totalStyle = expectedStyle;
         createTotalColumn(sheet, totalStyle);
 
         createReportingArea(sheet);
@@ -306,8 +319,123 @@ public class ExcelGenerator {
         createConditionalFormattingRules(sheet);
     }
 
+    /*
+    todo:
+    - przerobić to porządnie
+    - rozdzielić na mniejsze metody (?)
+    - ogarnąć zaokrąglanie
+    - co jeśli ktoś pracował z niedzieli na poniedziałek w nocy (granica przedziału)
+    - co jeśli ktoś pracować z jakiegokolwiek dnia na jakikolwiek dzień
+    - czy w ogóle zakładać że ktoś mógł pracować poza 6 - 22?
+    - zmienić granice periodEnda na poniedziałek północ
+    - ustawić formułę previous dla kolejnych sheetów index > 1
+     */
+    private void insertTimeline() {
+        int timePeriodIndex = 0;
+        int sheetIndex = 0;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+        Calendar periodCalendar = Calendar.getInstance();
+        XSSFSheet sheet;
+
+        while (timePeriodIndex < timeline.size()) {
+            sheet = workbook.getSheetAt(sheetIndex);
+            Date beginDate = timeline.get(timePeriodIndex).getBegin();
+
+            calendar.setTime(beginDate);
+            periodCalendar.setTime(beginDate);
+            StringBuilder nameBuilder = new StringBuilder().append("CW").append(calendar.get(Calendar.WEEK_OF_YEAR)).
+                    append("_").append(calendar.get(Calendar.YEAR));
+            workbook.setSheetName(sheetIndex, nameBuilder.toString());
+
+            insertDates(beginDate, sheet, calendar);
+
+            int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
+
+            /*
+            Sunday to wg Amerykanów pierwszy dzień tygodnia
+            calendar.setFirstDayOfWeek nie zmienia tego <- to działa tylko na WEEK_OF_YEAR i coś jeszcze, ale
+            na pewno nie na DAY_OF_WEEK */
+            System.out.println(calendar.getTime());
+            periodCalendar.setTimeInMillis(calendar.getTimeInMillis() - 7 * 24 * 60 * 60 * 1000);
+            System.out.println(periodCalendar.getTime());
+            periodCalendar.set(periodCalendar.get(Calendar.YEAR), periodCalendar.get(Calendar.MONTH),
+                    periodCalendar.get(Calendar.DAY_OF_MONTH), 6, 15);
+            System.out.println(periodCalendar.getTime());
+
+            long periodEnd = calendar.getTimeInMillis();
+            int rowIndex = 2;
+            while (beginDate.getTime() < periodEnd && timePeriodIndex < timeline.size()) {
+                System.out.println("petla while");
+                long beginPeriod = timeline.get(timePeriodIndex).getBegin().getTime();
+                long endPeriod = timeline.get(timePeriodIndex).getEnd().getTime();
+                long cellPeriod = periodCalendar.getTimeInMillis();
+                int cellColumn = 5;
+                System.out.println(timeline.get(timePeriodIndex).getBegin() + " " + periodCalendar.getTime());
+                System.out.println("begin " + beginPeriod + " cellPeriod " + cellPeriod);
+                while (cellPeriod < beginPeriod) {
+                    System.out.println("czekanie" + periodCalendar.getTime());
+                    if (cellColumn > 68)
+                        break;
+                    periodCalendar.add(Calendar.MINUTE, 15);
+                    cellPeriod = periodCalendar.getTimeInMillis();
+                    cellColumn++;
+                }
+                XSSFRow row = sheet.getRow(rowIndex);
+                XSSFCell cell;
+                while (cellPeriod < endPeriod) {
+                    System.out.println("wpisywanie" + periodCalendar.getTime());
+                    if (cellColumn > 68)
+                        break;
+                    periodCalendar.add(Calendar.MINUTE, 15);
+                    cellPeriod = periodCalendar.getTimeInMillis();
+                    cell = row.getCell(cellColumn);
+                    cell.setCellValue("n");
+                    cellColumn++;
+                }
+                timePeriodIndex++;
+                rowIndex++;
+                cellColumn = 5;
+            }
+            sheetIndex++;
+        }
+    }
+
+    private void insertDates(Date beginDate, XSSFSheet sheet, Calendar calendar) {
+        int weekDay = calendar.get(Calendar.DAY_OF_WEEK);
+        if (weekDay == 1)
+            calendar.setTimeInMillis(calendar.getTimeInMillis() - 6 * 24 * 60 * 60 * 1000);
+        else
+            calendar.setTimeInMillis(calendar.getTimeInMillis() - (weekDay - 2) * 24 * 60 * 60 * 1000);
+
+        for (int rowIndex = 2; rowIndex < 9; rowIndex++) {
+            XSSFRow row = sheet.getRow(rowIndex);
+            XSSFCell cell = row.getCell(0);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                Date dateWithoutTime = sdf.parse(sdf.format(calendar.getTime()));
+                cell.setCellValue(dateWithoutTime);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            calendar.add(Calendar.DATE, 1);
+        }
+    }
+
     public void generateExcel() {
-        createTemplateSheet("FirstSheet");
+        createTemplateSheet("TemplateSheet");
+
+        //todo obliczyć ile tygodni, to poniżej nie działa dla np. sob-wt (jeden tydzień wychodzi)
+//        Date firstDate = timeline.get(0).getBegin();
+//        Date lastDate = timeline.get(timeline.size() - 1).getEnd();
+
+        //long weeks = (lastDate.getTime() - firstDate.getTime()) / (7 * 24 * 60 * 60 * 1000);
+        //System.out.println(weeks);
+        //for (int i = 0; i < weeks; i++)
+        //workbook.cloneSheet(0);
+
+        insertTimeline();
+
         saveExcel();
     }
 
