@@ -297,30 +297,6 @@ public class HomeController extends Controller {
 
     }
 
-    public Result getschedule() {
-        //String login=session("LoginE");
-        JsonNode json = request().body().asJson();
-        String login = json.findPath("login").textValue();
-        String day = json.findPath("day").textValue();
-
-        try {
-            List<Schedule> listSchedule = models.ScheduleStorage.getSchedule(login, day);
-            return ok(toJson(listSchedule));
-        } catch (ScheduleNotFoundException e) {
-            System.out.println("ScheduleNotFoundException");
-            ObjectNode result = Json.newObject();
-            return ok(result);
-        } catch (ScheduleDayNotFoundException e) {
-            System.out.println("ScheduleDayNotFoundException");
-            ObjectNode result = Json.newObject();
-            result.put("id", 0);
-            result.put("login", login);
-            result.put("day", day);
-            result.put("end", "00:00:00");
-            return ok(result);
-        }
-    }
-
     public Result getUsers() {
         Model.Finder<Integer, User> finder = new Model.Finder<>(User.class);
         List<User> users = finder.all();
