@@ -25,19 +25,21 @@ schedule-comp{
 
   .row {
     background-color: #21314a;
-    padding: 5px;
-    margin: 5px;
+    padding: 1%;
+    margin: 1%;
     text-align: left;
     font-weight: normal;
 
   }
 
   .glyphicon {
-    padding-top: 5px;
-    padding-right: 5px;
+    size: 18px;
   }
 
   .glyphicon-plus-sign:hover {
+    padding-right: 1% !important;
+    padding-top: 1% !important;
+    font-size: 18px !important;
     cursor: pointer;
   }
 
@@ -55,44 +57,75 @@ schedule-comp{
   .glyphicon-trash:hover {
     cursor: pointer;
   }
+  .row-header {
+    background-color: rgb(73, 165, 191);
 
-  .span-icon {
-    background-color:  rgb(73,165,191);
-    float: left;
-    width: 50%;
-    text-align: right;
+    .span-icon {
+      background-color: rgb(73, 165, 191);
+      float: right;
+      width: 50%;
+      text-align: right;
+      padding-top: 1%;
+      padding-right: 1%;
     }
 
-
-  .row-text {
-    background-color:  rgb(73,165,191);
-    width: 50%;
-    float:left;
-    padding-top: 6px;
-    padding-left: 5px;
+    .row-text {
+      background-color: rgb(73, 165, 191);
+      width: 50%;
+      float: left;
+      padding-top: 1%;
+      padding-left: 1%;
     }
-
+  }
   .row-content {
     clear: both;
-    padding: 5px;
-    font-size: 20px;
+    padding: 1%;
+    font-size: 18px;
     color: #000000;
 
-  }
-  .row-content-time {
-    float: left;
-    width: 50%;
-    text-align: left;
-    padding-left: 5px;
-    padding-top: 5px;
+    .row-time {
+
+      clear:both;
+
+      .row-content-time {
+        float: left;
+        width: 48%;
+        text-align: left;
+        padding-left: 2%;
+        padding-top: 1%;
+      }
+
+      .row-content-option {
+        float: right;
+        width: 46%;
+        text-align: right;
+        padding-left: 2%;
+        padding-top: 1%;
+      }
+    }
+
   }
 
-  .row-content-option {
-    float: left;
-    width: 50%;
-    text-align: right;
-    padding-left: 5px;
-    padding-top: 5px;
+  .row-header:after {
+    content:'';
+    display:block;
+    clear:both;
+    background-color: rgb(73, 165, 191);
   }
+
+  .row-content:after {
+    clear: both;
+    content:'';
+    display:block;
+
+  }
+
+  .row-time:after{
+    clear: both;
+    content:'';
+    display:block;
+  }
+
+
 
 }

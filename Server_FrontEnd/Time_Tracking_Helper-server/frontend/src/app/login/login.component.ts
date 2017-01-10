@@ -23,6 +23,7 @@ export class LoginComponent {
     sendLoginRequest(logForm:NgForm) {
         this.userService.loginRequest(logForm.value.login, logForm.value.pwd);
 
+
         //  DEPRECATED
 
         /*var xhttp = new XMLHttpRequest();
