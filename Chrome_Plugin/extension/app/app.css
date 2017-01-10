@@ -1,5 +1,5 @@
 body {
-    width: 250px;
+    width: 300px;
     height: 300px;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -20,6 +20,8 @@ body {
     top: 70px;
     padding-top: 15px;
     padding-bottom: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 20px -8px #999999;
 }
 
 .login {
@@ -28,7 +30,7 @@ body {
     height: 50px;
     text-align: center;
     font-weight: bold;
-    font-size: 19px;
+    font-size: 20px;
     top: 50px;
     float: left;
     padding-left: 5px;
@@ -36,12 +38,12 @@ body {
 }
 
 .switch {
-    float: left;
+    float: right;
     width: 70px;
     height: 32px;
     background: #E5E5E5;
     z-index: 0;
-    margin: 0;
+    margin-right: 5px;
     padding: 0;
     line-height: 32px;
     appearance: none;
@@ -91,4 +93,12 @@ body {
 .switchOn:after {
     left: 38px !important;
     background: #ffffff !important;
+}
+
+.tab-content {
+    margin-bottom: 25px;
+}
+
+.login-container {
+    padding-bottom: 30px;
 }

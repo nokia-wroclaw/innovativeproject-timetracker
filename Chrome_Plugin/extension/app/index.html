@@ -20,7 +20,8 @@
 <body>
 
 <div ng-app="myApp" class="container" ng-controller="TrackingStateController">
-    <div ng-hide="isLogged">
+    <div class="login-container" ng-hide="isLogged">
+        <h1>Login</h1>
         <form name="loginForm">
             <div class="form-group">
                 <label for="login">Login:</label>
@@ -37,35 +38,47 @@
     </div>
     <div ng-show="isLogged">
         <div class="header">
-            <div class="login">Welcome {{login}}!</div>
+            <div class="login"><span class="glyphicon glyphicon-user"></span> Welcome {{login}}!</div>
             <div ng-click="changeTrackingState()" class="switch" ng-class="isTracking ? 'switchOn' : ''"></div>
         </div>
-        <div class="row">
-            <div class="col-xs-10">
-                Today you've worked
+
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#home"><span class="glyphicon glyphicon-time"></span> Day</a></li>
+            <li><a data-toggle="tab" href="#menu1"><span class="glyphicon glyphicon-time"></span> Month</a></li>
+            <li><a data-toggle="tab" href="#menu2"><span class="glyphicon glyphicon-wrench">Settings</span></a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="home" class="tab-pane fade in active">
+                <h4>Daily work hours</h4>
+                <div>
+                    {{workedToday.hours}}:{{workedToday.minutes}}
+                </div>
             </div>
-            <div>
-                {{workedToday.hours}}:{{workedToday.minutes}}
+            <div id="menu1" class="tab-pane fade">
+                <h4>Montly work hours</h4>
+                <div>
+                    {{workedThisMonth.hours}}:{{workedThisMonth.minutes}}
+                </div>
+            </div>
+            <div id="menu2" class="tab-pane fade">
+                <h4>Off-schedule reminder</h4>
+                <select class="form-control" id="sel1" ng-model="selectedReminder" ng-change="changeReminderTime()"
+                        ng-options="option.name for option in reminderOptions track by option.id">
+                </select>
             </div>
         </div>
-        <div class="row">
-            <div class="col-xs-10">
-                This month you've worked
+        <div class="btn-group btn-group-justified">
+            <div class="btn-group">
+                <button ng-click="redirect()" class="btn btn-block btn-primary btn-md">Go to website</button>
             </div>
-            <div>
-                {{workedThisMonth.hours}}:{{workedThisMonth.minutes}}
+            <div class="btn-group">
+                <button class="btn btn-block btn-primary btn-md" ng-click="signOut()">Sign out</button>
             </div>
+
         </div>
-        <div>
-            <p>Off-schedule reminder</p>
-            <select class="form-control" id="sel1" ng-model="selectedReminder" ng-change="changeReminderTime()"
-                    ng-options="option.name for option in reminderOptions track by option.id">
-            </select>
-        </div>
-        <div>
-            <button ng-click="redirect()" class="btn btn-block btn-primary btn-md">Go to website</button>
-            <button class="btn btn-block btn-primary btn-md" ng-click="signOut()">Sign out</button>
-        </div>
+
+
     </div>
 </div>
 
