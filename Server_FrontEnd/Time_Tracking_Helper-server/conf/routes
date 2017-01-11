@@ -30,8 +30,10 @@ POST    	/loginextension		controllers.HomeController.loginExtensionController
 POST    	/logoutextension	controllers.HomeController.logoutExtensionController
 # Kontroler POST sluzacy do rejestrowania czasu pracy
 POST		/tracking			controllers.HomeController.tracking
-# Kontroler POST sluzacy do wyswietlenia danych dotyczacych uzytkownika
-POST		/userinfo			controllers.HomeController.sendData
+# Kontroler POST sluzacy do wyswietlenia danych dotyczacych uzytkownika (timeline'a)
+POST		/userinfo			controllers.HomeController.sendUserTimelineData
+# Kontroler POST sluzacy do wyswietlenia danych dotyczacych innego użytkownika (timeline'a)
+POST		/otherinfo			controllers.HomeController.sendOtherTimelineData
 # Kontroler GET sprawdzający czy dany uzytkownik jest zalogowany
 GET     	/index2             controllers.HomeController.index2
 # Kontroler GET sluzacy do wyswietlenia timeline

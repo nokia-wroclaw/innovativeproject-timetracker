@@ -52,10 +52,10 @@ public class TimeStorage {
      * Funkcja zwracajaca dane dotyczace użytkownika nick
      */
 
-    public static List<TimeStorage> getData(JsonNode json) throws Exception {
+    public static List<TimeStorage> getDataSession(String login,JsonNode json) throws Exception {
 
         Model.Finder<Integer, Time> finder = new Model.Finder<>(Time.class);
-        String name = json.findValue("login").textValue();
+        String name = login;
         java.util.Date date1 = fromStringToDate(json.findValue("begin").textValue());
         java.util.Date date2 = fromStringToDate(json.findValue("end").textValue());
         List<Time> test = finder.all();
@@ -106,6 +106,66 @@ public class TimeStorage {
         }
 
     }
+    /*
+     * Metoda do wyświetlania timeline-u - z wyslanym w jsonie nickiem
+     * TODO: weryfikacja, czy użytkownik z sesji ma uprawnienie do przeglądania timeline-u osoby wyslanej w nicku
+     * 
+     */
+    public static List<TimeStorage> getDataLogin(String userlogin,JsonNode json) throws Exception {
+
+        Model.Finder<Integer, Time> finder = new Model.Finder<>(Time.class);
+        String name = json.findValue("begin").textValue();
+        java.util.Date date1 = fromStringToDate(json.findValue("begin").textValue());
+        java.util.Date date2 = fromStringToDate(json.findValue("end").textValue());
+        List<Time> test = finder.all();
+        if (test.isEmpty()) {
+            Time record = new Time("Kruk07", fromStringToDate("12/12/2016@12:12"), fromStringToDate("12/12/2016@14:14"));
+            record.save();
+            Time record2 = new Time("Wmblady", fromStringToDate("12/12/2016@11:54"), fromStringToDate("12/12/2016@15:34"));
+            record2.save();
+            Time record3 = new Time("Kruk07", fromStringToDate("12/12/2016@16:00"), fromStringToDate("12/12/2016@17:54"));
+            record3.save();
+            Time record4 = new Time("Wmblady", fromStringToDate("12/12/2016@16:11"), fromStringToDate("12/12/2016@18:30"));
+            record4.save();
+            Time record5 = new Time("Kruk07", fromStringToDate("13/12/2016@08:05"), fromStringToDate("13/12/2016@15:54"));
+            record5.save();
+            Time record6 = new Time("Wmblady", fromStringToDate("13/12/2016@08:09"), fromStringToDate("13/12/2016@13:54"));
+            record6.save();
+            Time record7 = new Time("Kruk07", fromStringToDate("13/12/2016@16:01"), fromStringToDate("13/12/2016@19:00"));
+            record7.save();
+            Time record8 = new Time("Wmblady", fromStringToDate("13/12/2016@14:00"), fromStringToDate("13/12/2016@18:59"));
+            record8.save();
+            Time record9 = new Time("Wmblady", fromStringToDate("14/12/2016@08:00"), fromStringToDate("14/12/2016@16:00"));
+            record9.save();
+            Time record10 = new Time("Wmblady", fromStringToDate("15/12/2016@09:00"), fromStringToDate("15/12/2016@17:30"));
+            record10.save();
+            Time record11 = new Time("Wmblady", fromStringToDate("16/12/2016@07:30"), fromStringToDate("16/12/2016@13:30"));
+            record11.save();
+            Time record12 = new Time("Wmblady", fromStringToDate("16/12/2016@14:00"), fromStringToDate("16/12/2016@16:00"));
+            record12.save();
+        }
+        List<Time> t = finder.where().and().eq("login", name).ge("begin", date1).le("end", date2).findList();
+
+        if (t == null) {
+            throw new Exception();
+        } else {
+            Iterator<Time> iterator = t.iterator();
+            int i = 0;
+            List<TimeStorage> t2 = new ArrayList<TimeStorage>();
+            while (iterator.hasNext()) {
+                Time krotka = t.get(i);
+                String sbegin = fromDateToString(krotka.begin);
+                String send = fromDateToString(krotka.end);
+                TimeStorage krotkamodyfikowana = new TimeStorage(krotka.login, sbegin, send);
+                t2.add(krotkamodyfikowana);
+                iterator.next();
+                i++;
+            }
+            return t2;
+        }
+
+    }
+    
 
     public static List<Time> getTimeline(String login, String beginTimestamp, String endTimestamp) {
         Model.Finder<Integer, Time> finder = new Model.Finder<>(Time.class);

@@ -168,13 +168,28 @@ public class HomeController extends Controller {
     }
 
     /*
-     * Action sending Timeline to frontend
+     * Action sending user's Timeline to frontend and to main site
      */
-    public Result sendData() {
+    public Result sendUserTimelineData() {
 
         try {
             JsonNode json = request().body().asJson();
-            List<TimeStorage> result = models.TimeStorage.getData(json);
+            String login= session("Login");
+            List<TimeStorage> result = models.TimeStorage.getDataSession(login,json);
+            return ok(toJson(result));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ok("ERROR");
+        }
+    }
+    
+    
+    public Result sendOtherTimelineData() {
+
+        try {
+            JsonNode json = request().body().asJson();
+            String login= session("Login");
+            List<TimeStorage> result = models.TimeStorage.getDataLogin(login,json);
             return ok(toJson(result));
         } catch (Exception e) {
             e.printStackTrace();
