@@ -52,7 +52,7 @@ public class TimeStorage {
      * Funkcja zwracajaca dane dotyczace użytkownika nick
      */
 
-    public static List<TimeStorage> getDataSession(String login,JsonNode json) throws Exception {
+    public static List<TimeStorage> getDataSession(String login, JsonNode json) throws Exception {
 
         Model.Finder<Integer, Time> finder = new Model.Finder<>(Time.class);
         String name = login;
@@ -106,12 +106,13 @@ public class TimeStorage {
         }
 
     }
+
     /*
      * Metoda do wyświetlania timeline-u - z wyslanym w jsonie nickiem
      * TODO: weryfikacja, czy użytkownik z sesji ma uprawnienie do przeglądania timeline-u osoby wyslanej w nicku
      * 
      */
-    public static List<TimeStorage> getDataLogin(String userlogin,JsonNode json) throws Exception {
+    public static List<TimeStorage> getDataLogin(String userlogin, JsonNode json) throws Exception {
 
         Model.Finder<Integer, Time> finder = new Model.Finder<>(Time.class);
         String name = json.findValue("begin").textValue();
@@ -165,28 +166,27 @@ public class TimeStorage {
         }
 
     }
-    
 
-    public static List<Time> getTimeline(String login, String beginTimestamp, String endTimestamp) {
+
+    public static List<Time> getTimeline(String login, long beginTimestamp, long endTimestamp) {
         Model.Finder<Integer, Time> finder = new Model.Finder<>(Time.class);
-        Date beginDate = new Date(Long.parseLong(beginTimestamp));
-        Date endDate = new Date(Long.parseLong(endTimestamp));
+        Date beginDate = new Date(beginTimestamp);
+        Date endDate = new Date(endTimestamp);
         if (finder.all().isEmpty()) {
-            /*Time record = new Time("Kruk07", fromStringToDate("11/12/2016@12:00"), fromStringToDate("11/12/2016@14:00"));
-            record.save();*/
+            Time record = new Time("Kruk07", fromStringToDate("11/12/2016@12:00"), fromStringToDate("11/12/2016@14:00"));
+            record.save();
             Time record1 = new Time("Kruk07", fromStringToDate("12/12/2016@12:12"), fromStringToDate("12/12/2016@14:14"));
             record1.save();
-            Time record3 = new Time("Kruk07", fromStringToDate("12/12/2016@16:00"), fromStringToDate("12/12/2016@17:54"));
+            Time record2 = new Time("Kruk07", fromStringToDate("12/12/2016@16:00"), fromStringToDate("12/12/2016@17:54"));
+            record2.save();
+            Time record3 = new Time("Kruk07", fromStringToDate("13/12/2016@08:05"), fromStringToDate("13/12/2016@15:54"));
             record3.save();
-            Time record5 = new Time("Kruk07", fromStringToDate("13/12/2016@08:05"), fromStringToDate("13/12/2016@15:54"));
+            Time record4 = new Time("Kruk07", fromStringToDate("13/12/2016@16:01"), fromStringToDate("13/12/2016@19:00"));
+            record4.save();
+            Time record5 = new Time("Kruk07", fromStringToDate("02/01/2017@10:00"), fromStringToDate("02/01/2017@19:00"));
             record5.save();
-            Time record7 = new Time("Kruk07", fromStringToDate("13/12/2016@16:01"), fromStringToDate("13/12/2016@19:00"));
-            record7.save();
         }
         List<Time> timeline = finder.where().and().eq("login", login).ge("begin", beginDate).le("end", endDate).findList();
-        //System.out.println(login + beginDate + endDate + t.size());
-        /*for (Time time : timeline)
-            System.out.println(time.getLogin() + " " + time.getBegin() + " " + time.getEnd());*/
         return timeline;
     }
 

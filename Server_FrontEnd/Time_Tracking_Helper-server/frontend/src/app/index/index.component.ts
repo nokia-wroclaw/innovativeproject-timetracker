@@ -191,27 +191,17 @@ export class IndexComponent {
     }
 
     generationModel = new TimelineSettings('Kruk07', "2016-12-12", "2016-12-13");
-    generated = false;
-
-    onGenerate() {
-        this.generated = true;
-    }
 
     getExcel(timelineForm: NgForm) {
         var xhttp = new XMLHttpRequest();
 
-        var fromDateStr = timelineForm.value.fromDate.split("-")[2] + "/" +
-            timelineForm.value.fromDate.split("-")[1] + "/" +
-            timelineForm.value.fromDate.split("-")[0] + "@00:00";
-
-        var toDateStr = timelineForm.value.toDate.split("-")[2] + "/" +
-            timelineForm.value.toDate.split("-")[1] + "/" +
-            timelineForm.value.toDate.split("-")[0] + "@23:59";
+        var fromDate = new Date(timelineForm.value.fromDate);
+        var toDate = new Date(timelineForm.value.toDate);
+        toDate.setHours(23, 59);
 
         var params = JSON.stringify({
-            login: "Kruk07",
-            begin: fromDateStr,
-            end: toDateStr
+            begin: fromDate.getTime(),
+            end: toDate.getTime()
         });
 
         xhttp.open("POST", "/excel", true);
@@ -220,7 +210,7 @@ export class IndexComponent {
             if(xhttp.readyState === XMLHttpRequest.DONE && xhttp.status === 200) {
                 console.log("Generation successful");
             } else {
-                //console.log(xhttp.responseText);
+                console.log("Generation error");
             }
         };
         xhttp.send(params);
