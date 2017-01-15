@@ -12,40 +12,62 @@ var vis = require("vis/dist/vis.js");
 export class TimelineComponent {
 
     model = new TimelineSettings('Kruk07', "2016-12-12", "2016-12-13");
-    submitted = false;
-
+    range = 7; // number of days to get
+    usersToWatch = [["Henryk","Niesienkiewicz", "Kruk07"], ["Jan","Mroźny", "Niegrozny"]];
     constructor() {
-
+        this.getUsersToWatch();
     }
 
-    onSubmit() {
-        this.submitted = true;
+    changeRange(num: number) {
+        this.range = num;
     }
 
-    getTimeline(timelineForm: NgForm) {
+    getUsersToWatch() {
+        /* UNCOMMENT WHEN SERVER READY
+        var xhttp = new XMLHttpRequest();
+        var params = JSON.stringify({
+            type: "privilegesyou"
+        });
+
+        xhttp.open("POST", "/getprivelegesandrequests", true);
+        xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+
+        xhttp.onreadystatechange = () => {
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+                this.usersToWatch = [[]];
+                this.usersToWatch.pop();
+                var jsonResponse = JSON.parse(xhttp.responseText);
+                for(let xResponse of jsonResponse){
+                    //this.invitationsTable.push([xResponse.name, xResponse.surname, xResponse.nick]);
+                    this.usersToWatch.push(["Unknown Name", "Unknown Surname", xResponse.userto]);
+                }
+                // document.getElementById("test").innerHTML = xhttp.responseText;
+            }
+        };
+
+        xhttp.send(params);
+        */
+    }
+
+    remTimeline(numberOfUser: number) {
+        document.getElementById("user-timeline-" + numberOfUser).innerHTML = "";
+    }
+
+    getTimeline(username: String, numberOfUser: number) {
         var xhttp = new XMLHttpRequest();
 
-        var fromDateStr = timelineForm.value.fromDate.split("-")[2] + "/" +
-        timelineForm.value.fromDate.split("-")[1] + "/" +
-        timelineForm.value.fromDate.split("-")[0] + "@00:00";
-
-        var toDateStr = timelineForm.value.toDate.split("-")[2] + "/" +
-            timelineForm.value.toDate.split("-")[1] + "/" +
-            timelineForm.value.toDate.split("-")[0] + "@23:59";
-
         var params = JSON.stringify({
-            login: timelineForm.value.login,
-            begin: fromDateStr,
-            end: toDateStr
+            login: username,
+            range: this.range
         });
 
 
-        xhttp.open("POST", "/userinfo", true);
+        xhttp.open("POST", "/otherinfo", true);
         xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
         xhttp.onreadystatechange = function(){
             if (this.readyState == 4 && this.status == 200) {
                 var jsonResponse = JSON.parse(xhttp.responseText);
-                var container = document.getElementById('visualization');
+                var container = document.getElementById('user-timeline-{{number}}');
                 var options = new Array();
                 var data = new Array();
 

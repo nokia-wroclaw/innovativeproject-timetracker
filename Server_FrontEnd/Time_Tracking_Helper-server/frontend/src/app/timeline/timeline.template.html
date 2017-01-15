@@ -4,22 +4,11 @@
 <div class="col-md-12">
     <div class = "transbox">
         <div class="timelineSettings-container" >
-            <form (ngSubmit)="onSubmit()" #timelineSettingsForm="ngForm">
+            <form>
                 <div class="form-group">
-                    <label for="login">Login</label>
-                    <input type="text" class="form-control" required [(ngModel)] = "model.login" name = "login"  value = "Test">
+                    <input type="radio"  (click)="changeRange(7);" name="range" value="7" checked> 7 days<br>
+                    <input type="radio"  (click)="changeRange(30);" name="range" value="30"> 30 days<br>
                 </div>
-                <div class="row">
-                    <div class="form-group col-xs-6">
-                        <label for="fromDate">From:</label>
-                        <input type="date" value = "2016-12-12" class="form-control" required [(ngModel)] = "model.fromDate" name = "fromDate">
-                    </div>
-                    <div class="form-group col-xs-6">
-                        <label for="toDate">To: </label>
-                        <input type="date" value = "2016-12-13" class="form-control" required [(ngModel)] = "model.toDate" name = "toDate">
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary timeline-button" [disabled]="!timelineSettingsForm.form.valid" (click) = "getTimeline(timelineSettingsForm)" >Submit</button>
             </form>
             <br>
         </div>
@@ -27,4 +16,13 @@
 
     <div id="serverAnswer"></div>
     <div class = "vis-timeline" id="visualization"></div>
+</div>
+
+<div class="col-md-12">
+    <div *ngFor="let item of usersToWatch; let i = index">
+        <div>{{item[0]}} {{item[1]}} {{item[2]}}</div>
+        <div id="user-timeline-{{i}}"></div>
+        <button type="button" id="show-timeline-btn" (click)=" remTimeline(item[2], i);" >show</button>
+        <button type="button" id="hide-timeline-btn" (click)=" remTimeline(i);" >hide</button>
+    </div>
 </div>
