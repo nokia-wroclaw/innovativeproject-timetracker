@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
@@ -111,12 +112,29 @@ public class TimeStorage {
      * TODO: weryfikacja, czy użytkownik z sesji ma uprawnienie do przeglądania timeline-u osoby wyslanej w nicku
      * 
      */
-    public static List<TimeStorage> getDataLogin(String userlogin,JsonNode json) throws Exception {
+    public static List<TimeStorage> getDataLogin(JsonNode json) throws Exception {
 
         Model.Finder<Integer, Time> finder = new Model.Finder<>(Time.class);
-        String name = json.findValue("begin").textValue();
-        java.util.Date date1 = fromStringToDate(json.findValue("begin").textValue());
-        java.util.Date date2 = fromStringToDate(json.findValue("end").textValue());
+        String name = json.findValue("login").textValue();
+        String range= json.findValue("range").textValue();
+        System.out.println(name);
+        System.out.println(range);
+        int days;
+        if (range.contains("7")){
+        	days=7;
+        }else if (range.contains("31")){
+        	days=31;
+        }else{
+        	throw new Exception();
+        }
+        Calendar calendar = Calendar.getInstance();    
+        java.util.Date date2= calendar.getTime();
+        calendar.add(Calendar.DAY_OF_MONTH, -days);
+        java.util.Date date1= calendar.getTime();
+        //java.util.Date date1 = fromStringToDate(json.findValue("begin").textValue());
+        //java.util.Date date2 = fromStringToDate(json.findValue("end").textValue());
+
+
         List<Time> test = finder.all();
         if (test.isEmpty()) {
             Time record = new Time("Kruk07", fromStringToDate("12/12/2016@12:12"), fromStringToDate("12/12/2016@14:14"));
@@ -143,6 +161,8 @@ public class TimeStorage {
             record11.save();
             Time record12 = new Time("Wmblady", fromStringToDate("16/12/2016@14:00"), fromStringToDate("16/12/2016@16:00"));
             record12.save();
+            Time record13 = new Time("Wmblady", fromStringToDate("13/01/2017@08:00"), fromStringToDate("13/01/2017@16:00"));
+            record13.save();
         }
         List<Time> t = finder.where().and().eq("login", name).ge("begin", date1).le("end", date2).findList();
 

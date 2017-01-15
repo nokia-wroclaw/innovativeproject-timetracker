@@ -15,6 +15,7 @@ import exceptions.ScheduleNotFoundException;
 import models.Privileges;
 import models.Request;
 import models.Schedule;
+import models.SendedObject;
 import models.ExcelGenerator;
 
 import models.Time;
@@ -188,8 +189,7 @@ public class HomeController extends Controller {
 
         try {
             JsonNode json = request().body().asJson();
-            String login= session("Login");
-            List<TimeStorage> result = models.TimeStorage.getDataLogin(login,json);
+            List<TimeStorage> result = models.TimeStorage.getDataLogin(json);
             return ok(toJson(result));
         } catch (Exception e) {
             e.printStackTrace();
@@ -280,16 +280,16 @@ public class HomeController extends Controller {
     	String type=json.findPath("type").textValue();
     	String login =session("Login");
     	if (type.contains("privilegesyou")){
-        	List<Privileges> result=models.PrivilegesStorage.getYou(login);
+        	List<SendedObject> result=models.PrivilegesStorage.getYou(login);
         	return ok(toJson(result));		
     	}else if (type.contains("privilegesother")){
-        	List<Privileges> result=models.PrivilegesStorage.getOther(login);
+        	List<SendedObject> result=models.PrivilegesStorage.getOther(login);
         	return ok(toJson(result));		
     	}else  if(type.contains("requestyou")){
-        	List<Request> result=models.RequestStorage.getYou(login);
+        	List<SendedObject> result=models.RequestStorage.getYou(login);
         	return ok(toJson(result));
     	}else  if (type.contains("requestother")){
-        	List<Request> result=models.RequestStorage.getOther(login);
+        	List<SendedObject> result=models.RequestStorage.getOther(login);
         	return ok(toJson(result));		
     	}else {
     		return ok("ERROR TYPE");

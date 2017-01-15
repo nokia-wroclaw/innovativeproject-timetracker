@@ -1,5 +1,7 @@
 package models;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.avaje.ebean.Model;
@@ -8,16 +10,47 @@ import com.fasterxml.jackson.databind.JsonNode;
 public class RequestStorage {
 
 
-	public static List<Request> getYou(String login) {
+	public static List<SendedObject> getYou(String login) {
 		Model.Finder<Integer, Request> finder = new Model.Finder<>(Request.class);
 		List<Request> t1 = finder.where().eq("userfrom", login).findList();
-		return t1;
+		
+		Iterator<Request> iterator = t1.iterator();
+		List<SendedObject> finallist = new ArrayList<SendedObject>();
+		int id=0;
+		while (iterator.hasNext()){
+			
+			Model.Finder<Integer, User> finder2 = new Model.Finder<>(User.class);
+			User usernameandsurname = finder2.where().eq("login", login).findUnique();
+			Request item = t1.get(id);
+			SendedObject obj=
+					new SendedObject(id,usernameandsurname.name,usernameandsurname.surname,item.userfrom,item.userto);
+			finallist.add(obj);
+			iterator.next();
+			id++;
+		}
+		return finallist;
 	}
 
-	public static List<Request> getOther(String login) {
+	public static List<SendedObject> getOther(String login) {
 		Model.Finder<Integer, Request> finder = new Model.Finder<>(Request.class);
 		List<Request> t1 = finder.where().eq("userto", login).findList();
-		return t1;
+		
+		Iterator<Request> iterator = t1.iterator();
+		List<SendedObject> finallist = new ArrayList<SendedObject>();
+		int id=0;
+		while (iterator.hasNext()){
+			
+			Model.Finder<Integer, User> finder2 = new Model.Finder<>(User.class);
+			User usernameandsurname = finder2.where().eq("login", login).findUnique();
+			Request item = t1.get(id);
+			SendedObject obj=
+					new SendedObject(id,usernameandsurname.name,usernameandsurname.surname,item.userfrom,item.userto);
+			finallist.add(obj);
+			iterator.next();
+			id++;
+		}
+		
+		return finallist;
 	}
 
 	public static String addRequest(String userlogin, String login) {
