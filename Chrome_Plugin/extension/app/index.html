@@ -37,8 +37,11 @@
         </form>
     </div>
     <div ng-show="isLogged">
+
+        <div class="text">Welcome</div>
         <div class="header">
-            <div class="login"><span class="glyphicon glyphicon-user"></span> Welcome {{login}}!</div>
+            <div class="login"><span class="glyphicon glyphicon-user"> {{login}}!</span>
+            </div>
             <div ng-click="changeTrackingState()" class="switch" ng-class="isTracking ? 'switchOn' : ''"></div>
         </div>
 
@@ -50,13 +53,13 @@
 
         <div class="tab-content">
             <div id="home" class="tab-pane fade in active">
-                <h4>Daily work hours</h4>
+                <h4>Daily hours</h4>
                 <div>
                     {{workedToday.hours}}:{{workedToday.minutes}}
                 </div>
             </div>
             <div id="menu1" class="tab-pane fade">
-                <h4>Montly work hours</h4>
+                <h4>Monthly hours</h4>
                 <div>
                     {{workedThisMonth.hours}}:{{workedThisMonth.minutes}}
                 </div>

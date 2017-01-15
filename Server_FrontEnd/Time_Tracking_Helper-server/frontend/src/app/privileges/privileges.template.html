@@ -1,26 +1,37 @@
 <header-comp></header-comp>
 <menu-comp></menu-comp>
 
-<button type="button" (click) = "changePartView(1)">My privileges</button><button type="button" (click) = "changePartView(2)">Others privileges</button>
-
-<div id="test"></div>
-
-<div id="firstPrivilegesPart" [hidden]="firstPrivilegesPartView">
-
-    <div class="privilegesAddForm-container">
-        <form (ngSubmit)="onSubmit()" #privilegesAddForm="ngForm">
-            <div class="form-group">
-                <label for="login">Login</label>
-                <input type="text" class="form-control" required [(ngModel)] = "model.login" name = "login"  value = "">
+<div class="background">
+    <div class="col-md-12">
+        <div class="transbox">
+            <div class="privileges-container">
+                <ul class="nav nav-tabs ">
+                    <li class="active"><a href="#" (click) = "changePartView(1)">My privileges</a></li>
+                    <li><a href="#" (click) = "changePartView(2)">Others privileges</a></li>
+                </ul>
             </div>
-            <button type="submit" class="btn btn-primary privileges-button" [disabled]="!privilegesAddForm.form.valid" (click) = "addPrivRequest(privilegesAddForm)" >Submit</button>
-        </form>
+        </div>
     </div>
-
-
-    <h3>Users that You requested for adding</h3>
-    <table class="table">
-        <thead>
+</div>
+<div id="test"></div>
+<div id="firstPrivilegesPart" [hidden]="firstPrivilegesPartView">
+    <div class="container">
+        <div class="privilegesAddForm-container">
+            <form (ngSubmit)="onSubmit()" #privilegesAddForm="ngForm">
+                <div class="form-group">
+                    <h2><label for="login">Add user</label></h2>
+                    <div class="col-md-3">
+                        <input type="text"  class="form-control" required [(ngModel)] = "model.login" name = "login"  value = "" placeholder="Nick">
+                    </div>
+                </div>
+                <button type="submit" style="float:left;margin-top:0px;" class="btn btn-primary privileges-button" [disabled]="!privilegesAddForm.form.valid" (click) = "addPrivRequest(privilegesAddForm)" >Submit</button>
+            </form>
+        </div>
+    </div>
+    <div class="container">
+        <h2>Users that You requested for adding</h2>
+            <table class="table table-striped">
+                <thead>
         <tr>
             <th>Name</th>
             <th>Surname</th>
@@ -36,11 +47,12 @@
             <td><button type="button" (click)="sendPrivReq('decline', 'privReq', item[2]);" >&#10008;</button></td>
         </tr>
         </tbody>
-    </table>
-
-    <h3>Users that You added</h3>
+            </table>
+    </div>
     <form>
-        <table class="table">
+        <div class="container">
+            <h2>Users that You added</h2>
+            <table class="table table-striped">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -61,14 +73,15 @@
                     <td><button type="button" (click)="sendPrivReq('deleteto', 'privList', item[2]);">&#10008;</button></td>
                 </tr>
             </tbody>
-        </table>
+            </table>
+        </div>
     </form>
 
 </div>
-
 <div id="secondPrivilegesPart" [hidden]="secondPrivilegesPartView">
-    <h3>Users that requested for adding You</h3>
-    <table class="table">
+    <div class="container">
+        <h2>Users that requested for adding You</h2>
+        <table class="table table-striped">
         <thead>
         <tr>
             <th>Name</th>
@@ -86,10 +99,11 @@
                 <button type="button" (click)="sendPrivReq('decrequest', 'othersPrivReq', item[2]);">&#10008;</button></td>
         </tr>
         </tbody>
-    </table>
-
-    <h3>Users that added You</h3>
-    <table class="table">
+        </table>
+    </div>
+    <div class="container">
+        <h2>Users that added You</h2>
+        <table class="table table-striped">
         <thead>
         <tr>
             <th>Name</th>
@@ -106,5 +120,6 @@
             <td><button type="button" (click)="sendPrivReq('deletefrom', 'othersPrivList', item[2]);">&#10008;</button></td>
         </tr>
         </tbody>
-    </table>
+        </table>
+    </div>
 </div>

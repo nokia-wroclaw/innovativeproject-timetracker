@@ -1,14 +1,13 @@
 index-comp{
   .transbox {
     font-weight: bold;
-    width: 75%;
+    width: 100%;
     margin: 0 auto;
     background-color: #21314a;
     color: #ffffff;
 
     .timelineSettings-container {
       padding: 20px;
-      background-color: #21314a;
       color: #ffffff;
       border: 1px solid rgba(0, 0, 0, 0.18);
       margin-bottom: 10px;
@@ -16,6 +15,12 @@ index-comp{
       .timeline-button {
         float: right;
       }
+    }
+
+    .col-md-3 {
+      background-color: #080b35 !important;
+      float: right;
+      border-radius: 22px;
     }
   }
 }

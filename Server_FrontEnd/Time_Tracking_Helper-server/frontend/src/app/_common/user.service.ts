@@ -28,8 +28,11 @@ export class UserService {
                     localStorage.setItem('authToken', mergedInfo);
                     document.getElementById("loginServerAnswer").innerHTML = xhttp.responseText;
                     window.location.href = '/';
+                }else {
+                    document.getElementById("sub").style.visibility = "visible";
                 }
             }
+
         };
         xhttp.send(params);
     }

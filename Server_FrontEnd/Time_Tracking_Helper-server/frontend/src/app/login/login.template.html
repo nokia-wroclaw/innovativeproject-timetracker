@@ -17,7 +17,7 @@
                         <label for="pwd">Password</label>
                         <input type="password" class="form-control" required [(ngModel)] = "model.pwd" name = "pwd">
                     </div>
-                    <div class="alert alert-danger" [hidden]="!submitted" >Incorrect login or password
+                    <div id="sub" class="alert alert-danger" [hidden]="!submitted" >Incorrect login or password
                     </div>
                     <button type="submit" class="btn btn-primary login-button" [disabled]="!loginForm.form.valid" (click) = "sendLoginRequest(loginForm);">Log in</button>
                 </form>
@@ -27,7 +27,7 @@
         </div>
         <div id="loginServerAnswer"></div>
     </div>
-</div>
+
 
 <div class = "footer-container">
     Copyright &copy; 2016

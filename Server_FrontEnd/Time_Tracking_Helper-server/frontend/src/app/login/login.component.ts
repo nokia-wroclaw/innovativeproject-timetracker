@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { User } from "../_common/user";
 import { NgForm } from "@angular/forms";
 import { UserService } from "../_common/user.service";
+import {Router} from "@angular/router";
 @Component({
     selector: 'login-comp',
     templateUrl: 'login.template.html',
@@ -21,6 +22,7 @@ export class LoginComponent {
     }
 
     sendLoginRequest(logForm:NgForm) {
+        document.getElementById("sub").style.visibility = "hidden";
         this.userService.loginRequest(logForm.value.login, logForm.value.pwd);
 
 

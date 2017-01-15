@@ -1,7 +1,7 @@
 <header-comp></header-comp>
 <menu-comp></menu-comp>
 
-<div class="col-md-8 col-md-offset-2">
+<div class="col-md-12">
     <div class="transbox">
         <div class="timelineSettings-container">
             <form (ngSubmit)="onSubmit()" #timelineSettingsForm="ngForm">
@@ -22,37 +22,32 @@
                 </button>
             </form>
             <br>
-
+            <div id="serverAnswer"></div>
+            <div class="vis-timeline" id="visualization"></div>
         </div>
-    </div>
-    <div id="serverAnswer"></div>
-    <div class="vis-timeline" id="visualization"></div>
-
-</div>
-
-<div class="col-md-8 col-md-offset-2">
-    <div class="transbox">
-        <div class="timelineSettings-container">
-            <form (ngSubmit)="onGenerate()" #timelineSettingsForm="ngForm">
-                <div class="row">
-                    <div class="form-group col-xs-6">
-                        <label>From:</label>
-                        <input type="date" value="2016-12-12" class="form-control"
+        <div class="col-md-3" >
+            <div class="timelineSettings-container">
+                <form (ngSubmit)="onGenerate()" #timelineSettingsForm="ngForm">
+                    <div class="row">
+                        <h2>PDF</h2>
+                        <div class="form-group">
+                            <label>From:</label>
+                            <input type="date" value="2016-12-12" class="form-control"
                                required [(ngModel)]="generationModel.fromDate" name="fromDate">
-                    </div>
-                    <div class="form-group col-xs-6">
-                        <label>To: </label>
-                        <input type="date" value="2016-12-13" class="form-control"
+                        </div>
+                        <div class="form-group">
+                            <label>To: </label>
+                            <input type="date" value="2016-12-13" class="form-control"
                                required [(ngModel)]="generationModel.toDate" name="toDate">
+                        </div>
                     </div>
-                </div>
-                <button type="submit" class="btn btn-primary timeline-button"
+                    <button type="submit" class="btn btn-primary timeline-button"
                         [disabled]="!timelineSettingsForm.form.valid" (click)="getExcel(timelineSettingsForm)">
                     Generate
-                </button>
-            </form>
-            <br>
-
+                    </button>
+                </form>
+                <br>
+            </div>
         </div>
     </div>
 </div>
