@@ -11,7 +11,7 @@ var vis = require("vis/dist/vis.js");
 
 export class IndexComponent {
 
-    model = new TimelineSettings('Kruk07', "2016-12-12", "2016-12-13");
+    model = new TimelineSettings('Kruk07', "2016-12-12", "2017-01-16");
     timelineView = false;
     textView = true;
     submitted = false;
@@ -59,6 +59,7 @@ export class IndexComponent {
         xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
         xhttp.onreadystatechange = () => {
             if (xhttp.readyState == 4 && xhttp.status == 200) {
+                //document.getElementById('serverAnswer').innerHTML = xhttp.responseText;
                 var jsonResponse = JSON.parse(xhttp.responseText);
                 var container = document.getElementById('visualization');
                 var options = new Array();

@@ -82,7 +82,7 @@ export class PrivilegesComponent {
                 this.othersInvitationsTable.pop();
                 var jsonResponse = JSON.parse(xhttp.responseText);
                 for(let xResponse of jsonResponse){
-                    this.invitationsTable.push([xResponse.name, xResponse.surname, xResponse.userfrom]);
+                    this.othersInvitationsTable.push([xResponse.name, xResponse.surname, xResponse.userfrom]);
                     //this.othersInvitationsTable.push(["Unknown Name", "Unknown Surname", xResponse.userfrom]);
                 }
                 // document.getElementById("test").innerHTML = xhttp.responseText;
