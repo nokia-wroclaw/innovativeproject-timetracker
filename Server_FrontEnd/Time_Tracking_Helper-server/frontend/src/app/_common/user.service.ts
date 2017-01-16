@@ -26,7 +26,7 @@ export class UserService {
                     var mergedInfo = responseInfo[1]/*login*/ + " " + responseInfo[5]/*name*/ + " " + responseInfo[7]/*surname*/;
 
                     localStorage.setItem('authToken', mergedInfo);
-                    document.getElementById("loginServerAnswer").innerHTML = xhttp.responseText;
+                    //document.getElementById("loginServerAnswer").innerHTML = xhttp.responseText;
                     window.location.href = '/';
                 }else {
                     document.getElementById("sub").style.visibility = "visible";

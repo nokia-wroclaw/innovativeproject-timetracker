@@ -330,11 +330,13 @@ public class HomeController extends Controller {
         JsonNode json = request().body().asJson();
         String login = session("Login");
         long begin = json.findPath("begin").numberValue().longValue();
+        System.out.println(begin);
         long end = json.findPath("end").numberValue().longValue();
         List<Schedule> weeklySchedule = models.ScheduleStorage.getSchedule(login);
         List<Time> timeline = models.TimeStorage.getTimeline(login, begin, end);
         ExcelGenerator generator = new ExcelGenerator(weeklySchedule, timeline);
         generator.generateExcel();
-        return ok("excel generated");
+        System.out.println("Wygenerowano excela, zwracam plik...");
+        return ok(new java.io.File("/app/NewExcelFile.xlsx"));
     }
 }

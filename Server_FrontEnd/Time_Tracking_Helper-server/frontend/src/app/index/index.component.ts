@@ -229,6 +229,18 @@ export class IndexComponent {
         xhttp.onreadystatechange = function () {
             if(xhttp.readyState === XMLHttpRequest.DONE && xhttp.status === 200) {
                 console.log("Generation successful");
+
+                var str = xhttp.responseText;
+                var uri = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8,' + str;
+                var uri = 'data:text/plain;charset=utf-8,' + str;
+                var downloadLink = document.createElement("a");
+                downloadLink.href = uri;
+                downloadLink.download = "excel.xlsx";
+
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+
             } else {
                 console.log("Generation error");
             }
