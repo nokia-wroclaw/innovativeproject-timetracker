@@ -31,7 +31,17 @@ angular.module('myApp')
                 if (keys.includes("login")) {
                     isLogged = message.isLogged;
                     login = message.login;
-                    resetReminder();
+                    if (isLogged) {
+                        setTimeout(fetchSchedule, 200);
+                        setTimeout(checkSchedule, 400);
+                    } else {
+                        clearInterval(nextNotificationTimerID);
+                    }
+                }
+                if (keys.includes("refreshSchedule")) {
+                    clearInterval(nextNotificationTimerID);
+                    setTimeout(fetchSchedule, 200);
+                    setTimeout(checkSchedule, 400);
                 }
             });
         };

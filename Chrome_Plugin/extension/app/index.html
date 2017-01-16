@@ -65,7 +65,9 @@
                 </div>
             </div>
             <div id="menu2" class="tab-pane fade">
-                <h4>Off-schedule reminder</h4>
+                <h4 id="scheduleTitle">Off-schedule reminder</h4>
+                <button type="submit" class="glyphicon glyphicon-refresh" ng-click="refreshSchedule()">
+                </button>
                 <select class="form-control" id="sel1" ng-model="selectedReminder" ng-change="changeReminderTime()"
                         ng-options="option.name for option in reminderOptions track by option.id">
                 </select>

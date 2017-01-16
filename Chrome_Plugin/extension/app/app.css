@@ -109,3 +109,11 @@ body {
 .login-container {
     padding-bottom: 30px;
 }
+
+.glyphicon-refresh {
+    background-color: #080b35;
+}
+
+#scheduleTitle {
+    display: inline-block;
+}
