@@ -85,6 +85,14 @@ public class TimeStorage {
             record11.save();
             Time record12 = new Time("Wmblady", fromStringToDate("16/12/2016@14:00"), fromStringToDate("16/12/2016@16:00"));
             record12.save();
+            Time record13 = new Time("Wmblady", fromStringToDate("13/01/2017@08:00"), fromStringToDate("13/01/2017@16:00"));
+            record13.save();
+            Time record14 = new Time("Kruk07", fromStringToDate("16/01/2017@07:00"), fromStringToDate("16/01/2017@15:00"));
+            record14.save();
+            Time record15 = new Time("Wmblady", fromStringToDate("02/01/2017@08:00"), fromStringToDate("02/01/2017@16:00"));
+            record15.save();
+            Time record16 = new Time("Kruk07", fromStringToDate("03/01/2017@07:00"), fromStringToDate("03/01/2017@15:00"));
+            record16.save();
         }
         List<Time> t = finder.where().and().eq("login", name).ge("begin", date1).le("end", date2).findList();
 
@@ -163,6 +171,12 @@ public class TimeStorage {
             record12.save();
             Time record13 = new Time("Wmblady", fromStringToDate("13/01/2017@08:00"), fromStringToDate("13/01/2017@16:00"));
             record13.save();
+            Time record14 = new Time("Kruk07", fromStringToDate("16/01/2017@07:00"), fromStringToDate("16/01/2017@15:00"));
+            record14.save();
+            Time record15 = new Time("Wmblady", fromStringToDate("02/01/2017@08:00"), fromStringToDate("02/01/2017@16:00"));
+            record15.save();
+            Time record16 = new Time("Kruk07", fromStringToDate("03/01/2017@07:00"), fromStringToDate("03/01/2017@15:00"));
+            record16.save();
         }
         List<Time> t = finder.where().and().eq("login", name).ge("begin", date1).le("end", date2).findList();
 

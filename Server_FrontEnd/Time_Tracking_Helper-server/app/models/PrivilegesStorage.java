@@ -19,8 +19,9 @@ public class PrivilegesStorage {
 		while (iterator.hasNext()){
 			
 			Model.Finder<Integer, User> finder2 = new Model.Finder<>(User.class);
-			User usernameandsurname = finder2.where().eq("login", login).findUnique();
 			Privileges item = t1.get(id);
+			User usernameandsurname = finder2.where().eq("login", item.userto).findUnique();
+
 			SendedObject obj=
 					new SendedObject(id,usernameandsurname.name,usernameandsurname.surname,item.userfrom,item.userto,item.estimatedHours);
 			finallist.add(obj);
@@ -40,8 +41,9 @@ public class PrivilegesStorage {
 		while (iterator.hasNext()){
 			
 			Model.Finder<Integer, User> finder2 = new Model.Finder<>(User.class);
-			User usernameandsurname = finder2.where().eq("login", login).findUnique();
 			Privileges item = t1.get(id);
+			User usernameandsurname = finder2.where().eq("login",item.userfrom).findUnique();
+
 			SendedObject obj=
 					new SendedObject(id,usernameandsurname.name,usernameandsurname.surname,item.userfrom,item.userto,item.estimatedHours);
 			finallist.add(obj);
