@@ -19,11 +19,13 @@
 </div>
 
 <div class="col-md-12">
+    <div class = "transbox">
     <div *ngFor="let item of usersToWatch; let i = index">
         <div>{{item[0]}} {{item[1]}} {{item[2]}}</div>
         <div id="user-timeline-{{i}}"></div>
         <button type="button" id="show-timeline-btn" (click)=" getTimeline(item[2], i);" >show</button>
         <button type="button" id="hide-timeline-btn" (click)=" remTimeline(i);" >hide</button>
+    </div>
     </div>
 </div>
 

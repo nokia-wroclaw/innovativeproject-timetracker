@@ -96,8 +96,8 @@ export class ScheduleComponent {
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 //document.getElementById("schedule-info").innerHTML = "Successful updated!" + inputValue;
-                document.getElementById("schedule-info").innerHTML = sendingStr + " <br>" +  xhttp.responseText;
-                xhttp.responseText
+                /*document.getElementById("schedule-info").innerHTML = sendingStr + " <br>" +  xhttp.responseText;*/
+                document.getElementById("schedule-info").innerHTML = "Successful updated!"
             }
         }
         xhttp.send(sendingStr);

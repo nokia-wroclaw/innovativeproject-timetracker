@@ -58,13 +58,13 @@ export class TimelineComponent {
             login: username,
             range: rng
         });
-        document.getElementById("serverAnswer").innerHTML = params;
+        //document.getElementById("serverAnswer").innerHTML = params;
 
         xhttp.open("POST", "/otherinfo", true);
         xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
         xhttp.onreadystatechange = function(){
             if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("serverAnswer2").innerHTML = xhttp.responseText;
+                //document.getElementById("serverAnswer2").innerHTML = xhttp.responseText;
                 var jsonResponse = JSON.parse(xhttp.responseText);
                 var container = document.getElementById('user-timeline-'+numberOfUser);
                 var options = new Array();

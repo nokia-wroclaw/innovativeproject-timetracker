@@ -131,7 +131,7 @@ export class PrivilegesComponent {
                 var jsonResponse = JSON.parse(xhttp.responseText);
                 for(let xResponse of jsonResponse){
                     //this.invitationsTable.push([xResponse.name, xResponse.surname, xResponse.nick]);
-                    this.othersAccInvitationsTable.push(["Unknown Name", "Unknown Surname", xResponse.from]);
+                    this.othersAccInvitationsTable.push([xResponse.name, xResponse.surname, xResponse.userfrom]);
                 }
                 // document.getElementById("test").innerHTML = xhttp.responseText;
             }
@@ -148,7 +148,7 @@ export class PrivilegesComponent {
         });
         xhttp.open("POST", "/sendprivelegesandrequests", true);
         xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-        document.getElementById("test").innerHTML = params;
+        //document.getElementById("test").innerHTML = params;
         xhttp.onreadystatechange = () => {
             if (xhttp.readyState == 4 && xhttp.status == 200) {
                 if(table === "privReq")
@@ -160,7 +160,7 @@ export class PrivilegesComponent {
                     this.getOthersPrivList();
                 } else if(table === "othersPrivList")
                     this.getOthersPrivList();
-                document.getElementById("test").innerHTML = xhttp.responseText;
+                //document.getElementById("test").innerHTML = xhttp.responseText;
             }
         };
 

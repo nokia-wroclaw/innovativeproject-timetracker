@@ -70,7 +70,7 @@
                     <td>{{item[2]}}</td>
                     <td><input type="number" value = "{{item[3]}}"></td>
                     <td><button type="button">&#10004;</button></td>
-                    <td><button type="button" (click)="sendPrivReq('deleteto', 'privList', item[2]);">&#10008;</button></td>
+                    <td><button type="button" (click)="sendPrivReq('deletefrom', 'privList', item[2]);">&#10008;</button></td>
                 </tr>
             </tbody>
             </table>
@@ -117,7 +117,7 @@
             <td>{{item[0]}}</td>
             <td>{{item[1]}}</td>
             <td>{{item[2]}}</td>
-            <td><button type="button" (click)="sendPrivReq('deletefrom', 'othersPrivList', item[2]);">&#10008;</button></td>
+            <td><button type="button" (click)="sendPrivReq('deleteto', 'othersPrivList', item[2]);">&#10008;</button></td>
         </tr>
         </tbody>
         </table>
