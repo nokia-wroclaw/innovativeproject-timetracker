@@ -24,10 +24,10 @@ angular.module('myApp', [])
                 console.error("Worked time fetching error", response);
             });*/
             //example
-            $scope.workedToday.hours = ("00" + 5).slice(-2);
-            $scope.workedToday.minutes = ("00" + 5).slice(-2);
-            $scope.workedThisMonth.hours = ("00" + 25).slice(-2); //to change (three digits)
-            $scope.workedThisMonth.minutes = ("00" + 5).slice(-2);
+            $scope.workedToday.hours = ("00" + 0).slice(-2);
+            $scope.workedToday.minutes = ("00" + 0).slice(-2);
+            $scope.workedThisMonth.hours = ("00" + 0).slice(-2); //to change (three digits)
+            $scope.workedThisMonth.minutes = ("00" + 0).slice(-2);
             if ($scope.isTracking)
                 timer = setInterval(updateTimer, timerDelay);
             $scope.$apply();
@@ -145,6 +145,12 @@ angular.module('myApp', [])
         $scope.redirect = function () {
             var newURL = "http://localhost:9000";
             chrome.tabs.create({url: newURL});
+        };
+
+        $scope.refreshSchedule = function () {
+            port.postMessage({
+                refreshSchedule: ""
+            });
         };
 
         var port = chrome.extension.connect({
