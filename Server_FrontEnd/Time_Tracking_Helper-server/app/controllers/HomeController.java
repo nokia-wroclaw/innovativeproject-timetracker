@@ -175,16 +175,16 @@ public class HomeController extends Controller {
 
         try {
             JsonNode json = request().body().asJson();
-            String login= session("Login");
-            List<TimeStorage> result = models.TimeStorage.getDataSession(login,json);
+            String login = session("Login");
+            List<TimeStorage> result = models.TimeStorage.getDataSession(login, json);
             return ok(toJson(result));
         } catch (Exception e) {
             e.printStackTrace();
             return ok("ERROR");
         }
     }
-    
-    
+
+
     public Result sendOtherTimelineData() {
 
         try {
@@ -217,64 +217,65 @@ public class HomeController extends Controller {
      * Action to get schedule for extension
      */
 
-    public Result getschedule(){
-    	//String login=session("LoginE");
-		JsonNode json=request().body().asJson();
-    	String login=json.findPath("login").textValue();
-    	String day=json.findPath("day").textValue();
-		
-				try {
-					List<Schedule> listSchedule = models.ScheduleStorage.getSchedule(login, day);
-		        	return ok(toJson(listSchedule));
-				} catch (ScheduleNotFoundException e) {
-					System.out.println("ScheduleNotFoundException");
-				    ObjectNode result = Json.newObject();
-					return ok(result);
-				} catch (ScheduleDayNotFoundException e) {
-					System.out.println("ScheduleDayNotFoundException");
-				    ObjectNode result = Json.newObject();
-				    result.put("id", 0);
-				    result.put("login", login);
-				    result.put("day", day);
-				    result.put("end", "00:00:00");
-					return ok(result);
-				}
+    public Result getschedule() {
+        //String login=session("LoginE");
+        JsonNode json = request().body().asJson();
+        String login = json.findPath("login").textValue();
+        String day = json.findPath("day").textValue();
+
+        try {
+            List<Schedule> listSchedule = models.ScheduleStorage.getSchedule(login, day);
+            return ok(toJson(listSchedule));
+        } catch (ScheduleNotFoundException e) {
+            System.out.println("ScheduleNotFoundException");
+            ObjectNode result = Json.newObject();
+            return ok(result);
+        } catch (ScheduleDayNotFoundException e) {
+            System.out.println("ScheduleDayNotFoundException");
+            ObjectNode result = Json.newObject();
+            result.put("id", 0);
+            result.put("login", login);
+            result.put("day", day);
+            result.put("end", "00:00:00");
+            return ok(result);
+        }
     }
+
     public Result sendPaR() {
-		JsonNode json=request().body().asJson();
-    	String type=json.findPath("type").textValue();
-    	String login=json.findPath("login").textValue();
-    	String userlogin=session("Login");
-    	if (type.contains("add")){
-    		//użytkownik A wysyla zaproszenie do użytkownika B
-        	String result=models.RequestStorage.addRequest(userlogin,login);
-        	return ok(result);			
-    	}else if(type.contains("decline")){
-    		//użytkownik A cofa zaproszenie do użytkownika B
-        	String result=models.RequestStorage.deleteRequest(userlogin,login);
-        	return ok(result);
-    	}else if(type.contains("acceptrequest")){
-    		//użytkownik B akceptuje zaproszenie użytkownika A
-        	String result=models.PrivilegesStorage.addPrivileges(userlogin,login);
-        	return ok(result);
-    	}else if(type.contains("decrequest")){
-    		//użytkownik B odrzuca zaproszenie użytkownika A
-        	String result=models.RequestStorage.declinePrivileges(userlogin,login);
-        	return ok(result);
-    	}else if(type.contains("deletefrom")){
-    		//użytkownik B usuwa z dostępu użytkownika A
-        	String result=models.PrivilegesStorage.deleteFromPrivileges(userlogin,login);
-        	return ok(result);
-    	}else if(type.contains("deleteto")){
-    		//użytkownik A usuwa z dostępu użytkownika B
-        	String result=models.PrivilegesStorage.deleteToPrivileges(userlogin,login);
-        	return ok(result);
-    	}else{
-    		return ok("WRONG TYPE OF REQUEST");
-    	}
+        JsonNode json = request().body().asJson();
+        String type = json.findPath("type").textValue();
+        String login = json.findPath("login").textValue();
+        String userlogin = session("Login");
+        if (type.contains("add")) {
+            //użytkownik A wysyla zaproszenie do użytkownika B
+            String result = models.RequestStorage.addRequest(userlogin, login);
+            return ok(result);
+        } else if (type.contains("decline")) {
+            //użytkownik A cofa zaproszenie do użytkownika B
+            String result = models.RequestStorage.deleteRequest(userlogin, login);
+            return ok(result);
+        } else if (type.contains("acceptrequest")) {
+            //użytkownik B akceptuje zaproszenie użytkownika A
+            String result = models.PrivilegesStorage.addPrivileges(userlogin, login);
+            return ok(result);
+        } else if (type.contains("decrequest")) {
+            //użytkownik B odrzuca zaproszenie użytkownika A
+            String result = models.RequestStorage.declinePrivileges(userlogin, login);
+            return ok(result);
+        } else if (type.contains("deletefrom")) {
+            //użytkownik B usuwa z dostępu użytkownika A
+            String result = models.PrivilegesStorage.deleteFromPrivileges(userlogin, login);
+            return ok(result);
+        } else if (type.contains("deleteto")) {
+            //użytkownik A usuwa z dostępu użytkownika B
+            String result = models.PrivilegesStorage.deleteToPrivileges(userlogin, login);
+            return ok(result);
+        } else {
+            return ok("WRONG TYPE OF REQUEST");
+        }
 
     }
-    
+
     public Result getPaR() {
 		JsonNode json=request().body().asJson();
     	String type=json.findPath("type").textValue();
@@ -295,20 +296,21 @@ public class HomeController extends Controller {
     		return ok("ERROR TYPE");
     	}
     }
-    public Result setEstimatedHours(){
-    	//number- liczba estimated hours
-    	//login- login użytkownika, któremu zmieniamy estimated hours
-    	String userlogin=session("Login");
-    	try{
-    		JsonNode json=request().body().asJson();
-        	String number=json.findPath("number").textValue();
-        	String login=json.findPath("login").textValue();
-        	String result=models.PrivilegesStorage.setEstimated(userlogin,login,number);
-        	return ok(result);
-    	}catch(Exception ex){
-    		ex.printStackTrace();
-    		return ok("ERROR");
-    	}
+
+    public Result setEstimatedHours() {
+        //number- liczba estimated hours
+        //login- login użytkownika, któremu zmieniamy estimated hours
+        String userlogin = session("Login");
+        try {
+            JsonNode json = request().body().asJson();
+            String number = json.findPath("number").textValue();
+            String login = json.findPath("login").textValue();
+            String result = models.PrivilegesStorage.setEstimated(userlogin, login, number);
+            return ok(result);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ok("ERROR");
+        }
 
     }
 
@@ -327,10 +329,8 @@ public class HomeController extends Controller {
     public Result generateExcel() {
         JsonNode json = request().body().asJson();
         String login = session("Login");
-        //String login = "Kruk07";
-        //String login = json.findPath("login").textValue();
-        String begin = "1481328000000";//json.findPath("begin").textValue();
-        String end = "1481673540000";//json.findPath("end").textValue();
+        long begin = json.findPath("begin").numberValue().longValue();
+        long end = json.findPath("end").numberValue().longValue();
         List<Schedule> weeklySchedule = models.ScheduleStorage.getSchedule(login);
         List<Time> timeline = models.TimeStorage.getTimeline(login, begin, end);
         ExcelGenerator generator = new ExcelGenerator(weeklySchedule, timeline);

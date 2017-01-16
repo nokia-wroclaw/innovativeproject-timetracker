@@ -46,9 +46,9 @@
         </div>
         <div class="col-md-3" >
             <div class="timelineSettings-container">
-                <form (ngSubmit)="onGenerate()" #timelineSettingsForm="ngForm">
+                <form #timelineSettingsForm2="ngForm">
                     <div class="row">
-                        <h2>PDF</h2>
+                        <h2>Excel generator</h2>
                         <div class="form-group">
                             <label>From:</label>
                             <input type="date" value="2016-12-12" class="form-control"
@@ -61,7 +61,7 @@
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary timeline-button"
-                        [disabled]="!timelineSettingsForm.form.valid" (click)="getExcel(timelineSettingsForm)">
+                        [disabled]="!timelineSettingsForm2.form.valid" (click)="getExcel(timelineSettingsForm2)">
                     Generate
                     </button>
                 </form>
