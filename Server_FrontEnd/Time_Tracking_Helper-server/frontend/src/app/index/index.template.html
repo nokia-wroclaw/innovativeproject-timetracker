@@ -1,6 +1,19 @@
 <header-comp></header-comp>
 <menu-comp></menu-comp>
 
+<div class="background">
+    <div class="col-md-12">
+        <div class="transbox">
+            <div class="timeline-container">
+                <ul class="nav nav-tabs ">
+                    <li class="active"><a href="#" (click) = "changePartView(1)">Graphical mode</a></li>
+                    <li><a href="#" (click) = "changePartView(2)">Editing mode</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="col-md-12">
     <div class="transbox">
         <div class="timelineSettings-container">
@@ -23,7 +36,13 @@
             </form>
             <br>
             <div id="serverAnswer"></div>
-            <div class="vis-timeline" id="visualization"></div>
+            <div class="vis-timeline" id="visualization" [hidden]="timelineView"></div>
+            <div id="textMode" [hidden]="textView">
+                <form>
+                    <input type="range" name="datesSlider" min="0" max="10">
+                    <input type="date" name="dateInput">
+                </form>
+            </div>
         </div>
         <div class="col-md-3" >
             <div class="timelineSettings-container">
@@ -51,3 +70,5 @@
         </div>
     </div>
 </div>
+
+<div id="testing"></div>

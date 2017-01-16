@@ -58,8 +58,8 @@ export class PrivilegesComponent {
                 this.invitationsTable.pop();
                 var jsonResponse = JSON.parse(xhttp.responseText);
                 for(let xResponse of jsonResponse){
-                    //this.invitationsTable.push([xResponse.name, xResponse.surname, xResponse.nick]);
-                    this.invitationsTable.push(["Unknown Name", "Unknown Surname", xResponse.userto]);
+                    this.invitationsTable.push([xResponse.name, xResponse.surname, xResponse.userto]);
+                    //this.invitationsTable.push(["Unknown Name", "Unknown Surname", xResponse.userto]);
                 }
                // document.getElementById("test").innerHTML = xhttp.responseText;
             }
@@ -82,8 +82,8 @@ export class PrivilegesComponent {
                 this.othersInvitationsTable.pop();
                 var jsonResponse = JSON.parse(xhttp.responseText);
                 for(let xResponse of jsonResponse){
-                    //this.invitationsTable.push([xResponse.name, xResponse.surname, xResponse.nick]);
-                    this.othersInvitationsTable.push(["Unknown Name", "Unknown Surname", xResponse.userfrom]);
+                    this.invitationsTable.push([xResponse.name, xResponse.surname, xResponse.userfrom]);
+                    //this.othersInvitationsTable.push(["Unknown Name", "Unknown Surname", xResponse.userfrom]);
                 }
                 // document.getElementById("test").innerHTML = xhttp.responseText;
             }
@@ -107,7 +107,7 @@ export class PrivilegesComponent {
                 var jsonResponse = JSON.parse(xhttp.responseText);
                 for(let xResponse of jsonResponse){
                     //this.invitationsTable.push([xResponse.name, xResponse.surname, xResponse.nick]);
-                    this.accInvitationsTable.push(["Unknown Name", "Unknown Surname", xResponse.userto]);
+                    this.accInvitationsTable.push([xResponse.name, xResponse.surname, xResponse.userto]);
                 }
                 // document.getElementById("test").innerHTML = xhttp.responseText;
             }

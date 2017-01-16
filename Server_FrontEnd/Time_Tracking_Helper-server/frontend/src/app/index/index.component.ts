@@ -12,14 +12,30 @@ var vis = require("vis/dist/vis.js");
 export class IndexComponent {
 
     model = new TimelineSettings('Kruk07', "2016-12-12", "2016-12-13");
+    timelineView = false;
+    textView = true;
     submitted = false;
 
     constructor() {
-
     }
 
     onSubmit() {
         this.submitted = true;
+    }
+
+    changePartView(num: number) {
+        if(num == 1) {
+            this.timelineView = false;
+            this.textView = true;
+        } else {
+            this.timelineView = true;
+            this.textView = false;
+        }
+    }
+
+
+    generateTextTimeline(response: String) {
+
     }
 
     getTimeline(timelineForm: NgForm) {
@@ -41,14 +57,14 @@ export class IndexComponent {
 
         xhttp.open("POST", "/userinfo", true);
         xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
+        xhttp.onreadystatechange = () => {
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
                 var jsonResponse = JSON.parse(xhttp.responseText);
                 var container = document.getElementById('visualization');
                 var options = new Array();
                 var data = new Array();
 
-                //GATE FOR USER CHOICE IN DISPLAYING
+                //max days in one Row
                 var maxDaysInRow = 7;
 
                 //start-end date for a one row
@@ -184,6 +200,9 @@ export class IndexComponent {
                     var timeline = new vis.Timeline(container, data[k], options[k]);
                 }
 
+
+                /*generate text form for editing in the end*/
+                this.generateTextTimeline(xhttp.responseText);
             }
 
         };

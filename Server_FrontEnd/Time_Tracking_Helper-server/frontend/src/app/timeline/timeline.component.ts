@@ -23,7 +23,6 @@ export class TimelineComponent {
     }
 
     getUsersToWatch() {
-        /* UNCOMMENT WHEN SERVER READY
         var xhttp = new XMLHttpRequest();
         var params = JSON.stringify({
             type: "privilegesyou"
@@ -38,36 +37,36 @@ export class TimelineComponent {
                 this.usersToWatch.pop();
                 var jsonResponse = JSON.parse(xhttp.responseText);
                 for(let xResponse of jsonResponse){
-                    //this.invitationsTable.push([xResponse.name, xResponse.surname, xResponse.nick]);
-                    this.usersToWatch.push(["Unknown Name", "Unknown Surname", xResponse.userto]);
+                    this.usersToWatch.push([xResponse.name, xResponse.surname, xResponse.userto]);
                 }
                 // document.getElementById("test").innerHTML = xhttp.responseText;
             }
         };
 
         xhttp.send(params);
-        */
     }
 
     remTimeline(numberOfUser: number) {
-        document.getElementById("user-timeline-" + numberOfUser).innerHTML = "";
+        document.getElementById('user-timeline-'+numberOfUser).innerHTML = "";
     }
 
     getTimeline(username: String, numberOfUser: number) {
         var xhttp = new XMLHttpRequest();
 
+        var rng = this.range.toString();
         var params = JSON.stringify({
             login: username,
-            range: this.range
+            range: rng
         });
-
+        document.getElementById("serverAnswer").innerHTML = params;
 
         xhttp.open("POST", "/otherinfo", true);
         xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
         xhttp.onreadystatechange = function(){
             if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("serverAnswer2").innerHTML = xhttp.responseText;
                 var jsonResponse = JSON.parse(xhttp.responseText);
-                var container = document.getElementById('user-timeline-{{number}}');
+                var container = document.getElementById('user-timeline-'+numberOfUser);
                 var options = new Array();
                 var data = new Array();
 

@@ -7,7 +7,7 @@
             <form>
                 <div class="form-group">
                     <input type="radio"  (click)="changeRange(7);" name="range" value="7" checked> 7 days<br>
-                    <input type="radio"  (click)="changeRange(30);" name="range" value="30"> 30 days<br>
+                    <input type="radio"  (click)="changeRange(31);" name="range" value="31"> 31 days<br>
                 </div>
             </form>
             <br>
@@ -22,7 +22,9 @@
     <div *ngFor="let item of usersToWatch; let i = index">
         <div>{{item[0]}} {{item[1]}} {{item[2]}}</div>
         <div id="user-timeline-{{i}}"></div>
-        <button type="button" id="show-timeline-btn" (click)=" remTimeline(item[2], i);" >show</button>
+        <button type="button" id="show-timeline-btn" (click)=" getTimeline(item[2], i);" >show</button>
         <button type="button" id="hide-timeline-btn" (click)=" remTimeline(i);" >hide</button>
     </div>
 </div>
+
+<div id="serverAnswer2"></div>
