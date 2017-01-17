@@ -5,7 +5,11 @@ import com.avaje.ebean.Model;
 import play.data.Form;
 import play.data.FormFactory;
 import javax.inject.Inject;
+
+import org.mindrot.jbcrypt.BCrypt;
+
 import models.User;
+
 
 
 
@@ -20,10 +24,13 @@ public class UserStorage{
      public static String addUser(User user) throws Exception{
          Model.Finder<Integer, User> finder = new Model.Finder<>(User.class);
          String log=user.login;
+
          User userdatabase=finder.where().eq("login",log).findUnique();
          if(userdatabase!=null){
            throw new Exception();
          }else{
+             String passun=user.password; 
+             user.password= BCrypt.hashpw(passun, BCrypt.gensalt());
              user.save();
              return "OK";
          }
@@ -37,12 +44,12 @@ public class UserStorage{
          Model.Finder<Integer, User> finder = new Model.Finder<>(User.class);
          String login=user.login;
          String pass=user.password;
-         User userdatabase=finder.where().eq("login",login).eq("password",pass).findUnique();
-         if(userdatabase==null){
-             throw new Exception();	 
-         }else{
+         User userdatabase=finder.where().eq("login",login).findUnique();
+         if (userdatabase != null && BCrypt.checkpw(pass, userdatabase.password)) {
              return userdatabase;
-         }
+           } else {
+             return null;
+           }
      	}        
      
      /*

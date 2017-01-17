@@ -32,8 +32,12 @@ import views.html.*;
 public class HomeController extends Controller {
 
     public Result index() {
-        return ok(index.render("Hello World!"));
-
+        String login = session("Login");
+        if (login != null) {
+        	return ok(index.render("Hello World!"));
+        } else{
+        	return redirect(routes.HomeController.login());
+        }
     }
 
     public Result login() {
@@ -48,24 +52,41 @@ public class HomeController extends Controller {
 
     public Result timeline() {
         String login = session("Login");
-        return ok(timeline.render(login));
+        if (login != null) {
+        	return ok(timeline.render(login));
+        } else {
+            return redirect(routes.HomeController.login());
+        }
+        
     }
 
     public Result settings() {
         String login = session("Login");
-        return ok(settings.render(login));
+        if (login != null) {
+        	return ok(settings.render(login));
+        } else {
+            return redirect(routes.HomeController.login());
+        }
     }
 
     public Result schedule() {
         String login = session("Login");
-        List<Schedule> schedule2 = models.ScheduleStorage.getSchedule(login);
-        ok(toJson(schedule2));
-        return ok(schedule.render(login));
+        if (login != null) {
+        	List<Schedule> schedule2 = models.ScheduleStorage.getSchedule(login);
+        	ok(toJson(schedule2));
+        	return ok(schedule.render(login));
+        } else {
+            return redirect(routes.HomeController.login());
+        }
     }
 
     public Result privileges() {
         String login = session("Login");
+        if (login != null) {
         return ok(privileges.render(login));
+        } else {
+            return redirect(routes.HomeController.login());
+        }
     }
 
     /*
@@ -189,7 +210,8 @@ public class HomeController extends Controller {
 
         try {
             JsonNode json = request().body().asJson();
-            List<TimeStorage> result = models.TimeStorage.getDataLogin(json);
+            String userlogin = session("Login");
+            List<TimeStorage> result = models.TimeStorage.getDataLogin(json,userlogin);
             return ok(toJson(result));
         } catch (Exception e) {
             e.printStackTrace();
@@ -337,6 +359,6 @@ public class HomeController extends Controller {
         ExcelGenerator generator = new ExcelGenerator(weeklySchedule, timeline);
         generator.generateExcel();
         System.out.println("Wygenerowano excela, zwracam plik...");
-        return ok(new java.io.File("/app/NewExcelFile.xlsx"));
+        return ok(new java.io.File("app/NewExcelFile.xlsx"));
     }
 }

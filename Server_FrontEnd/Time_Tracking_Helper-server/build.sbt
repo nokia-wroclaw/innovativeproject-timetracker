@@ -9,7 +9,8 @@ libraryDependencies ++= Seq(
   javaJdbc,
   cache,
   javaWs,
-  filters
+  filters,
+   "org.mindrot" % "jbcrypt" % "0.3m"
 )
 
 

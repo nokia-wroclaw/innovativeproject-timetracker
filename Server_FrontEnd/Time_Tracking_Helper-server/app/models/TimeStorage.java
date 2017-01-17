@@ -121,11 +121,17 @@ public class TimeStorage {
      * TODO: weryfikacja, czy użytkownik z sesji ma uprawnienie do przeglądania timeline-u osoby wyslanej w nicku
      * 
      */
-    public static List<TimeStorage> getDataLogin(JsonNode json) throws Exception {
+    public static List<TimeStorage> getDataLogin(JsonNode json, String userlogin) throws Exception {
 
         Model.Finder<Integer, Time> finder = new Model.Finder<>(Time.class);
         String name = json.findValue("login").textValue();
         String range= json.findValue("range").textValue();
+		Model.Finder<Integer, Privileges> finder2 = new Model.Finder<>(Privileges.class);
+		
+		List<Privileges> t23 = finder2.where().and().eq("userfrom", userlogin).eq("userto", name).findList();
+		if (t23==null){
+			throw new Exception("BRAK UPRAWNIEN");
+		}
         System.out.println(name);
         System.out.println(range);
         int days;
@@ -134,7 +140,7 @@ public class TimeStorage {
         }else if (range.contains("31")){
         	days=31;
         }else{
-        	throw new Exception();
+        	throw new Exception("NIEPOPRAWNY FORMAT");
         }
         Calendar calendar = Calendar.getInstance();    
         java.util.Date date2= calendar.getTime();

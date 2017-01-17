@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
+
+import org.mindrot.jbcrypt.BCrypt;
+
 import play.data.validation.Constraints.Required;
 import com.avaje.ebean.Model;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -39,6 +42,7 @@ public class User extends Model{
         this.name=Name;
         this.surname=Surname;
         this.email=Email;
+
     }
     public void setEmail(String email) {
         this.email = email;
