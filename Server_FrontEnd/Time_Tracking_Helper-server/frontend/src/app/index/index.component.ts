@@ -210,7 +210,7 @@ export class IndexComponent {
         xhttp.send(params);
     }
 
-    generationModel = new TimelineSettings('Kruk07', "2016-12-12", "2016-12-13");
+    generationModel = new TimelineSettings('Kruk07', "2017-01-03", "2017-01-16");
 
     getExcel(timelineForm: NgForm) {
         var xhttp = new XMLHttpRequest();

@@ -95,14 +95,14 @@ public class ExcelGenerator {
         sheet.autoSizeColumn(4);
 
         int firstHour = 6;
-        int lastHour = 21;
+        int lastHour = 5 + 24;
 
         for (int hour = firstHour; hour <= lastHour; hour++) {
             int firstMergedColumnIndex = 5 + (hour - firstHour) * 4;
             int lastMergedColumnIndex = 8 + (hour - firstHour) * 4;
 
             cell = headRow.createCell(firstMergedColumnIndex);
-            Date time = new Date((hour - 1) * 60 * 60 * 1000);
+            Date time = new Date((hour - 1) % 24 * 60 * 60 * 1000);
             cell.setCellValue(time);
             cell.setCellStyle(headerStyle);
 
@@ -138,7 +138,6 @@ public class ExcelGenerator {
     }
 
     private void createExpectedColumn(XSSFSheet sheet, XSSFCellStyle expectedStyle) {
-        //na razie weeklySchedule wszedzie taki sam wiec dodajemy go do templatki
         String weekDays[] = {"monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"};
         XSSFCell cell;
         int rowExcelOffset = 2;
@@ -159,8 +158,8 @@ public class ExcelGenerator {
             XSSFCell cell = row.createCell(4);
 
             int formulaRowIndex = rowIndex + 1;
-            StringBuilder formulaBuilder = new StringBuilder().append("(COUNTIF(F").append(formulaRowIndex).append(":CS")
-                    .append(formulaRowIndex).append(", \"=n\")+COUNTIF(F").append(formulaRowIndex).append(":CG")
+            StringBuilder formulaBuilder = new StringBuilder().append("(COUNTIF(F").append(formulaRowIndex).append(":CW")
+                    .append(formulaRowIndex).append(", \"=n\")+COUNTIF(F").append(formulaRowIndex).append(":CW")
                     .append(formulaRowIndex).append(", \"=h\")) / 4");
 
             cell.setCellFormula(formulaBuilder.toString());
@@ -171,7 +170,7 @@ public class ExcelGenerator {
 
     private void createReportingArea(XSSFSheet sheet) {
         int leftBorder = 5;
-        int rightBorder = 68;
+        int rightBorder = 5 + 24 * 4;
         int topBorder = 2;
         int bottomBorder = 8;
         for (int row = topBorder; row <= bottomBorder; row++) {
@@ -272,7 +271,7 @@ public class ExcelGenerator {
         PatternFormatting homePattern = homeRule.createPatternFormatting();
         homePattern.setFillBackgroundColor(homeColor);
 
-        CellRangeAddress[] regions = {new CellRangeAddress(2, 8, 5, 109)};
+        CellRangeAddress[] regions = {new CellRangeAddress(2, 8, 5, 100)};
         sheetCF.addConditionalFormatting(regions, nokiaRule);
         sheetCF.addConditionalFormatting(regions, homeRule);
     }
@@ -339,34 +338,63 @@ public class ExcelGenerator {
             insertDates(calendar, this.workbook.getSheetAt(sheetIndex), days);
             previousName = name;
         }
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date beginPeriod = null;
-        for (Time period : this.timeline) {
-            try {
-                beginPeriod = sdf.parse(sdf.format(period.getBegin()));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            XSSFRow row = days.get(beginPeriod);
-            insertPeriod(period, row, calendar);
-        }
+        timeline.forEach((period) -> insertPeriod(period, days, calendar));
     }
 
-    //I assume all periods are between 6-22 and during one day - correct it later
-    private void insertPeriod(Time period, XSSFRow row, Calendar calendar) {
-        calendar.setTime(period.getBegin());
-        int beginHour = calendar.get(Calendar.HOUR_OF_DAY);
-        int beginMinute = calendar.get(Calendar.MINUTE);
+    private void insertPeriod(Time period, Map<Date, XSSFRow> days, Calendar calendar) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date beginDay = null;
+        Date endDay = null;
+        try {
+            beginDay = sdf.parse(sdf.format(period.getBegin()));
+            endDay = sdf.parse(sdf.format(period.getEnd()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         calendar.setTime(period.getEnd());
-        int endHour = calendar.get(Calendar.HOUR_OF_DAY);
         int endMinute = calendar.get(Calendar.MINUTE);
+        int endHour = calendar.get(Calendar.HOUR_OF_DAY);
+        if (endHour < 6)
+            endHour += 24;
+
+        calendar.setTime(period.getBegin());
+        int beginMinute = calendar.get(Calendar.MINUTE);
+        int beginHour = calendar.get(Calendar.HOUR_OF_DAY);
+        if (beginHour < 6)
+            beginHour += 24;
 
         int reportingOffset = 5;
         int firstCell = 4 * (beginHour - 6) + (int) Math.round(beginMinute / 15.0) + reportingOffset;
+        int lastCellOfADay = 4 * (24 - 6) + reportingOffset - 1;
+        int lastReportingCell = 4 * 24 + reportingOffset;
         int lastCell = 4 * (endHour - 6) + (int) Math.round(endMinute / 15.0) + reportingOffset;
+        XSSFRow row = null;
 
+        while (!beginDay.equals(endDay)) {
+            if (firstCell > lastCellOfADay) {
+                row = days.get(beginDay);
+                for (int column = firstCell; column < lastReportingCell; column++)
+                    row.getCell(column).setCellValue("n");
+                firstCell = reportingOffset;
+            }
+            for (int column = firstCell; column <= lastCellOfADay; column++)
+                row.getCell(column).setCellValue("n");
+            calendar.add(Calendar.DATE, 1);
+            try {
+                beginDay = sdf.parse(sdf.format(calendar.getTime()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            firstCell = lastCellOfADay + 1;
+        }
+
+        row = days.get(beginDay);
+        if (firstCell > lastCell) {
+            for (int column = firstCell; column < lastReportingCell; column++)
+                row.getCell(column).setCellValue("n");
+            firstCell = reportingOffset;
+        }
         for (int column = firstCell; column < lastCell; column++)
             row.getCell(column).setCellValue("n");
     }
