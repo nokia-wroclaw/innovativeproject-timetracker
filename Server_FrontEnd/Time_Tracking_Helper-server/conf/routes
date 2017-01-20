@@ -56,3 +56,5 @@ POST		/getprivelegesandrequests		controllers.HomeController.getPaR
 POST		/setestimated		controllers.HomeController.setEstimatedHours
 # Kontroler POST służący do wygenerowania excela dla danego użytkownika i danego przedziału czasowego
 POST        /excel              controllers.HomeController.generateExcel
+# Kontroler POST służący do wysłania danemu użytkownikowi liczbę jego przepracowanych godzin w ciągu aktualnego dnia i miesiąca
+POST        /workedhours        controllers.HomeController.sendWorkedHours

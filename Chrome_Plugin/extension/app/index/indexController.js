@@ -16,18 +16,21 @@ angular.module('myApp', [])
         };
 
         var fetchWorkedTime = function () {
-            /*$http({
-                //TODO
-            }).then(function (response) {
-                //TODO
+            $http({
+                    method: "POST",
+                    url: "http://localhost:9000/workedhours",
+                    data: {
+                        login: $scope.login
+                    }
+                }
+            ).then(function (response) {
+                $scope.workedToday.hours = ("00" + Math.floor(response.data.daily / 60)).slice(-2);
+                $scope.workedToday.minutes = ("00" + response.data.daily % 60).slice(-2);
+                $scope.workedThisMonth.hours = ("00" + Math.floor(response.data.monthly / 60)).slice(-3);
+                $scope.workedThisMonth.minutes = ("00" + response.data.monthly % 60).slice(-2);
             }, function (response) {
-                console.error("Worked time fetching error", response);
-            });*/
-            //example
-            $scope.workedToday.hours = ("00" + 0).slice(-2);
-            $scope.workedToday.minutes = ("00" + 0).slice(-2);
-            $scope.workedThisMonth.hours = ("00" + 0).slice(-2); //to change (three digits)
-            $scope.workedThisMonth.minutes = ("00" + 0).slice(-2);
+                console.error("Fetching worked time error", response);
+            });
             if ($scope.isTracking)
                 timer = setInterval(updateTimer, timerDelay);
             $scope.$apply();
