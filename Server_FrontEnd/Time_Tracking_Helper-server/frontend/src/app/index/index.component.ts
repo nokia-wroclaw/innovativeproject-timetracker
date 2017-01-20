@@ -15,7 +15,11 @@ export class IndexComponent {
     timelineView = false;
     textView = true;
     submitted = false;
-
+    numberOfEditingDays = 3;
+    listOfEditingDays = [''];
+    actualDateEditing = '';
+    actualDateNrEditing = 0;
+    editingTables = [[['14:00', '15:00'],['17:00', '19:00'], ['19:15', '22:00']], [['9:00', '12:30'],['13:45', '16:00']]];
     constructor() {
     }
 
@@ -33,12 +37,42 @@ export class IndexComponent {
         }
     }
 
+    changeEditingDay(whichDay: number) {
+        this.actualDateEditing = this.listOfEditingDays[whichDay];
+    }
 
-    generateTextTimeline(response: String) {
+    changeEditingDayInput(whichDay: string) {
+        var whichDayNr = 0;
+        for(var i=0; i<this.listOfEditingDays.length; i++) {
+            if(whichDay == this.listOfEditingDays[i]) {
+                whichDayNr = i;
+                break;
+            }
+        }
+        this.actualDateNrEditing = whichDayNr;
+    }
 
+    generateTextTimeline(response: string, date1: String, date2: string) {
+        //this.numberOfEditingDays = (date2.getDate() - date1.getDate())/86400000 + 1;
+        var d1 = new Date(date1);
+        var d2 = new Date(date2);
+        this.actualDateEditing = d1.getFullYear() + '-' + (d1.getMonth()+1) + '-' + d1.getDate();
+        this.listOfEditingDays = [];
+        while (d1.getTime() <= d2.getTime()) {
+            this.listOfEditingDays.push(d1.getFullYear() + '-' + (d1.getMonth()+1) + '-' + d1.getDate());
+            d1.setDate(d1.getDate() + 1);
+        }
+        this.numberOfEditingDays = this.listOfEditingDays.length - 1;
+
+        var jsonResponse = JSON.parse(response);
+
+        //document.getElementById('serverAnswer').innerHTML = response;
+        //TODO: FILL editingTables (in getTimeline?)
     }
 
     getTimeline(timelineForm: NgForm) {
+        /*counting number of days*/
+
         var xhttp = new XMLHttpRequest();
 
         var fromDateStr = timelineForm.value.fromDate.split("-")[2] + "/" +
@@ -70,9 +104,7 @@ export class IndexComponent {
 
                 //start-end date for a one row
                 var dateStart = new Date();
-                ;
                 var dateEnd = new Date();
-                ;
 
                 //How many rows prepared already
                 var j = 0;
@@ -203,7 +235,7 @@ export class IndexComponent {
 
 
                 /*generate text form for editing in the end*/
-                this.generateTextTimeline(xhttp.responseText);
+                this.generateTextTimeline(xhttp.responseText, timelineForm.value.fromDate, timelineForm.value.toDate);
             }
 
         };
