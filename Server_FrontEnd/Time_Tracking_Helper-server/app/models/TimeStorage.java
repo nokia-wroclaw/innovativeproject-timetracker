@@ -11,6 +11,8 @@ import java.util.List;
 
 import com.avaje.ebean.Model;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import play.libs.Json;
 
 public class TimeStorage {
 
@@ -125,27 +127,27 @@ public class TimeStorage {
 
         Model.Finder<Integer, Time> finder = new Model.Finder<>(Time.class);
         String name = json.findValue("login").textValue();
-        String range= json.findValue("range").textValue();
-		Model.Finder<Integer, Privileges> finder2 = new Model.Finder<>(Privileges.class);
-		
-		List<Privileges> t23 = finder2.where().and().eq("userfrom", userlogin).eq("userto", name).findList();
-		if (t23==null){
-			throw new Exception("BRAK UPRAWNIEN");
-		}
+        String range = json.findValue("range").textValue();
+        Model.Finder<Integer, Privileges> finder2 = new Model.Finder<>(Privileges.class);
+
+        List<Privileges> t23 = finder2.where().and().eq("userfrom", userlogin).eq("userto", name).findList();
+        if (t23 == null) {
+            throw new Exception("BRAK UPRAWNIEN");
+        }
         System.out.println(name);
         System.out.println(range);
         int days;
-        if (range.contains("7")){
-        	days=7;
-        }else if (range.contains("31")){
-        	days=31;
-        }else{
-        	throw new Exception("NIEPOPRAWNY FORMAT");
+        if (range.contains("7")) {
+            days = 7;
+        } else if (range.contains("31")) {
+            days = 31;
+        } else {
+            throw new Exception("NIEPOPRAWNY FORMAT");
         }
-        Calendar calendar = Calendar.getInstance();    
-        java.util.Date date2= calendar.getTime();
+        Calendar calendar = Calendar.getInstance();
+        java.util.Date date2 = calendar.getTime();
         calendar.add(Calendar.DAY_OF_MONTH, -days);
-        java.util.Date date1= calendar.getTime();
+        java.util.Date date1 = calendar.getTime();
         //java.util.Date date1 = fromStringToDate(json.findValue("begin").textValue());
         //java.util.Date date2 = fromStringToDate(json.findValue("end").textValue());
 
@@ -209,22 +211,87 @@ public class TimeStorage {
 
     public static List<Time> getTimeline(String login, long beginTimestamp, long endTimestamp) {
         Model.Finder<Integer, Time> finder = new Model.Finder<>(Time.class);
-        Date beginDate = new Date(beginTimestamp);
-        Date endDate = new Date(endTimestamp);
-        if (finder.all().isEmpty()) {
-            Time record16 = new Time("Kruk07", fromStringToDate("03/01/2017@07:00"), fromStringToDate("03/01/2017@15:00"));
-            record16.save();
-            Time record1 = new Time("Kruk07", fromStringToDate("07/01/2017@05:34"), fromStringToDate("09/01/2017@14:27"));
-            record1.save();
-            Time record = new Time("Kruk07", fromStringToDate("12/01/2017@12:12"), fromStringToDate("12/01/2017@14:14"));
-            record.save();
-            Time record3 = new Time("Kruk07", fromStringToDate("13/01/2017@07:00"), fromStringToDate("13/01/2017@14:00"));
-            record3.save();
-            Time record14 = new Time("Kruk07", fromStringToDate("16/01/2017@07:00"), fromStringToDate("16/01/2017@15:00"));
-            record14.save();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+        calendar.setTimeInMillis(beginTimestamp);
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        Date beginDate = calendar.getTime();
+
+        calendar.setTimeInMillis(endTimestamp);
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        Date endDate = calendar.getTime();
+
+        if (finder.all().isEmpty())
+            fillDataBaseWithSampleData();
+        return getTimelineData(login, beginDate, endDate, finder);
+    }
+
+    public static List<Time> getTimelineData(String login, Date beginDate, Date endDate, Model.Finder<Integer, Time> finder) {
+        List<Time> timeline = finder.where().and().eq("login", login).ge("end", beginDate).le("begin", endDate).findList();
+        if (!timeline.isEmpty()) {
+            Time firstPeriod = timeline.get(0);
+            Time lastPeriod = timeline.get(timeline.size() - 1);
+            if (firstPeriod.getBegin().compareTo(beginDate) < 0)
+                firstPeriod.setBegin(beginDate);
+            if (lastPeriod.getEnd().compareTo(endDate) > 0)
+                lastPeriod.setEnd(endDate);
         }
-        List<Time> timeline = finder.where().and().eq("login", login).ge("begin", beginDate).le("end", endDate).findList();
         return timeline;
+    }
+
+    public static ObjectNode getWorkedHours(String login) {
+        Model.Finder<Integer, Time> finder = new Model.Finder<>(Time.class);
+        if (finder.all().isEmpty())
+            fillDataBaseWithSampleData();
+
+        Calendar calendar = Calendar.getInstance();
+        Date now = calendar.getTime();
+
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        Date today = calendar.getTime();
+
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        Date firstMonthDay = calendar.getTime();
+
+        //todo continue
+        List<Time> todayPeriods = getTimelineData(login, today, now, finder);
+        List<Time> monthPeriods = getTimelineData(login, firstMonthDay, now, finder);
+
+        ObjectNode result = Json.newObject();
+        result.put("daily", calculateMinutes(todayPeriods));
+        result.put("monthly", calculateMinutes(monthPeriods));
+        return result;
+    }
+
+    public static int calculateMinutes(List<Time> periods) {
+        int minutes = 0;
+        int millisecondsInMinute = 1000 * 60;
+        for (Time period : periods)
+            minutes += (period.getEnd().getTime() - period.getBegin().getTime()) / millisecondsInMinute;
+        return minutes;
+    }
+
+    public static void fillDataBaseWithSampleData() {
+        Time record4 = new Time("Kruk07", fromStringToDate("01/01/2017@22:00"), fromStringToDate("02/01/2017@04:00"));
+        record4.save();
+        Time record16 = new Time("Kruk07", fromStringToDate("03/01/2017@07:00"), fromStringToDate("03/01/2017@15:00"));
+        record16.save();
+        Time record1 = new Time("Kruk07", fromStringToDate("07/01/2017@05:34"), fromStringToDate("09/01/2017@14:27"));
+        record1.save();
+        Time record = new Time("Kruk07", fromStringToDate("12/01/2017@12:12"), fromStringToDate("12/01/2017@14:14"));
+        record.save();
+        Time record3 = new Time("Kruk07", fromStringToDate("13/01/2017@07:00"), fromStringToDate("13/01/2017@14:00"));
+        record3.save();
+        Time record14 = new Time("Kruk07", fromStringToDate("16/01/2017@07:00"), fromStringToDate("16/01/2017@15:00"));
+        record14.save();
+        Time record2 = new Time("Kruk07", fromStringToDate("22/01/2017@22:00"), fromStringToDate("23/01/2017@04:00"));
+        record2.save();
     }
 
     /*

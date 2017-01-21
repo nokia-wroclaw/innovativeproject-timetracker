@@ -16,7 +16,7 @@ import models.Privileges;
 import models.Request;
 import models.Schedule;
 import models.SendedObject;
-import models.ExcelGenerator;
+import services.ExcelGenerator;
 
 import models.Time;
 import models.TimeStorage;
@@ -360,5 +360,11 @@ public class HomeController extends Controller {
         generator.generateExcel();
         System.out.println("Wygenerowano excela, zwracam plik...");
         return ok(new java.io.File("app/NewExcelFile.xlsx"));
+    }
+
+    public Result sendWorkedHours() {
+        String login = request().body().asJson().findPath("login").textValue();
+        ObjectNode result = models.TimeStorage.getWorkedHours(login);
+        return ok(result);
     }
 }

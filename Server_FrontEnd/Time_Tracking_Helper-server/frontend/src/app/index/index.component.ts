@@ -249,7 +249,6 @@ export class IndexComponent {
 
         var fromDate = new Date(timelineForm.value.fromDate);
         var toDate = new Date(timelineForm.value.toDate);
-        toDate.setHours(23, 59);
 
         var params = JSON.stringify({
             begin: fromDate.getTime(),
