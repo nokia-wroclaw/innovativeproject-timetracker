@@ -61,7 +61,10 @@ angular.module('myApp', [])
         };
 
         loadStorage();
-        setTimeout(fetchWorkedTime, 100);
+        setTimeout(function () {
+            if (isLogged)
+                fetchWorkedTime();
+        }, 200);
 
         $scope.reminderOptions = [
             {id: 5, name: '5 minutes'},
@@ -113,6 +116,7 @@ angular.module('myApp', [])
                         password: $scope.password,
                         isLogged: true
                     });
+                    fetchWorkedTime();
                 } else {
                     $scope.loginError = true;
                 }

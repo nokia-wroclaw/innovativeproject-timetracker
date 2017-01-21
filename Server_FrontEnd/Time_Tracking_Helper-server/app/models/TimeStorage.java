@@ -211,11 +211,36 @@ public class TimeStorage {
 
     public static List<Time> getTimeline(String login, long beginTimestamp, long endTimestamp) {
         Model.Finder<Integer, Time> finder = new Model.Finder<>(Time.class);
-        Date beginDate = new Date(beginTimestamp);
-        Date endDate = new Date(endTimestamp);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+        calendar.setTimeInMillis(beginTimestamp);
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        Date beginDate = calendar.getTime();
+
+        calendar.setTimeInMillis(endTimestamp);
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        Date endDate = calendar.getTime();
+
         if (finder.all().isEmpty())
             fillDataBaseWithSampleData();
-        List<Time> timeline = finder.where().and().eq("login", login).ge("begin", beginDate).le("end", endDate).findList();
+        return getTimelineData(login, beginDate, endDate, finder);
+    }
+
+    public static List<Time> getTimelineData(String login, Date beginDate, Date endDate, Model.Finder<Integer, Time> finder) {
+        List<Time> timeline = finder.where().and().eq("login", login).ge("end", beginDate).le("begin", endDate).findList();
+        if (!timeline.isEmpty()) {
+            Time firstPeriod = timeline.get(0);
+            Time lastPeriod = timeline.get(timeline.size() - 1);
+            if (firstPeriod.getBegin().compareTo(beginDate) < 0)
+                firstPeriod.setBegin(beginDate);
+            if (lastPeriod.getEnd().compareTo(endDate) > 0)
+                lastPeriod.setEnd(endDate);
+        }
         return timeline;
     }
 
@@ -225,6 +250,8 @@ public class TimeStorage {
             fillDataBaseWithSampleData();
 
         Calendar calendar = Calendar.getInstance();
+        Date now = calendar.getTime();
+
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         Date today = calendar.getTime();
@@ -232,9 +259,9 @@ public class TimeStorage {
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         Date firstMonthDay = calendar.getTime();
 
-        //todo periods between + continue?
-        List<Time> todayPeriods = finder.where().and().eq("login", login).ge("begin", today).findList();
-        List<Time> monthPeriods = finder.where().and().eq("login", login).ge("begin", firstMonthDay).findList();
+        //todo continue
+        List<Time> todayPeriods = getTimelineData(login, today, now, finder);
+        List<Time> monthPeriods = getTimelineData(login, firstMonthDay, now, finder);
 
         ObjectNode result = Json.newObject();
         result.put("daily", calculateMinutes(todayPeriods));
@@ -245,12 +272,14 @@ public class TimeStorage {
     public static int calculateMinutes(List<Time> periods) {
         int minutes = 0;
         int millisecondsInMinute = 1000 * 60;
-        for (Time period: periods)
+        for (Time period : periods)
             minutes += (period.getEnd().getTime() - period.getBegin().getTime()) / millisecondsInMinute;
         return minutes;
     }
 
     public static void fillDataBaseWithSampleData() {
+        Time record4 = new Time("Kruk07", fromStringToDate("01/01/2017@22:00"), fromStringToDate("02/01/2017@04:00"));
+        record4.save();
         Time record16 = new Time("Kruk07", fromStringToDate("03/01/2017@07:00"), fromStringToDate("03/01/2017@15:00"));
         record16.save();
         Time record1 = new Time("Kruk07", fromStringToDate("07/01/2017@05:34"), fromStringToDate("09/01/2017@14:27"));
@@ -261,7 +290,7 @@ public class TimeStorage {
         record3.save();
         Time record14 = new Time("Kruk07", fromStringToDate("16/01/2017@07:00"), fromStringToDate("16/01/2017@15:00"));
         record14.save();
-        Time record2 = new Time("Kruk07", fromStringToDate("20/01/2017@07:00"), fromStringToDate("20/01/2017@15:00"));
+        Time record2 = new Time("Kruk07", fromStringToDate("22/01/2017@22:00"), fromStringToDate("23/01/2017@04:00"));
         record2.save();
     }
 

@@ -16,7 +16,7 @@ import models.Privileges;
 import models.Request;
 import models.Schedule;
 import models.SendedObject;
-import models.ExcelGenerator;
+import services.ExcelGenerator;
 
 import models.Time;
 import models.TimeStorage;
