@@ -62,7 +62,7 @@ angular.module('myApp', [])
 
         loadStorage();
         setTimeout(function () {
-            if (isLogged)
+            if ($scope.isLogged)
                 fetchWorkedTime();
         }, 200);
 

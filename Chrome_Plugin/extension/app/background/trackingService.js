@@ -1,11 +1,11 @@
 'use strict';
 
 var tracking = null;
-var intervalTime = 1500;
+var intervalTime = 15000;
 var sendingParams = {
     login: "",
     password: "",
-    date: "",
+    date: 0,
     state: "End"
 };
 var isTracking = null;
@@ -47,13 +47,11 @@ angular.module('myApp').service('trackingService', function ($http, storageServi
         updateUserState();
         setTimeout(function () {
             if (isTracking) {
-                sendingParams.state = "Start";
+                sendingParams.state = "Continue";
+                track();
                 tracking = setInterval(track, intervalTime);
-                setTimeout(function () {
-                    sendingParams.state = "Continue";
-                }, 2000);
             }
-        }, 2000);
+        }, 200);
     };
 
     this.changeTrackingState = function (state) {
@@ -67,11 +65,9 @@ angular.module('myApp').service('trackingService', function ($http, storageServi
     var changeTracking = function () {
         if (isTracking) {
             if (tracking == null) {
-                sendingParams.state = "Start";
+                sendingParams.state = "Continue";
+                track();
                 tracking = setInterval(track, intervalTime);
-                setTimeout(function () {
-                    sendingParams.state = "Continue";
-                }, 2000);
             }
         } else {
             if (sendingParams.state != "End") {
@@ -83,21 +79,8 @@ angular.module('myApp').service('trackingService', function ($http, storageServi
         }
     };
 
-    var getCurrentDate = function () {
-        var currentDate = new Date();
-        var day = currentDate.getDate();
-        day = (day < 10) ? '0' + day : day;
-        var month = currentDate.getMonth() + 1;
-        month = (month < 10) ? '0' + month : month;
-        var hour = currentDate.getHours();
-        hour = (hour < 10) ? '0' + hour : hour;
-        var minutes = currentDate.getMinutes();
-        minutes = (minutes < 10) ? '0' + minutes : minutes;
-        return day + "/" + month + "/" + currentDate.getFullYear() + "@" + hour + ":" + minutes;
-    };
-
     var track = function () {
-        sendingParams.date = getCurrentDate();
+        sendingParams.date = Date.now();
         console.log(sendingParams);
         $http({
                 method: "POST",

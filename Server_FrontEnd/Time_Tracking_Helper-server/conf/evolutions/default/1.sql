@@ -35,6 +35,7 @@ create table time (
   login                         varchar(255),
   begin                         timestamp,
   end                           timestamp,
+  state                         varchar(255),
   constraint pk_time primary key (id)
 );
 create sequence time_seq;
