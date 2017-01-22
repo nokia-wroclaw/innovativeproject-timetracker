@@ -52,6 +52,70 @@ export class IndexComponent {
         this.actualDateNrEditing = whichDayNr;
     }
 
+    submitDayChanges() {
+        /*save changes to the table*/
+        var inputFrom = "9:00";
+        var inputTo = "10:00";
+        for(var i=0; i<this.editingTables[this.actualDateNrEditing].length; i++) {
+            //here checking values? (10:00 - 9:00)
+            var inputFrom = (<HTMLInputElement>document.getElementById("edTables-"+i+"-1")).value;
+            var inputTo = (<HTMLInputElement>document.getElementById("edTables-"+i+"-2")).value;
+            this.editingTables[this.actualDateNrEditing][i] = ([inputFrom, inputTo]);
+        }
+
+
+        var xhttp = new XMLHttpRequest();
+
+        var dateStr = this.actualDateEditing;
+
+        //building sending msg
+        var sendingMsg = "[";
+        for(var i=0; i<this.editingTables[this.actualDateNrEditing].length; i++) {
+            sendingMsg += "{"
+            sendingMsg += "begin:"+ "\"" + this.editingTables[this.actualDateNrEditing][i][0] + "\"";
+            sendingMsg += ",end:"+ "\"" + this.editingTables[this.actualDateNrEditing][i][1] + "\"";
+            sendingMsg += "}"
+
+            if(i+1<this.editingTables[this.actualDateNrEditing].length) {
+                sendingMsg += ","
+            }
+        }
+
+        sendingMsg += "]";
+
+        document.getElementById("serverAnswer").innerHTML = sendingMsg;
+
+        //UNCOMMENT WHEN SERVER READY
+        /*
+        var params = JSON.stringify({
+            day: this.actualDateEditing
+        });
+
+
+        xhttp.open("POST", "/sendtimelinechanges", true);
+        xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+        xhttp.onreadystatechange = () => {
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+                document.getElementById("serverAnswer").innerHTML = xhttp.responseText;
+            }
+        };
+        xhttp.send(params);
+        */
+
+    }
+
+    addSpaceHours(upOrDown: number, nearWhichHours: number) {
+        this.editingTables[this.actualDateNrEditing].splice(nearWhichHours + upOrDown, 0, new Array());
+    }
+
+    deleteHours(whichHours:number) {
+        this.editingTables[this.actualDateNrEditing].splice(whichHours, 1);
+
+        if(this.editingTables[this.actualDateNrEditing].length == 0) {
+            this.editingTables[this.actualDateNrEditing].push(new Array());
+        }
+    }
+
     generateTextTimeline(response: string, date1: String, date2: string) {
         //this.numberOfEditingDays = (date2.getDate() - date1.getDate())/86400000 + 1;
         var d1 = new Date(date1);
@@ -64,13 +128,39 @@ export class IndexComponent {
         }
         this.numberOfEditingDays = this.listOfEditingDays.length - 1;
 
+        this.editingTables = [[[]]];
         var jsonResponse = JSON.parse(response);
+        var tmpArray =[['14:00', '15:00'], ['17:00', '18:00']];
+        tmpArray.length = 0;
 
-        //document.getElementById('serverAnswer').innerHTML = response;
-        //TODO: FILL editingTables (in getTimeline?)
+        var iteratorJson = 0;
+        var iteratorList = 0;
+
+        while(iteratorJson<jsonResponse.length && iteratorList<this.listOfEditingDays.length) {
+            var tmp = jsonResponse[iteratorJson].begin.split("/");
+
+            //7/12/2016@15:00 -> 2016-21-7
+            d1 = new Date(tmp[2].split("@")[0] + "-" + tmp[1] + "-" + tmp[0]);
+            if(d1.getFullYear() + '-' + (d1.getMonth()+1) + '-' + d1.getDate() == this.listOfEditingDays[iteratorList]) {
+                tmpArray.push([jsonResponse[iteratorJson].begin.split("@")[1], jsonResponse[iteratorJson].end.split("@")[1]]);
+                iteratorJson++;
+            } else {
+                if(tmpArray.length != 0) {
+                    this.editingTables[iteratorList] = (tmpArray);
+                    var tmpArray = [['14:00', '15:00'], ['17:00', '18:00']];
+                    tmpArray.length = 0;
+                } else {
+                    this.editingTables[iteratorList] = [[]];
+                    this.editingTables.push();
+                }
+                iteratorList++;
+            }
+        }
+
     }
 
     getTimeline(timelineForm: NgForm) {
+        document.getElementById('visualization').innerHTML = "";
         /*counting number of days*/
 
         var xhttp = new XMLHttpRequest();
@@ -93,7 +183,7 @@ export class IndexComponent {
         xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
         xhttp.onreadystatechange = () => {
             if (xhttp.readyState == 4 && xhttp.status == 200) {
-                //document.getElementById('serverAnswer').innerHTML = xhttp.responseText;
+                document.getElementById('serverAnswer').innerHTML = xhttp.responseText;
                 var jsonResponse = JSON.parse(xhttp.responseText);
                 var container = document.getElementById('visualization');
                 var options = new Array();

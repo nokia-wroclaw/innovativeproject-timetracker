@@ -50,17 +50,21 @@
                         <tr>
                             <th>From</th>
                             <th>To</th>
-                            <th>Merge Up</th>
+                            <th>Add Above</th>
+                            <th>Add Below</th>
+                            <th>Delete</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr *ngFor="let item of editingTables[actualDateNrEditing]; let i = index">
-                            <td><input type="time" id="edTables-{{i}}-1" name="edTables-{{i}}-1" value="{{item[0]}}" size="5"  /></td>
-                            <td><input type="time" id="edTables-{{i}}-2" name="edTables-{{i}}-2" value="{{item[1]}}" size="5"  /></td>
-                            <td><button type="button">&uArr;</button>
+                            <td><input type="time" class="form-control" id="edTables-{{i}}-1" name="edTables-{{i}}-1" value="{{item[0]}}" size="5"  /></td>
+                            <td><input type="time" class="form-control" id="edTables-{{i}}-2" name="edTables-{{i}}-2" value="{{item[1]}}" size="5"  /></td>
+                            <td><button type="button" (click)="addSpaceHours(0, i)">A&uArr;</button>
+                            <td><button type="button" (click)="addSpaceHours(1, i)">A&dArr;</button>
+                            <td><button type="button" (click)="deleteHours(i)">&#10008;</button>
                         </tr>
                         </tbody>
-                        <button type="button">Submit Day Changes</button>
+                        <button type="button" (click)="submitDayChanges()">Submit Day Changes</button>
                     </table>
                 </div>
 
