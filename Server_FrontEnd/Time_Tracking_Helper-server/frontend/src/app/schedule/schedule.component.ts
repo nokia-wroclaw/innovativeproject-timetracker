@@ -26,12 +26,25 @@ export class ScheduleComponent {
         [false, false, false, false, false, false, false, false]];
 
     constructor() {
+        this.getSchedule();
     }
 
     onSubmit() {
         this.submitted = true;
     }
 
+    getSchedule() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("GET", "/fullschedule", true);
+        xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("schedule-info").innerHTML = xhttp.responseText;
+            }
+        }
+        xhttp.send();
+
+    }
     sendSchedule(scheduleForm:NgForm) {
         var inputValue = (<HTMLInputElement>document.getElementById("field_monday00")).value;
 

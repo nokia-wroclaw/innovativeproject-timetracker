@@ -87,11 +87,11 @@ export class IndexComponent {
         */
 
        var dateStamp = (new Date(this.actualDateEditing)).getTime();
-        var sendingMsg = "{date:" + "\"" + dateStamp.toString() + "\", periods: [";
+        var sendingMsg = "{\"date\":" + dateStamp.toString() + ", \"periods\": [";
         for(var i=0; i<this.editingTables[this.actualDateNrEditing].length; i++) {
             sendingMsg += "{"
-            sendingMsg += "begin:"+ "\"" + this.editingTables[this.actualDateNrEditing][i][0] + "\"";
-            sendingMsg += ",end:"+ "\"" + this.editingTables[this.actualDateNrEditing][i][1] + "\"";
+            sendingMsg += "\"begin\":"+ "\"" + this.editingTables[this.actualDateNrEditing][i][0] + "\"";
+            sendingMsg += ",\"end\":"+ "\"" + this.editingTables[this.actualDateNrEditing][i][1] + "\"";
             sendingMsg += "}"
 
             if(i+1<this.editingTables[this.actualDateNrEditing].length) {
@@ -135,7 +135,8 @@ export class IndexComponent {
         this.actualDateEditing = d1.getFullYear() + '-' + (d1.getMonth()+1) + '-' + d1.getDate();
         this.listOfEditingDays = [];
         while (d1.getTime() <= d2.getTime()) {
-            this.listOfEditingDays.push(d1.getFullYear() + '-' + (d1.getMonth()+1) + '-' + d1.getDate());
+            this.listOfEditingDays.push(d1.toISOString().substr(0, 10));
+            //this.listOfEditingDays.push(d1.getFullYear() + '-' + (d1.getMonth()+1) + '-' + d1.getDate());
             d1.setDate(d1.getDate() + 1);
         }
         this.numberOfEditingDays = this.listOfEditingDays.length - 1;
@@ -153,7 +154,8 @@ export class IndexComponent {
 
             //7/12/2016@15:00 -> 2016-21-7
             d1 = new Date(tmp[2].split("@")[0] + "-" + tmp[1] + "-" + tmp[0]);
-            if(d1.getFullYear() + '-' + (d1.getMonth()+1) + '-' + d1.getDate() == this.listOfEditingDays[iteratorList]) {
+            /*if(d1.getFullYear() + '-' + (d1.getMonth()+1) + '-' + d1.getDate() == this.listOfEditingDays[iteratorList]) {*/
+            if(d1.toISOString().substr(0, 10) == this.listOfEditingDays[iteratorList]) {
                 tmpArray.push([jsonResponse[iteratorJson].begin.split("@")[1], jsonResponse[iteratorJson].end.split("@")[1]]);
                 iteratorJson++;
             } else {
@@ -167,6 +169,23 @@ export class IndexComponent {
                 }
                 iteratorList++;
             }
+        }
+
+        //for last item
+        if(tmpArray.length != 0) {
+            this.editingTables[iteratorList] = (tmpArray);
+            var tmpArray = [['14:00', '15:00'], ['17:00', '18:00']];
+            tmpArray.length = 0;
+        } else {
+            this.editingTables[iteratorList] = [[]];
+            this.editingTables.push();
+        }
+
+        iteratorList++;
+        while(iteratorList<this.listOfEditingDays.length) {
+            this.editingTables[iteratorList] = [[]];
+            this.editingTables.push();
+            iteratorList++;
         }
 
     }
