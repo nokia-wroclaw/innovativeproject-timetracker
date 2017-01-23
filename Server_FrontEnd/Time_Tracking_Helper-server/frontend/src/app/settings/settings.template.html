@@ -1,0 +1,57 @@
+<header-comp></header-comp>
+<menu-comp></menu-comp>
+
+<div class="usernameSettings-container col-md-3">
+    <form #settingsForm1="ngForm">
+        <div class="row">
+            <h2>Change username</h2>
+            <div class="form-group">
+                <input type="text" class="form-control" name="username" id="username" value="{{userNick()}}">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary username-button" (click)="changeUsername(settingsForm1)">
+            Change
+        </button>
+    </form>
+    <br>
+</div>
+
+<div class="usernameSettings-container col-md-3">
+    <form #settingsForm2="ngForm">
+        <div class="row">
+            <h2>Change name and surname</h2>
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" name="name" id="name" value="{{userName()}}">
+                <label for="surname">Surname:</label>
+                <input type="text" class="form-control" name="surname" id="surname" value="{{userSurname()}}">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary nameSurname-button" (click)="changeNameSurname(settingsForm2)">
+            Change
+        </button>
+    </form>
+    <br>
+</div>
+
+<div class="usernameSettings-container col-md-3">
+    <form #settingsForm3="ngForm">
+        <div class="row">
+            <h2>Change password</h2>
+            <div class="form-group">
+                <label for="oldPwd">Old Password:</label>
+                <input type="password" class="form-control" name="oldPwd" id="oldPwd">
+                <label for="newPwd1">New Password:</label>
+                <input type="password" class="form-control" name="newPwd1" id="newPwd1">
+                <label for="newPwd2">Repeat Password:</label>
+                <input type="password" class="form-control" name="newPwd2" id="newPwd2">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary password-button" (click)="changePassword(settingsForm3)">
+            Change
+        </button>
+    </form>
+    <br>
+</div>
+
+<div id="serverAnswer"></div>

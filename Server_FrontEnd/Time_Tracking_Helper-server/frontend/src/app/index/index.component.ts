@@ -69,7 +69,25 @@ export class IndexComponent {
         var dateStr = this.actualDateEditing;
 
         //building sending msg
-        var sendingMsg = "[";
+        //Old version
+       /* var sendingMsg = "[";
+        for(var i=0; i<this.editingTables[this.actualDateNrEditing].length; i++) {
+            sendingMsg += "{"
+            sendingMsg += "day:" + "\"" + this.actualDateEditing + "\"";
+            sendingMsg += ",begin:"+ "\"" + this.editingTables[this.actualDateNrEditing][i][0] + "\"";
+            sendingMsg += ",end:"+ "\"" + this.editingTables[this.actualDateNrEditing][i][1] + "\"";
+            sendingMsg += "}"
+
+            if(i+1<this.editingTables[this.actualDateNrEditing].length) {
+                sendingMsg += ","
+            }
+        }
+
+        sendingMsg += "]";
+        */
+
+       var dateStamp = (new Date(this.actualDateEditing)).getTime();
+        var sendingMsg = "{date:" + "\"" + dateStamp.toString() + "\", periods: [";
         for(var i=0; i<this.editingTables[this.actualDateNrEditing].length; i++) {
             sendingMsg += "{"
             sendingMsg += "begin:"+ "\"" + this.editingTables[this.actualDateNrEditing][i][0] + "\"";
@@ -81,15 +99,10 @@ export class IndexComponent {
             }
         }
 
-        sendingMsg += "]";
+        sendingMsg += "]}";
 
-        document.getElementById("serverAnswer").innerHTML = sendingMsg;
+        //document.getElementById("serverAnswer").innerHTML = sendingMsg;
 
-        //UNCOMMENT WHEN SERVER READY
-        /*
-        var params = JSON.stringify({
-            day: this.actualDateEditing
-        });
 
 
         xhttp.open("POST", "/sendtimelinechanges", true);
@@ -99,8 +112,7 @@ export class IndexComponent {
                 document.getElementById("serverAnswer").innerHTML = xhttp.responseText;
             }
         };
-        xhttp.send(params);
-        */
+        xhttp.send(sendingMsg);
 
     }
 
@@ -183,7 +195,7 @@ export class IndexComponent {
         xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
         xhttp.onreadystatechange = () => {
             if (xhttp.readyState == 4 && xhttp.status == 200) {
-                document.getElementById('serverAnswer').innerHTML = xhttp.responseText;
+                //document.getElementById('serverAnswer').innerHTML = xhttp.responseText;
                 var jsonResponse = JSON.parse(xhttp.responseText);
                 var container = document.getElementById('visualization');
                 var options = new Array();
@@ -353,7 +365,7 @@ export class IndexComponent {
 
                 var str = xhttp.responseText;
                 var uri = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8,' + str;
-                var uri = 'data:text/plain;charset=utf-8,' + str;
+                //var uri = 'data:text/plain;charset=utf-8,' + str;
                 var downloadLink = document.createElement("a");
                 downloadLink.href = uri;
                 downloadLink.download = "excel.xlsx";

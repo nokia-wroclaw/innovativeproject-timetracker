@@ -14,7 +14,8 @@ var entry = {
     register: ['./registerEntry.ts'],
     timeline: ['./timelineEntry.ts'],
     schedule: ['./scheduleEntry.ts'],
-    privileges: ['./privilegesEntry.ts']
+    privileges: ['./privilegesEntry.ts'],
+    settings: ['./settingsEntry.ts']
 };
 
 var config = {
