@@ -97,7 +97,8 @@ public class TimeStorage {
             Time record14 = new Time("Kruk07", fromStringToDate("15/01/2017@022:00"), fromStringToDate("15/01/2017@23:59"), "End");
             record14.save();
         }
-        List<Time> t = finder.where().and().eq("login", name).ge("begin", date1).le("end", date2).findList();
+        List<Time> t = finder.where().and().eq("login", name).ge("begin", date1).le("end", date2).
+                orderBy().asc("begin").findList();
 
         if (t == null) {
             throw new Exception();
@@ -188,7 +189,7 @@ public class TimeStorage {
             Time record14 = new Time("Kruk07", fromStringToDate("16/01/2017@07:00"), fromStringToDate("16/01/2017@15:00"), "End");
             record14.save();
         }
-        List<Time> t = finder.where().and().eq("login", name).ge("begin", date1).le("end", date2).findList();
+        List<Time> t = finder.where().and().eq("login", name).ge("begin", date1).le("end", date2).orderBy().asc("begin").findList();
 
         if (t == null) {
             throw new Exception();
@@ -227,8 +228,8 @@ public class TimeStorage {
         calendar.set(Calendar.MINUTE, 59);
         Date endDate = calendar.getTime();
 
-        if (finder.all().isEmpty())
-            fillDataBaseWithSampleData();
+        //if (finder.all().isEmpty())
+        fillDataBaseWithSampleData();
         return finder.where().and().eq("login", login).ge("begin", beginDate).le("end", endDate).findList();
     }
 
@@ -265,7 +266,7 @@ public class TimeStorage {
         Time lastPeriod = periods.get(periods.size() - 1);
         if (lastPeriod.getState().equals("Continue")) {
             Date now = new Date();
-            int minutesBetween = (int)(now.getTime() - lastPeriod.getEnd().getTime()) / millisecondsInMinute;
+            int minutesBetween = (int) (now.getTime() - lastPeriod.getEnd().getTime()) / millisecondsInMinute;
             if (minutesBetween <= 15)
                 minutes += minutesBetween;
         }
@@ -363,8 +364,8 @@ public class TimeStorage {
         List<Time> tc = finder.where().and().eq("login", login).ge("begin", begin).le("end", end).findList();
         tc.forEach((period) -> period.delete());
         ArrayNode node = (ArrayNode) json.findPath("periods");
-        for (int i = 0; i < node.size(); i += 2) {
-            String beginTime = node.get(i).textValue();
+        for (int i = 0; i < node.size(); i++) {
+            String beginTime = node.get(i).findPath("begin").textValue();
             int semicolonIndex = beginTime.indexOf(':');
             int hours = Integer.parseInt(beginTime.substring(0, semicolonIndex));
             int minutes = Integer.parseInt(beginTime.substring(semicolonIndex + 1));
@@ -372,7 +373,7 @@ public class TimeStorage {
             calendar.set(Calendar.MINUTE, minutes);
             Date beginDate = calendar.getTime();
 
-            String endTime = node.get(i + 1).textValue();
+            String endTime = node.get(i).findPath("end").textValue();
             semicolonIndex = endTime.indexOf(':');
             hours = Integer.parseInt(endTime.substring(0, semicolonIndex));
             minutes = Integer.parseInt(endTime.substring(semicolonIndex + 1));
@@ -403,6 +404,4 @@ public class TimeStorage {
         String datestring = dateFrm.format(daterequest);
         return datestring;
     }
-
 }
-
