@@ -12,6 +12,7 @@ import java.util.List;
 import com.avaje.ebean.Model;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import play.libs.Json;
 
 public class TimeStorage {
@@ -343,6 +344,43 @@ public class TimeStorage {
             }
         } else {
             Time record = new Time(login, dateToInsert, dateToInsert, "Continue");
+            record.save();
+        }
+    }
+
+    public static void updateDay(String login, JsonNode json) {
+        long timestamp = json.findPath("date").numberValue().longValue();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(timestamp);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        Date begin = calendar.getTime();
+        calendar.add(Calendar.DATE, 1);
+        Date end = calendar.getTime();
+        calendar.add(Calendar.DATE, -1);
+        Model.Finder<Integer, Time> finder = new Model.Finder<>(Time.class);
+        List<Time> tc = finder.where().and().eq("login", login).ge("begin", begin).le("end", end).findList();
+        tc.forEach((period) -> period.delete());
+        ArrayNode node = (ArrayNode) json.findPath("periods");
+        for (int i = 0; i < node.size(); i += 2) {
+            String beginTime = node.get(i).textValue();
+            int semicolonIndex = beginTime.indexOf(':');
+            int hours = Integer.parseInt(beginTime.substring(0, semicolonIndex));
+            int minutes = Integer.parseInt(beginTime.substring(semicolonIndex + 1));
+            calendar.set(Calendar.HOUR_OF_DAY, hours);
+            calendar.set(Calendar.MINUTE, minutes);
+            Date beginDate = calendar.getTime();
+
+            String endTime = node.get(i + 1).textValue();
+            semicolonIndex = endTime.indexOf(':');
+            hours = Integer.parseInt(endTime.substring(0, semicolonIndex));
+            minutes = Integer.parseInt(endTime.substring(semicolonIndex + 1));
+            calendar.set(Calendar.HOUR_OF_DAY, hours);
+            calendar.set(Calendar.MINUTE, minutes);
+            Date endDate = calendar.getTime();
+
+            Time record = new Time(login, beginDate, endDate, "End");
             record.save();
         }
     }

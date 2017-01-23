@@ -34,9 +34,9 @@ public class HomeController extends Controller {
     public Result index() {
         String login = session("Login");
         if (login != null) {
-        	return ok(index.render("Hello World!"));
-        } else{
-        	return redirect(routes.HomeController.login());
+            return ok(index.render("Hello World!"));
+        } else {
+            return redirect(routes.HomeController.login());
         }
     }
 
@@ -53,17 +53,17 @@ public class HomeController extends Controller {
     public Result timeline() {
         String login = session("Login");
         if (login != null) {
-        	return ok(timeline.render(login));
+            return ok(timeline.render(login));
         } else {
             return redirect(routes.HomeController.login());
         }
-        
+
     }
 
     public Result settings() {
         String login = session("Login");
         if (login != null) {
-        	return ok(settings.render(login));
+            return ok(settings.render(login));
         } else {
             return redirect(routes.HomeController.login());
         }
@@ -72,9 +72,9 @@ public class HomeController extends Controller {
     public Result schedule() {
         String login = session("Login");
         if (login != null) {
-        	List<Schedule> schedule2 = models.ScheduleStorage.getSchedule(login);
-        	ok(toJson(schedule2));
-        	return ok(schedule.render(login));
+            List<Schedule> schedule2 = models.ScheduleStorage.getSchedule(login);
+            ok(toJson(schedule2));
+            return ok(schedule.render(login));
         } else {
             return redirect(routes.HomeController.login());
         }
@@ -83,7 +83,7 @@ public class HomeController extends Controller {
     public Result privileges() {
         String login = session("Login");
         if (login != null) {
-        return ok(privileges.render(login));
+            return ok(privileges.render(login));
         } else {
             return redirect(routes.HomeController.login());
         }
@@ -211,7 +211,7 @@ public class HomeController extends Controller {
         try {
             JsonNode json = request().body().asJson();
             String userlogin = session("Login");
-            List<TimeStorage> result = models.TimeStorage.getDataLogin(json,userlogin);
+            List<TimeStorage> result = models.TimeStorage.getDataLogin(json, userlogin);
             return ok(toJson(result));
         } catch (Exception e) {
             e.printStackTrace();
@@ -299,24 +299,24 @@ public class HomeController extends Controller {
     }
 
     public Result getPaR() {
-		JsonNode json=request().body().asJson();
-    	String type=json.findPath("type").textValue();
-    	String login =session("Login");
-    	if (type.contains("privilegesyou")){
-        	List<SendedObject> result=models.PrivilegesStorage.getYou(login);
-        	return ok(toJson(result));		
-    	}else if (type.contains("privilegesother")){
-        	List<SendedObject> result=models.PrivilegesStorage.getOther(login);
-        	return ok(toJson(result));		
-    	}else  if(type.contains("requestyou")){
-        	List<SendedObject> result=models.RequestStorage.getYou(login);
-        	return ok(toJson(result));
-    	}else  if (type.contains("requestother")){
-        	List<SendedObject> result=models.RequestStorage.getOther(login);
-        	return ok(toJson(result));		
-    	}else {
-    		return ok("ERROR TYPE");
-    	}
+        JsonNode json = request().body().asJson();
+        String type = json.findPath("type").textValue();
+        String login = session("Login");
+        if (type.contains("privilegesyou")) {
+            List<SendedObject> result = models.PrivilegesStorage.getYou(login);
+            return ok(toJson(result));
+        } else if (type.contains("privilegesother")) {
+            List<SendedObject> result = models.PrivilegesStorage.getOther(login);
+            return ok(toJson(result));
+        } else if (type.contains("requestyou")) {
+            List<SendedObject> result = models.RequestStorage.getYou(login);
+            return ok(toJson(result));
+        } else if (type.contains("requestother")) {
+            List<SendedObject> result = models.RequestStorage.getOther(login);
+            return ok(toJson(result));
+        } else {
+            return ok("ERROR TYPE");
+        }
     }
 
     public Result setEstimatedHours() {
@@ -350,9 +350,9 @@ public class HomeController extends Controller {
 
     public Result generateExcel() {
         JsonNode json = request().body().asJson();
+        System.out.println(json.size() + " " + json);
         String login = session("Login");
         long begin = json.findPath("begin").numberValue().longValue();
-        System.out.println(begin);
         long end = json.findPath("end").numberValue().longValue();
         List<Schedule> weeklySchedule = models.ScheduleStorage.getSchedule(login);
         List<Time> timeline = models.TimeStorage.getTimeline(login, begin, end);
@@ -366,5 +366,15 @@ public class HomeController extends Controller {
         String login = request().body().asJson().findPath("login").textValue();
         ObjectNode result = models.TimeStorage.getWorkedHours(login);
         return ok(result);
+    }
+
+    public Result updateTimelineDay() {
+        models.TimeStorage.updateDay(session("Login"), request().body().asJson());
+        return ok("changed");
+    }
+
+    public Result sendFullSchedule() {
+        List<Schedule> weeklySchedule = models.ScheduleStorage.getSchedule(session("Login"));
+        return ok(toJson(weeklySchedule));
     }
 }

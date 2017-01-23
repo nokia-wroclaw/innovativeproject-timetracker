@@ -58,3 +58,7 @@ POST		/setestimated		controllers.HomeController.setEstimatedHours
 POST        /excel              controllers.HomeController.generateExcel
 # Kontroler POST służący do wysłania danemu użytkownikowi liczbę jego przepracowanych godzin w ciągu aktualnego dnia i miesiąca
 POST        /workedhours        controllers.HomeController.sendWorkedHours
+# Kontroler POST służący do edycji timeline'a
+POST        /sendtimelinechanges          controllers.HomeController.updateTimelineDay
+# Kontroler GET sluzacy do pobrania całego harmonogramu
+GET			/fullschedule		controllers.HomeController.sendFullSchedule
