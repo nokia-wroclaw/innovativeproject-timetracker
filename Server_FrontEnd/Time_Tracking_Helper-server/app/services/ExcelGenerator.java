@@ -24,15 +24,17 @@ public class ExcelGenerator {
     private XSSFWorkbook workbook;
     private List<Schedule> weeklySchedule;
     private List<Time> timeline;
+    private long begin;
+    private long end;
 
-    public ExcelGenerator(List<Schedule> weeklySchedule, List<Time> timeline) {
+    public ExcelGenerator(List<Schedule> weeklySchedule, List<Time> timeline, long begin, long end) {
         this.weeklySchedule = weeklySchedule;
         this.timeline = timeline;
         this.workbook = new XSSFWorkbook();
+        this.begin = begin;
+        this.end = end;
     }
 
-    //walidacja poprawności danych - TODO serwer + strona
-    //tzn. begin < end oraz zakresy na siebie nie nachodzą
     private double countExpectedTime(String weekDay) {
         double expectedTime = 0.0;
         for (Schedule schedule : this.weeklySchedule)
@@ -342,16 +344,6 @@ public class ExcelGenerator {
     }
 
     private void insertPeriod(Time period, Map<Date, XSSFRow> days, Calendar calendar) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date beginDay = null;
-        Date endDay = null;
-        try {
-            beginDay = sdf.parse(sdf.format(period.getBegin()));
-            endDay = sdf.parse(sdf.format(period.getEnd()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         calendar.setTime(period.getEnd());
         int endMinute = calendar.get(Calendar.MINUTE);
         int endHour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -366,30 +358,18 @@ public class ExcelGenerator {
 
         int reportingOffset = 5;
         int firstCell = 4 * (beginHour - 6) + (int) Math.round(beginMinute / 15.0) + reportingOffset;
-        int lastCellOfADay = 4 * (24 - 6) + reportingOffset - 1;
-        int lastReportingCell = 4 * 24 + reportingOffset;
         int lastCell = 4 * (endHour - 6) + (int) Math.round(endMinute / 15.0) + reportingOffset;
-        XSSFRow row = null;
+        int lastReportingCell = 4 * 24 + reportingOffset;
 
-        while (!beginDay.equals(endDay)) {
-            if (firstCell > lastCellOfADay) {
-                row = days.get(beginDay);
-                for (int column = firstCell; column < lastReportingCell; column++)
-                    row.getCell(column).setCellValue("n");
-                firstCell = reportingOffset;
-            }
-            for (int column = firstCell; column <= lastCellOfADay; column++)
-                row.getCell(column).setCellValue("n");
-            calendar.add(Calendar.DATE, 1);
-            try {
-                beginDay = sdf.parse(sdf.format(calendar.getTime()));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            firstCell = lastCellOfADay + 1;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date day = null;
+        try {
+            day = sdf.parse(sdf.format(period.getBegin()));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        row = days.get(beginDay);
+        XSSFRow row = days.get(day);
         if (firstCell > lastCell) {
             for (int column = firstCell; column < lastReportingCell; column++)
                 row.getCell(column).setCellValue("n");
@@ -450,17 +430,16 @@ public class ExcelGenerator {
     public void generateExcel() {
         createTemplateSheet();
 
-        if (!timeline.isEmpty()) {
-            Date firstDate = this.timeline.get(0).getBegin();
-            Date lastDate = this.timeline.get(this.timeline.size() - 1).getEnd();
+        Date beginDate = new Date(this.begin);
+        Date endDate = new Date(this.end);
 
-            int weeks = weeksBetween(firstDate, lastDate);
+        int weeks = weeksBetween(beginDate, endDate);
 
-            for (int i = 0; i < weeks; i++)
-                this.workbook.cloneSheet(0);
+        for (int i = 0; i < weeks; i++)
+            this.workbook.cloneSheet(0);
 
+        if (!timeline.isEmpty())
             insertTimeline(weeks);
-        }
 
         saveExcel();
     }

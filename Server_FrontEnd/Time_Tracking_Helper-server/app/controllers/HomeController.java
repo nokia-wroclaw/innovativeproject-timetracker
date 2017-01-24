@@ -10,6 +10,7 @@ import com.avaje.ebean.Model;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import exceptions.IncorrectPasswordException;
 import exceptions.ScheduleDayNotFoundException;
 import exceptions.ScheduleNotFoundException;
 import models.Privileges;
@@ -350,13 +351,12 @@ public class HomeController extends Controller {
 
     public Result generateExcel() {
         JsonNode json = request().body().asJson();
-        System.out.println(json.size() + " " + json);
         String login = session("Login");
         long begin = json.findPath("begin").numberValue().longValue();
         long end = json.findPath("end").numberValue().longValue();
         List<Schedule> weeklySchedule = models.ScheduleStorage.getSchedule(login);
         List<Time> timeline = models.TimeStorage.getTimeline(login, begin, end);
-        ExcelGenerator generator = new ExcelGenerator(weeklySchedule, timeline);
+        ExcelGenerator generator = new ExcelGenerator(weeklySchedule, timeline, begin, end);
         generator.generateExcel();
         System.out.println("Wygenerowano excela, zwracam plik...");
         return ok(new java.io.File("app/NewExcelFile.xlsx"));
@@ -370,11 +370,21 @@ public class HomeController extends Controller {
 
     public Result updateTimelineDay() {
         models.TimeStorage.updateDay(session("Login"), request().body().asJson());
-        return ok("changed");
+        return ok();
     }
 
     public Result sendFullSchedule() {
         List<Schedule> weeklySchedule = models.ScheduleStorage.getSchedule(session("Login"));
+        System.out.println(toJson(weeklySchedule));
         return ok(toJson(weeklySchedule));
+    }
+
+    public Result changeUserInfo() {
+        try {
+            models.UserStorage.changeUserInfo(session("Login"), request().body().asJson());
+        } catch (IncorrectPasswordException e) {
+            return badRequest();
+        }
+        return ok();
     }
 }

@@ -12,6 +12,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import play.data.validation.Constraints.Required;
 import com.avaje.ebean.Model;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 /*
  * Klasa tworzaca jedna z tabel baz danych
  * Poszczegolne pola publiczne to sa nazwy kolumn tabeli
@@ -19,31 +20,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * 
  */
 @Entity
-public class User extends Model{
-	@Id
-	public Integer id;
-	@JsonProperty
-	@OneToMany(mappedBy = "user", cascade=CascadeType.ALL)
-	public String login;
-	@JsonProperty
-	public String password;
-	@JsonProperty
-	public String name;
-	@JsonProperty
-	public String surname;
-	@JsonProperty
-	public String email;
+public class User extends Model {
+    @Id
+    public Integer id;
+    @JsonProperty
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    public String login;
+    @JsonProperty
+    public String password;
+    @JsonProperty
+    public String name;
+    @JsonProperty
+    public String surname;
+    @JsonProperty
+    public String email;
 
-
-	
-    public User(String Login,String Password,String Name,String Surname, String Email) {
-        this.login=Login;
-        this.password=Password;
-        this.name=Name;
-        this.surname=Surname;
-        this.email=Email;
-
+    public User(String Login, String Password, String Name, String Surname, String Email) {
+        this.login = Login;
+        this.password = Password;
+        this.name = Name;
+        this.surname = Surname;
+        this.email = Email;
     }
+
     public void setEmail(String email) {
         this.email = email;
     }
@@ -59,6 +58,7 @@ public class User extends Model{
     public String getPassword() {
         return password;
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -66,6 +66,7 @@ public class User extends Model{
     public String getName() {
         return name;
     }
+
     public void setSurname(String surname) {
         this.surname = surname;
     }
@@ -73,6 +74,7 @@ public class User extends Model{
     public String getSurname() {
         return surname;
     }
+
     public void setLogin(String login) {
         this.login = login;
     }

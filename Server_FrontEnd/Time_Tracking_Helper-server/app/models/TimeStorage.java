@@ -211,6 +211,12 @@ public class TimeStorage {
 
     }
 
+    public static void setMidnight(Calendar calendar) {
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+    }
+
     public static List<Time> getTimeline(String login, long beginTimestamp, long endTimestamp) {
         Model.Finder<Integer, Time> finder = new Model.Finder<>(Time.class);
 
@@ -218,19 +224,18 @@ public class TimeStorage {
         calendar.setFirstDayOfWeek(Calendar.MONDAY);
         calendar.setTimeInMillis(beginTimestamp);
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
+        setMidnight(calendar);
         Date beginDate = calendar.getTime();
 
         calendar.setTimeInMillis(endTimestamp);
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-        calendar.set(Calendar.HOUR_OF_DAY, 23);
-        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        setMidnight(calendar);
+        calendar.add(Calendar.DATE, 7);
         Date endDate = calendar.getTime();
 
-        //if (finder.all().isEmpty())
-        fillDataBaseWithSampleData();
-        return finder.where().and().eq("login", login).ge("begin", beginDate).le("end", endDate).findList();
+        if (finder.all().isEmpty())
+            fillDataBaseWithSampleData();
+        return finder.where().and().eq("login", login).ge("begin", beginDate).le("end", endDate).orderBy().asc("begin").findList();
     }
 
     public static ObjectNode getWorkedHours(String login) {
@@ -241,9 +246,7 @@ public class TimeStorage {
         Calendar calendar = Calendar.getInstance();
         Date now = calendar.getTime();
 
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
+        setMidnight(calendar);
         Date today = calendar.getTime();
 
         calendar.set(Calendar.DAY_OF_MONTH, 1);
@@ -260,15 +263,17 @@ public class TimeStorage {
 
     public static int calculateMinutes(List<Time> periods) {
         int minutes = 0;
-        int millisecondsInMinute = 1000 * 60;
-        for (Time period : periods)
-            minutes += (period.getEnd().getTime() - period.getBegin().getTime()) / millisecondsInMinute;
-        Time lastPeriod = periods.get(periods.size() - 1);
-        if (lastPeriod.getState().equals("Continue")) {
-            Date now = new Date();
-            int minutesBetween = (int) (now.getTime() - lastPeriod.getEnd().getTime()) / millisecondsInMinute;
-            if (minutesBetween <= 15)
-                minutes += minutesBetween;
+        if (!periods.isEmpty()) {
+            int millisecondsInMinute = 1000 * 60;
+            for (Time period : periods)
+                minutes += (period.getEnd().getTime() - period.getBegin().getTime()) / millisecondsInMinute;
+            Time lastPeriod = periods.get(periods.size() - 1);
+            if (lastPeriod.getState().equals("Continue")) {
+                Date now = new Date();
+                int minutesBetween = (int) ((now.getTime() - lastPeriod.getEnd().getTime()) / millisecondsInMinute);
+                if (minutesBetween <= 15)
+                    minutes += minutesBetween;
+            }
         }
         return minutes;
     }
@@ -290,7 +295,7 @@ public class TimeStorage {
         record2.save();
     }
 
-    public static void expandPeriod(Time lastRecord, Date dateToInsert, String state, String login) {
+    public static void addTimeToPeriod(Time lastRecord, Date dateToInsert, String state, String login) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(dateToInsert);
         int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
@@ -330,11 +335,10 @@ public class TimeStorage {
         Date dateToInsert = new Date(timestamp);
 
         Model.Finder<Integer, Time> finder = new Model.Finder<>(Time.class);
-        List<Time> tc = finder.where().eq("login", login).orderBy().desc("begin").setMaxRows(1).findList();
-        if (!tc.isEmpty()) {
-            Time lastRecord = tc.get(0);
+        Time lastRecord = finder.where().eq("login", login).orderBy().desc("begin").setMaxRows(1).findUnique();
+        if (lastRecord != null) {
             if ((timestamp - lastRecord.getEnd().getTime()) < maxPeriodBetween) {
-                expandPeriod(lastRecord, dateToInsert, state, login);
+                addTimeToPeriod(lastRecord, dateToInsert, state, login);
             } else {
                 lastRecord.setState("End");
                 lastRecord.update();
@@ -351,39 +355,43 @@ public class TimeStorage {
 
     public static void updateDay(String login, JsonNode json) {
         long timestamp = json.findPath("date").numberValue().longValue();
+
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(timestamp);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        Date begin = calendar.getTime();
+        setMidnight(calendar);
+
         calendar.add(Calendar.DATE, 1);
         Date end = calendar.getTime();
+
         calendar.add(Calendar.DATE, -1);
+        Date begin = calendar.getTime();
+
         Model.Finder<Integer, Time> finder = new Model.Finder<>(Time.class);
         List<Time> tc = finder.where().and().eq("login", login).ge("begin", begin).le("end", end).findList();
         tc.forEach((period) -> period.delete());
+
         ArrayNode node = (ArrayNode) json.findPath("periods");
+
         for (int i = 0; i < node.size(); i++) {
             String beginTime = node.get(i).findPath("begin").textValue();
-            int semicolonIndex = beginTime.indexOf(':');
-            int hours = Integer.parseInt(beginTime.substring(0, semicolonIndex));
-            int minutes = Integer.parseInt(beginTime.substring(semicolonIndex + 1));
-            calendar.set(Calendar.HOUR_OF_DAY, hours);
-            calendar.set(Calendar.MINUTE, minutes);
+            setHour(calendar, beginTime);
             Date beginDate = calendar.getTime();
 
             String endTime = node.get(i).findPath("end").textValue();
-            semicolonIndex = endTime.indexOf(':');
-            hours = Integer.parseInt(endTime.substring(0, semicolonIndex));
-            minutes = Integer.parseInt(endTime.substring(semicolonIndex + 1));
-            calendar.set(Calendar.HOUR_OF_DAY, hours);
-            calendar.set(Calendar.MINUTE, minutes);
+            setHour(calendar, endTime);
             Date endDate = calendar.getTime();
 
             Time record = new Time(login, beginDate, endDate, "End");
             record.save();
         }
+    }
+
+    public static void setHour(Calendar calendar, String hour) {
+        int semicolonIndex = hour.indexOf(':');
+        int hours = Integer.parseInt(hour.substring(0, semicolonIndex));
+        int minutes = Integer.parseInt(hour.substring(semicolonIndex + 1));
+        calendar.set(Calendar.HOUR_OF_DAY, hours);
+        calendar.set(Calendar.MINUTE, minutes);
     }
 
     public static java.util.Date fromStringToDate(String stringDate) {

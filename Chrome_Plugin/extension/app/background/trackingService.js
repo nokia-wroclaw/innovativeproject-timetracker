@@ -1,7 +1,7 @@
 'use strict';
 
 var tracking = null;
-var intervalTime = 15000;
+var intervalTime = 1000 * 60 * 15;
 var sendingParams = {
     login: "",
     password: "",

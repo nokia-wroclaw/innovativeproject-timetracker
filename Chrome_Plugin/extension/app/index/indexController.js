@@ -3,16 +3,16 @@
 var timer = 0;
 var timerDelay = 60000;
 angular.module('myApp', [])
-    .controller('TrackingStateController', function ($scope, storageService, $http) {
+    .controller('TrackingStateController', function ($scope, $http, storageService) {
 
         $scope.loginError = false;
         $scope.workedToday = {
-            hours: 0,
-            minutes: 0
+            hours: "00",
+            minutes: "00"
         };
         $scope.workedThisMonth = {
-            hours: 0,
-            minutes: 0
+            hours: "00",
+            minutes: "00"
         };
 
         var fetchWorkedTime = function () {
