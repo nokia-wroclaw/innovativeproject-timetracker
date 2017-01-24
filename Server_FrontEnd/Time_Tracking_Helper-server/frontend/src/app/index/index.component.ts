@@ -15,6 +15,7 @@ export class IndexComponent {
     timelineView = false;
     textView = true;
     submitted = false;
+    isSubmitted = true;
     numberOfEditingDays = 3;
     listOfEditingDays = [''];
     actualDateEditing = '';
@@ -60,6 +61,24 @@ export class IndexComponent {
             //here checking values? (10:00 - 9:00)
             var inputFrom = (<HTMLInputElement>document.getElementById("edTables-"+i+"-1")).value;
             var inputTo = (<HTMLInputElement>document.getElementById("edTables-"+i+"-2")).value;
+
+            /*compare if inputTo is later than inputFrom (as time)*/
+            if(inputFrom.length != 0) {
+                if(inputFrom.length == 4)
+                    var inputFrom2 = "0" + inputFrom + ":00";
+                else
+                    var inputFrom2 = inputFrom + ":00";
+
+                if(inputTo.length == 4)
+                    var inputTo2 = "0" + inputTo + ":00";
+                else
+                    var inputTo2 = inputTo + ":00";
+
+                if (inputFrom2 >= inputTo2) {
+                    document.getElementById("serverAnswer").innerHTML = "Incorrect hours!";
+                    return;
+                }
+            }
             this.editingTables[this.actualDateNrEditing][i] = ([inputFrom, inputTo]);
         }
 
@@ -69,32 +88,23 @@ export class IndexComponent {
         var dateStr = this.actualDateEditing;
 
         //building sending msg
-        //Old version
-       /* var sendingMsg = "[";
-        for(var i=0; i<this.editingTables[this.actualDateNrEditing].length; i++) {
-            sendingMsg += "{"
-            sendingMsg += "day:" + "\"" + this.actualDateEditing + "\"";
-            sendingMsg += ",begin:"+ "\"" + this.editingTables[this.actualDateNrEditing][i][0] + "\"";
-            sendingMsg += ",end:"+ "\"" + this.editingTables[this.actualDateNrEditing][i][1] + "\"";
-            sendingMsg += "}"
-
-            if(i+1<this.editingTables[this.actualDateNrEditing].length) {
-                sendingMsg += ","
-            }
-        }
-
-        sendingMsg += "]";
-        */
-
-       var dateStamp = (new Date(this.actualDateEditing)).getTime();
+        var dateStamp = (new Date(this.actualDateEditing)).getTime();
         var sendingMsg = "{\"date\":" + dateStamp.toString() + ", \"periods\": [";
         for(var i=0; i<this.editingTables[this.actualDateNrEditing].length; i++) {
+            if(this.editingTables[this.actualDateNrEditing][i][0].length == 0) {
+                if(this.editingTables[this.actualDateNrEditing][i][1].length == 0) {
+                    continue;
+                }
+                document.getElementById("serverAnswer").innerHTML = "Incorrect hours!";
+                return;
+            }
             sendingMsg += "{"
             sendingMsg += "\"begin\":"+ "\"" + this.editingTables[this.actualDateNrEditing][i][0] + "\"";
             sendingMsg += ",\"end\":"+ "\"" + this.editingTables[this.actualDateNrEditing][i][1] + "\"";
             sendingMsg += "}"
 
-            if(i+1<this.editingTables[this.actualDateNrEditing].length) {
+            if(i+1<this.editingTables[this.actualDateNrEditing].length &&
+                this.editingTables[this.actualDateNrEditing][i+1][0].length != 0 ) {
                 sendingMsg += ","
             }
         }
@@ -191,6 +201,7 @@ export class IndexComponent {
     }
 
     getTimeline(timelineForm: NgForm) {
+        this.isSubmitted = false;
         document.getElementById('visualization').innerHTML = "";
         /*counting number of days*/
 

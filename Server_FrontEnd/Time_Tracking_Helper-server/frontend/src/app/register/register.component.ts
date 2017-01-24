@@ -16,6 +16,10 @@ export class RegisterComponent {
         this.submitted = true;
     }
 
+    changeToLoginPage(){
+        window.location.href = '/login';
+    }
+
     sendUser(regForm:NgForm) {
 
         if(regForm.value.pwd != regForm.value.pwdR) {
@@ -95,8 +99,5 @@ export class RegisterComponent {
         return JSON.stringify(this.model);
     }
     constructor() {
-    }
-    changeToLoginPage(){
-        window.location.href = 'http://localhost:9000/login';
     }
 }

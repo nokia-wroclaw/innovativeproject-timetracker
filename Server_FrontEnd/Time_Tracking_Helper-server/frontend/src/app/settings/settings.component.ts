@@ -12,28 +12,23 @@ export class SettingsComponent {
     constructor() {
     }
 
-    userNick = () => localStorage.getItem('authToken').split(" ")[0];
     userName = () => localStorage.getItem('authToken').split(" ")[1];
     userSurname = () => localStorage.getItem('authToken').split(" ")[2];
 
-    changeUsername() {
+    changeEmail() {
+        var emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-        var newNick = (<HTMLInputElement>document.getElementById("username")).value;
-        if (newNick.length < 3) {
-            document.getElementById("serverAnswer").innerHTML = "New username is too short!"
-            return;
-        } else if (newNick.length > 16) {
-            document.getElementById("serverAnswer").innerHTML = "New username is too long!"
+        var newEmail = (<HTMLInputElement>document.getElementById("username")).value;
+        if(emailRegex.test(newEmail) == false) {
+            document.getElementById("serverAnswer").innerHTML = "Invalid e-mail!"
             return;
         }
 
         var xhttp = new XMLHttpRequest();
 
-        document.getElementById("serverAnswer").innerHTML = newNick;
-        /*
+        //document.getElementById("serverAnswer").innerHTML = newEmail;
          var params = JSON.stringify({
-         type: "changenick",
-         newnick: newNick
+         newemail: newEmail
          });
 
         xhttp.open("POST", "/changeuserinfo", true);
@@ -41,11 +36,10 @@ export class SettingsComponent {
         xhttp.onreadystatechange = () => {
             if (xhttp.readyState == 4 && xhttp.status == 200) {
                 document.getElementById("serverAnswer").innerHTML = xhttp.responseText;
-                //Server gives new info for token?
             }
         };
         xhttp.send(params);
-        */
+
     }
 
     changeNameSurname() {
@@ -68,15 +62,15 @@ export class SettingsComponent {
             return;
         }
 
-        document.getElementById("serverAnswer").innerHTML = newName + " " + newSurname;
+        //document.getElementById("serverAnswer").innerHTML = newName + " " + newSurname;
 
         var xhttp = new XMLHttpRequest();
-        /*
+
         var params = JSON.stringify({
-            type: "changename",
             newname: newName,
             newsurname: newSurname
         });
+
 
         xhttp.open("POST", "/changeuserinfo", true);
         xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
@@ -87,7 +81,7 @@ export class SettingsComponent {
             }
         };
         xhttp.send(params);
-        */
+
     }
 
     changePassword() {
@@ -110,9 +104,8 @@ export class SettingsComponent {
 
         var xhttp = new XMLHttpRequest();
 
-        /*
+
         var params = JSON.stringify({
-            type: "changepwd",
             oldpwd: oldPwd,
             newpwd: newPwd1
         });
@@ -125,7 +118,7 @@ export class SettingsComponent {
             }
         };
         xhttp.send(params);
-        */
+
     }
 
 

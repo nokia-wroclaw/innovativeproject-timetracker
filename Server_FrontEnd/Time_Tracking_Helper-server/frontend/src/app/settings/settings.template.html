@@ -4,12 +4,12 @@
 <div class="usernameSettings-container col-md-3">
     <form #settingsForm1="ngForm">
         <div class="row">
-            <h2>Change username</h2>
+            <h2>Change e-mail</h2>
             <div class="form-group">
-                <input type="text" class="form-control" name="username" id="username" value="{{userNick()}}">
+                <input type="text" class="form-control" name="email" id="email" value="">
             </div>
         </div>
-        <button type="submit" class="btn btn-primary username-button" (click)="changeUsername(settingsForm1)">
+        <button type="submit" class="btn btn-primary username-button" (click)="changeEmail()">
             Change
         </button>
     </form>
@@ -27,7 +27,7 @@
                 <input type="text" class="form-control" name="surname" id="surname" value="{{userSurname()}}">
             </div>
         </div>
-        <button type="submit" class="btn btn-primary nameSurname-button" (click)="changeNameSurname(settingsForm2)">
+        <button type="submit" class="btn btn-primary nameSurname-button" (click)="changeNameSurname()">
             Change
         </button>
     </form>
@@ -47,7 +47,7 @@
                 <input type="password" class="form-control" name="newPwd2" id="newPwd2">
             </div>
         </div>
-        <button type="submit" class="btn btn-primary password-button" (click)="changePassword(settingsForm3)">
+        <button type="submit" class="btn btn-primary password-button" (click)="changePassword()">
             Change
         </button>
     </form>
