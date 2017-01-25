@@ -12,6 +12,7 @@ var vis = require("vis/dist/vis.js");
 export class IndexComponent {
 
     model = new TimelineSettings('Kruk07', "2016-12-12", "2017-01-16");
+    generationModel = new TimelineSettings('Kruk07', "2017-01-03", "2017-01-16");
     timelineView = false;
     textView = true;
     submitted = false;
@@ -22,6 +23,8 @@ export class IndexComponent {
     actualDateNrEditing = 0;
     editingTables = [[['14:00', '15:00'],['17:00', '19:00'], ['19:15', '22:00']], [['9:00', '12:30'],['13:45', '16:00']]];
     constructor() {
+        this.model = new TimelineSettings('Kruk07', (new Date((new Date()).getTime()-600000000).toISOString().substr(0, 10)), (new Date().toISOString().substr(0, 10)));
+        this.generationModel = new TimelineSettings('Kruk07', (new Date((new Date()).getTime()-600000000).toISOString().substr(0, 10)), (new Date().toISOString().substr(0, 10)));
     }
 
     onSubmit() {
@@ -373,8 +376,6 @@ export class IndexComponent {
         };
         xhttp.send(params);
     }
-
-    generationModel = new TimelineSettings('Kruk07', "2017-01-03", "2017-01-16");
 
     getExcel(timelineForm: NgForm) {
         var xhttp = new XMLHttpRequest();

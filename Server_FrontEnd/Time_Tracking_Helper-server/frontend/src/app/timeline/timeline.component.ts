@@ -16,6 +16,8 @@ export class TimelineComponent {
     usersToWatch = [["Henryk","Niesienkiewicz", "Kruk07"], ["Jan","Mroźny", "Niegrozny"]];
     constructor() {
         this.getUsersToWatch();
+        var fromDefault = new Date();
+        this.model = new TimelineSettings('Kruk07', (new Date((new Date()).getTime()-600000000).toISOString().substr(0, 10)), (new Date().toISOString().substr(0, 10)));
     }
 
     changeRange(num: number) {
@@ -50,15 +52,32 @@ export class TimelineComponent {
         document.getElementById('user-timeline-'+numberOfUser).innerHTML = "";
     }
 
-    getTimeline(username: String, numberOfUser: number) {
+    getTimeline(username: String, numberOfUser: number, timelineForm:NgForm) {
         var xhttp = new XMLHttpRequest();
 
-        var rng = this.range.toString();
-        var params = JSON.stringify({
-            login: username,
-            range: rng
-        });
-        //document.getElementById("serverAnswer").innerHTML = params;
+        var params = "";
+        if(this.range != 0) {
+            var rng = this.range.toString();
+            params = JSON.stringify({
+                login: username,
+                range: rng
+            });
+        } else {
+            var fromDateStr = timelineForm.value.fromDate.split("-")[2] + "/" +
+                timelineForm.value.fromDate.split("-")[1] + "/" +
+                timelineForm.value.fromDate.split("-")[0] + "@00:00";
+
+            var toDateStr = timelineForm.value.toDate.split("-")[2] + "/" +
+                timelineForm.value.toDate.split("-")[1] + "/" +
+                timelineForm.value.toDate.split("-")[0] + "@23:59";
+
+            params = JSON.stringify({
+                login: username,
+                begin: fromDateStr,
+                end: toDateStr
+            });
+        }
+        //document.getElementById("serverAnswer2").innerHTML = params;
 
         xhttp.open("POST", "/otherinfo", true);
         xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
