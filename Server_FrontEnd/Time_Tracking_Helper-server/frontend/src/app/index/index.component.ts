@@ -145,7 +145,7 @@ export class IndexComponent {
         //this.numberOfEditingDays = (date2.getDate() - date1.getDate())/86400000 + 1;
         var d1 = new Date(date1);
         var d2 = new Date(date2);
-        this.actualDateEditing = d1.getFullYear() + '-' + (d1.getMonth()+1) + '-' + d1.getDate();
+        this.actualDateEditing = d1.toISOString().substr(0, 10);
         this.listOfEditingDays = [];
         while (d1.getTime() <= d2.getTime()) {
             this.listOfEditingDays.push(d1.toISOString().substr(0, 10));
@@ -390,20 +390,24 @@ export class IndexComponent {
 
         xhttp.open("POST", "/excel", true);
         xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-        xhttp.onreadystatechange = function () {
+        xhttp.responseType = 'arraybuffer';
+        xhttp.onreadystatechange = () => {
             if(xhttp.readyState === XMLHttpRequest.DONE && xhttp.status === 200) {
                 console.log("Generation successful");
 
-                var str = xhttp.responseText;
-                var uri = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8,' + str;
-                //var uri = 'data:text/plain;charset=utf-8,' + str;
-                var downloadLink = document.createElement("a");
-                downloadLink.href = uri;
-                downloadLink.download = "excel.xlsx";
+                var blob = new Blob(
+                    //[this.s2ab(xhttp.responseText)],
+                    [xhttp.response],
+                    {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=ISO-8859-1,"}
+                );
 
-                document.body.appendChild(downloadLink);
-                downloadLink.click();
-                document.body.removeChild(downloadLink);
+                // Programatically create a link and click it:
+                var a = document.createElement("a");
+                a.href = URL.createObjectURL(blob);
+                a.download = "excel.xlsx";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
 
             } else {
                 console.log("Generation error");
@@ -411,4 +415,5 @@ export class IndexComponent {
         };
         xhttp.send(params);
     }
+
 }
