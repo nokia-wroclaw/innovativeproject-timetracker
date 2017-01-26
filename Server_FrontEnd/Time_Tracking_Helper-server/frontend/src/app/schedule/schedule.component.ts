@@ -49,7 +49,7 @@ export class ScheduleComponent {
         var inputValue = (<HTMLInputElement>document.getElementById("field_monday00")).value;
 
        /*holds string that will be send to server as json*/
-        var sendingStr = "[";
+        var sendingStr = "{ \"schedule\": [";
 
         /*holds information if every input is correct*/
         var validTimeFormat = true;
@@ -93,7 +93,7 @@ export class ScheduleComponent {
             j = 0;
             i++;
         }
-        sendingStr += "]";
+        sendingStr += "]}";
 
 
         if(validTimeFormat == false) {
