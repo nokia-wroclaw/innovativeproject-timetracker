@@ -270,6 +270,28 @@ public class TimeStorage {
         return result;
     }
 
+    public static int getWorkedMinutes(String login) {
+        Model.Finder<Integer, Time> finder = new Model.Finder<>(Time.class);
+        if (finder.all().isEmpty())
+            fillDataBaseWithSampleData();
+
+        Calendar calendar = Calendar.getInstance();
+        setMidnight(calendar);
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+
+        calendar.add(Calendar.DAY_OF_MONTH, -7);
+        Date begin = calendar.getTime();
+
+        calendar.add(Calendar.DAY_OF_MONTH, 7);
+        calendar.add(Calendar.SECOND, -1);
+        Date end = calendar.getTime();
+
+        List<Time> periods = finder.where().and().eq("login", login).ge("begin", begin).le("end", end).findList();
+
+        return calculateMinutes(periods);
+    }
+
     public static int calculateMinutes(List<Time> periods) {
         int minutes = 0;
         if (!periods.isEmpty()) {
