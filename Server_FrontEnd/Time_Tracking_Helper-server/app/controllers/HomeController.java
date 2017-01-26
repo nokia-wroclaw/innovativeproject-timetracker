@@ -362,7 +362,9 @@ public class HomeController extends Controller {
         ExcelGenerator generator = new ExcelGenerator(weeklySchedule, timeline, begin, end);
         generator.generateExcel();
         System.out.println("Wygenerowano excela, zwracam plik...");
-        return ok(new java.io.File("app/NewExcelFile.xlsx"));
+        return ok(new java.io.File("app/NewExcelFile.xlsx"))
+                .as("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=ISO-8859-1")
+                .withHeader("Content-Disposition", "attachment; filename=NewExcelFile.xlsx");
     }
 
     public Result sendWorkedHours() {
@@ -378,7 +380,6 @@ public class HomeController extends Controller {
 
     public Result sendFullSchedule() {
         List<Schedule> weeklySchedule = models.ScheduleStorage.getSchedule(session("Login"));
-        System.out.println(toJson(weeklySchedule));
         return ok(toJson(weeklySchedule));
     }
 

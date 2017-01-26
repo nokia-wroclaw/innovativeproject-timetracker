@@ -129,27 +129,36 @@ public class TimeStorage {
 
         Model.Finder<Integer, Time> finder = new Model.Finder<>(Time.class);
         String name = json.findValue("login").textValue();
-        String range = json.findValue("range").textValue();
         Model.Finder<Integer, Privileges> finder2 = new Model.Finder<>(Privileges.class);
 
         List<Privileges> t23 = finder2.where().and().eq("userfrom", userlogin).eq("userto", name).findList();
         if (t23 == null) {
             throw new Exception("BRAK UPRAWNIEN");
         }
-        System.out.println(name);
-        System.out.println(range);
-        int days;
-        if (range.contains("7")) {
-            days = 7;
-        } else if (range.contains("31")) {
-            days = 31;
+
+        Date beginDate = null;
+        Date endDate = null;
+        JsonNode node = json.findValue("range");
+        if (node != null) {
+            String range = node.textValue();
+            int days;
+            if (range.contains("7")) {
+                days = 7;
+            } else if (range.contains("31")) {
+                days = 31;
+            } else {
+                throw new Exception("NIEPOPRAWNY FORMAT");
+            }
+            Calendar calendar = Calendar.getInstance();
+            endDate = calendar.getTime();
+            setMidnight(calendar);
+            calendar.add(Calendar.DAY_OF_MONTH, -days);
+            beginDate = calendar.getTime();
         } else {
-            throw new Exception("NIEPOPRAWNY FORMAT");
+            beginDate = fromStringToDate(json.findValue("begin").textValue());
+            endDate = fromStringToDate(json.findValue("end").textValue());
         }
-        Calendar calendar = Calendar.getInstance();
-        java.util.Date date2 = calendar.getTime();
-        calendar.add(Calendar.DAY_OF_MONTH, -days);
-        java.util.Date date1 = calendar.getTime();
+
         //java.util.Date date1 = fromStringToDate(json.findValue("begin").textValue());
         //java.util.Date date2 = fromStringToDate(json.findValue("end").textValue());
 
@@ -189,7 +198,7 @@ public class TimeStorage {
             Time record14 = new Time("Kruk07", fromStringToDate("16/01/2017@07:00"), fromStringToDate("16/01/2017@15:00"), "End");
             record14.save();
         }
-        List<Time> t = finder.where().and().eq("login", name).ge("begin", date1).le("end", date2).orderBy().asc("begin").findList();
+        List<Time> t = finder.where().and().eq("login", name).ge("begin", beginDate).le("end", endDate).orderBy().asc("begin").findList();
 
         if (t == null) {
             throw new Exception();

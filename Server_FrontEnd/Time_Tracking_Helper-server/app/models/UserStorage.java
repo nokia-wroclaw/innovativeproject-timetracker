@@ -9,6 +9,7 @@ import javax.inject.Inject;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+import exceptions.EmailExistsInDatabaseException;
 import exceptions.IncorrectPasswordException;
 import models.User;
 
@@ -71,7 +72,7 @@ public class UserStorage {
         }
     }
 
-    public static void changeUserInfo(String login, JsonNode json) throws IncorrectPasswordException {
+    public static void changeUserInfo(String login, JsonNode json) throws IncorrectPasswordException, EmailExistsInDatabaseException {
         Model.Finder<Integer, User> finder = new Model.Finder<>(User.class);
         User user = finder.where().eq("login", login).findUnique();
         String newEmail = json.findPath("newemail").textValue();
@@ -81,6 +82,9 @@ public class UserStorage {
                 throw new EmailExistsInDatabaseException();
             user.setEmail(newEmail);
         }
+        String newName = json.findPath("newname").textValue();
+        if (newName != null)
+            user.setName(newName);
         String newSurname = json.findPath("newsurname").textValue();
         if (newSurname != null)
             user.setSurname(newSurname);
