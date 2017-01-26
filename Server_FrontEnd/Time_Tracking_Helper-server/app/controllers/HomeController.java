@@ -10,6 +10,7 @@ import com.avaje.ebean.Model;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import exceptions.EmailExistsInDatabaseException;
 import exceptions.IncorrectPasswordException;
 import exceptions.ScheduleDayNotFoundException;
 import exceptions.ScheduleNotFoundException;
@@ -199,6 +200,7 @@ public class HomeController extends Controller {
             JsonNode json = request().body().asJson();
             String login = session("Login");
             List<TimeStorage> result = models.TimeStorage.getDataSession(login, json);
+            result.forEach((res) -> System.out.println(res.getName() + res.getBegin() + res.getEnd()));
             return ok(toJson(result));
         } catch (Exception e) {
             e.printStackTrace();
@@ -346,6 +348,7 @@ public class HomeController extends Controller {
     public Result getUserinfo() {
         Model.Finder<Integer, Time> finder = new Model.Finder<>(Time.class);
         List<Time> users = finder.all();
+
         return ok(toJson(users));
     }
 
@@ -383,7 +386,9 @@ public class HomeController extends Controller {
         try {
             models.UserStorage.changeUserInfo(session("Login"), request().body().asJson());
         } catch (IncorrectPasswordException e) {
-            return badRequest();
+            return badRequest("Incorrect password");
+        } catch (EmailExistsInDatabaseException e) {
+            return badRequest("Email already used");
         }
         return ok();
     }

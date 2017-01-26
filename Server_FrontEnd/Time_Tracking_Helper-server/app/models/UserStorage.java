@@ -74,9 +74,13 @@ public class UserStorage {
     public static void changeUserInfo(String login, JsonNode json) throws IncorrectPasswordException {
         Model.Finder<Integer, User> finder = new Model.Finder<>(User.class);
         User user = finder.where().eq("login", login).findUnique();
-        String newName = json.findPath("newname").textValue();
-        if (newName != null)
-            user.setName(newName);
+        String newEmail = json.findPath("newemail").textValue();
+        if (newEmail != null) {
+            User userWithNewEmail = finder.where().eq("email", newEmail).findUnique();
+            if (userWithNewEmail != null)
+                throw new EmailExistsInDatabaseException();
+            user.setEmail(newEmail);
+        }
         String newSurname = json.findPath("newsurname").textValue();
         if (newSurname != null)
             user.setSurname(newSurname);
@@ -89,5 +93,6 @@ public class UserStorage {
                 throw new IncorrectPasswordException();
             }
         }
+        user.update();
     }
 }
