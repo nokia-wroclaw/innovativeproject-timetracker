@@ -427,7 +427,7 @@ public class ExcelGenerator {
         return weeks;
     }
 
-    public void generateExcel() {
+    public byte[] generateExcel() {
         createTemplateSheet();
 
         Date beginDate = new Date(this.begin);
@@ -441,18 +441,19 @@ public class ExcelGenerator {
         if (!timeline.isEmpty())
             insertTimeline(weeks);
 
-        saveExcel();
-    }
-
-    private void saveExcel() {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
         try {
-            String filename = "app//NewExcelFile.xlsx";
-            FileOutputStream fileOut = new FileOutputStream(filename);
-            this.workbook.write(fileOut);
-            fileOut.close();
-            System.out.println("Your excel file has been generated!");
-        } catch (Exception ex) {
-            System.out.println(ex);
+            this.workbook.write(bos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                bos.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        byte[] bytes = bos.toByteArray();
+        return bytes;
     }
 }

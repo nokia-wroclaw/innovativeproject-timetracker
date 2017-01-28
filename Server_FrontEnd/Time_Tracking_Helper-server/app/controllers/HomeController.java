@@ -360,11 +360,8 @@ public class HomeController extends Controller {
         List<Schedule> weeklySchedule = models.ScheduleStorage.getSchedule(login);
         List<Time> timeline = models.TimeStorage.getTimeline(login, begin, end);
         ExcelGenerator generator = new ExcelGenerator(weeklySchedule, timeline, begin, end);
-        generator.generateExcel();
-        System.out.println("Wygenerowano excela, zwracam plik...");
-        return ok(new java.io.File("app/NewExcelFile.xlsx"))
-                .as("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=ISO-8859-1")
-                .withHeader("Content-Disposition", "attachment; filename=NewExcelFile.xlsx");
+        byte[] bytes = generator.generateExcel();
+        return ok(bytes).as("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=ISO-8859-1");
     }
 
     public Result sendWorkedHours() {
