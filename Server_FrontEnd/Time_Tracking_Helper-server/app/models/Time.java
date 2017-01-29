@@ -3,6 +3,7 @@ package models;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -14,7 +15,7 @@ import com.avaje.ebean.Model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-public class Time extends Model {
+public class Time extends Model implements Comparator<Time>, Comparable<Time>{
 
     @Id
     public Integer id;
@@ -65,5 +66,13 @@ public class Time extends Model {
 
     public Date getEnd() {
         return this.end;
+    }
+
+    public int compare(Time t1, Time t2) {
+        return t1.getBegin().compareTo(t2.getBegin());
+    }
+
+    public int compareTo(Time t) {
+        return (this.getBegin()).compareTo(t.getBegin());
     }
 }

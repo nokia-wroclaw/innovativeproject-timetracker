@@ -200,7 +200,6 @@ public class HomeController extends Controller {
             JsonNode json = request().body().asJson();
             String login = session("Login");
             List<TimeStorage> result = models.TimeStorage.getDataSession(login, json);
-            result.forEach((res) -> System.out.println(res.getName() + res.getBegin() + res.getEnd()));
             return ok(toJson(result));
         } catch (Exception e) {
             e.printStackTrace();

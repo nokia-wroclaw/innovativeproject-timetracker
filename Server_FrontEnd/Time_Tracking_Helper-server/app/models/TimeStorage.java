@@ -1,5 +1,6 @@
 package models;
 
+import java.util.Collections;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
+import java.util.LinkedList;
 
 import com.avaje.ebean.Model;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -401,7 +403,9 @@ public class TimeStorage {
         List<Time> tc = finder.where().and().eq("login", login).ge("begin", begin).le("end", end).findList();
         tc.forEach((period) -> period.delete());
 
+        List<Time> periodsInDay = new LinkedList<Time>();
         ArrayNode node = (ArrayNode) json.findPath("periods");
+        System.out.println(node);
 
         for (int i = 0; i < node.size(); i++) {
             String beginTime = node.get(i).findPath("begin").textValue();
@@ -412,9 +416,36 @@ public class TimeStorage {
             setHour(calendar, endTime);
             Date endDate = calendar.getTime();
 
-            Time record = new Time(login, beginDate, endDate, "End");
-            record.save();
+            periodsInDay.add(new Time(login, beginDate, endDate, "End"));
         }
+        List<Time> mergedPeriods = mergeOverlappingPeriods(periodsInDay);
+        mergedPeriods.forEach((period) -> period.save());
+    }
+
+    public static List<Time> mergeOverlappingPeriods(List<Time> periods) {
+        List<Time> mergedPeriods = new LinkedList<Time>();
+        if (!periods.isEmpty()) {
+            Collections.sort(periods);
+            Time previousPeriod = periods.get(0);
+            mergedPeriods.add(previousPeriod);
+            periods.remove(previousPeriod);
+            while (!periods.isEmpty()) {
+                Time period = periods.get(0);
+                if (period.getBegin().compareTo(previousPeriod.getEnd()) > 0) {
+                    previousPeriod = period;
+                    mergedPeriods.add(period);
+                    periods.remove(period);
+                } else {
+                    if (period.getEnd().compareTo(previousPeriod.getEnd()) <= 0) {
+                        periods.remove(period);
+                    } else {
+                        previousPeriod.setEnd(period.getEnd());
+                        periods.remove(period);
+                    }
+                }
+            }
+        }
+        return mergedPeriods;
     }
 
     public static void setHour(Calendar calendar, String hour) {
