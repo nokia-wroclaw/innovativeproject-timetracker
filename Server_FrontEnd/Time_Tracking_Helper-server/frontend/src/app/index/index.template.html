@@ -60,12 +60,12 @@
                             <tr *ngFor="let item of editingTables[actualDateNrEditing]; let i = index">
                                 <td><input type="time" class="form-control" id="edTables-{{i}}-1" name="edTables-{{i}}-1" value="{{item[0]}}" size="5"  /></td>
                                 <td><input type="time" class="form-control" id="edTables-{{i}}-2" name="edTables-{{i}}-2" value="{{item[1]}}" size="5"  /></td>
-                                <td><button type="button" (click)="addSpaceHours(0, i)">A&uArr;</button>
-                                <td><button type="button" (click)="addSpaceHours(1, i)">A&dArr;</button>
-                                <td><button type="button" (click)="deleteHours(i)">&#10008;</button>
+                                <td><button class="btn btn-primary timeline-button1" type="button" (click)="addSpaceHours(0, i)">A&uArr;</button>
+                                <td><button class="btn btn-primary timeline-button1" type="button" (click)="addSpaceHours(1, i)">A&dArr;</button>
+                                <td><button class="btn btn-primary timeline-button1" type="button" (click)="deleteHours(i)">&#10008;</button>
                             </tr>
                             </tbody>
-                            <button type="button" (click)="submitDayChanges()">Submit Day Changes</button>
+                            <button class="btn btn-primary timeline-button1" type="button" (click)="submitDayChanges()">Submit Day Changes</button>
                         </table>
                     </div>
                 </div>
@@ -79,17 +79,17 @@
                         <div class="form-group">
                             <label>From:</label>
                             <input type="date" class="form-control"
-                               required [(ngModel)]="generationModel.fromDate" name="fromDate">
+                                   required [(ngModel)]="generationModel.fromDate" name="fromDate">
                         </div>
                         <div class="form-group">
                             <label>To: </label>
                             <input type="date" class="form-control"
-                               required [(ngModel)]="generationModel.toDate" name="toDate">
+                                   required [(ngModel)]="generationModel.toDate" name="toDate">
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary timeline-button"
-                        [disabled]="!timelineSettingsForm2.form.valid" (click)="getExcel(timelineSettingsForm2)">
-                    Generate
+                            [disabled]="!timelineSettingsForm2.form.valid" (click)="getExcel(timelineSettingsForm2)">
+                        Generate
                     </button>
                 </form>
                 <br>

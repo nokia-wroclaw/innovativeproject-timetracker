@@ -9,6 +9,10 @@ import {FormsModule, NgForm} from "@angular/forms";
 
 export class SettingsComponent {
 
+
+    firstSettingsPartView = false;
+    secondSettingsPartView = true;
+    thirdSettingsPartView = true;
     constructor() {
     }
 
@@ -27,9 +31,9 @@ export class SettingsComponent {
         var xhttp = new XMLHttpRequest();
 
         //document.getElementById("serverAnswer").innerHTML = newEmail;
-         var params = JSON.stringify({
-         newemail: newEmail
-         });
+        var params = JSON.stringify({
+            newemail: newEmail
+        });
 
         xhttp.open("POST", "/changeuserinfo", true);
         xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
@@ -119,6 +123,22 @@ export class SettingsComponent {
         };
         xhttp.send(params);
 
+    }
+
+    changePartView(which:Number) {
+        if(which == 1) {
+            this.firstSettingsPartView = false;
+            this.secondSettingsPartView = true;
+            this.thirdSettingsPartView = true;
+        } else  if(which == 2) {
+            this.firstSettingsPartView = true;
+            this.secondSettingsPartView = false;
+            this.thirdSettingsPartView = true;
+        } else  {
+            this.firstSettingsPartView = true;
+            this.secondSettingsPartView = true;
+            this.thirdSettingsPartView = false;
+        }
     }
 
 

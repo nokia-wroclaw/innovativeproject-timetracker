@@ -112,8 +112,11 @@ body {
 
 .glyphicon-refresh {
     background-color: #080b35;
+    margin-top: 7px;
+    float: right;
 }
 
 #scheduleTitle {
     display: inline-block;
 }
+
