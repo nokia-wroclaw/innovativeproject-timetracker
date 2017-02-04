@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 @Entity
-public class Schedule extends Model implements Comparator<Schedule>, Comparable<Schedule> {
+public class Schedule extends Model {
 
     @Id
     public Integer id;
@@ -60,13 +60,5 @@ public class Schedule extends Model implements Comparator<Schedule>, Comparable<
 
     public Date getEnd() {
         return end;
-    }
-
-    public int compare(Schedule s1, Schedule s2) {
-        return s1.getBegin().compareTo(s2.getBegin());
-    }
-
-    public int compareTo(Schedule s) {
-        return (this.getBegin()).compareTo(s.getBegin());
     }
 }

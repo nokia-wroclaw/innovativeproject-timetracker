@@ -101,7 +101,7 @@ public class ExcelGenerator {
 
         for (int hour = firstHour; hour <= lastHour; hour++) {
             int firstMergedColumnIndex = 5 + (hour - firstHour) * 4;
-            int lastMergedColumnIndex = 8 + (hour - firstHour) * 4;
+            int lastMergedColumnIndex = firstMergedColumnIndex + 3;
 
             cell = headRow.createCell(firstMergedColumnIndex);
             Date time = new Date((hour - 1) % 24 * 60 * 60 * 1000);
@@ -322,7 +322,8 @@ public class ExcelGenerator {
 
     private void insertTimeline(int weeks) {
         Map<Date, XSSFRow> days = new HashMap<Date, XSSFRow>();
-        Date beginDate = this.timeline.get(0).getBegin();
+        //Date beginDate = this.timeline.get(0).getBegin();
+		Date beginDate = new Date(this.begin);
 
         Calendar calendar = Calendar.getInstance();
         calendar.setFirstDayOfWeek(Calendar.MONDAY);
@@ -330,7 +331,7 @@ public class ExcelGenerator {
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 
         String previousName = "";
-        for (int sheetIndex = 0; sheetIndex < weeks + 1; sheetIndex++) {
+        for (int sheetIndex = 0; sheetIndex < weeks; sheetIndex++) {
             if (sheetIndex > 0)
                 this.workbook.getSheetAt(sheetIndex).getRow(10).getCell(2).setCellFormula(previousName + "!C12");
             StringBuilder nameBuilder = new StringBuilder().append("CW").append(calendar.get(Calendar.WEEK_OF_YEAR)).
@@ -340,7 +341,8 @@ public class ExcelGenerator {
             insertDates(calendar, this.workbook.getSheetAt(sheetIndex), days);
             previousName = name;
         }
-        timeline.forEach((period) -> insertPeriod(period, days, calendar));
+		if (!this.timeline.isEmpty())
+			this.timeline.forEach((period) -> insertPeriod(period, days, calendar));
     }
 
     private void insertPeriod(Time period, Map<Date, XSSFRow> days, Calendar calendar) {
@@ -410,8 +412,12 @@ public class ExcelGenerator {
         int beginWeek = calendar.get(Calendar.WEEK_OF_YEAR);
         int beginYear = calendar.get(Calendar.YEAR);
 
-        if (beginYear == endYear)
-            weeks = endWeek - beginWeek;
+        if (beginYear == endYear) {
+            if (beginWeek > endWeek)
+                weeks = endWeek;
+            else
+                weeks = endWeek - beginWeek;
+        }
         else {
             calendar.set(Calendar.MONTH, Calendar.DECEMBER);
             calendar.set(Calendar.DAY_OF_MONTH, 31);
@@ -438,8 +444,7 @@ public class ExcelGenerator {
         for (int i = 0; i < weeks; i++)
             this.workbook.cloneSheet(0);
 
-        if (!timeline.isEmpty())
-            insertTimeline(weeks);
+        insertTimeline(weeks + 1);
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         try {

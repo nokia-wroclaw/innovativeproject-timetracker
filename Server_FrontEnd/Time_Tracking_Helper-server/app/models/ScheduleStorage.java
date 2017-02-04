@@ -51,7 +51,7 @@ public class ScheduleStorage {
     public static List<Schedule> mergeOverlappingPeriods(List<Schedule> periods) {
         List<Schedule> mergedPeriods = new LinkedList<Schedule>();
         if (!periods.isEmpty()) {
-            Collections.sort(periods);
+            Collections.sort(periods, (period1, period2) -> period1.getBegin().compareTo(period2.getBegin()));
             Schedule previousPeriod = periods.get(0);
             mergedPeriods.add(previousPeriod);
             periods.remove(previousPeriod);

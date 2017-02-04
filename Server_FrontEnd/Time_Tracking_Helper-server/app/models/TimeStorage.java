@@ -405,7 +405,6 @@ public class TimeStorage {
 
         List<Time> periodsInDay = new LinkedList<Time>();
         ArrayNode node = (ArrayNode) json.findPath("periods");
-        System.out.println(node);
 
         for (int i = 0; i < node.size(); i++) {
             String beginTime = node.get(i).findPath("begin").textValue();
@@ -425,7 +424,7 @@ public class TimeStorage {
     public static List<Time> mergeOverlappingPeriods(List<Time> periods) {
         List<Time> mergedPeriods = new LinkedList<Time>();
         if (!periods.isEmpty()) {
-            Collections.sort(periods);
+            Collections.sort(periods, (period1, period2) -> period1.getBegin().compareTo(period2.getBegin()));
             Time previousPeriod = periods.get(0);
             mergedPeriods.add(previousPeriod);
             periods.remove(previousPeriod);
