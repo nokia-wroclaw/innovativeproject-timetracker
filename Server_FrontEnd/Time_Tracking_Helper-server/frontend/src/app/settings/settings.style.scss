@@ -1,6 +1,14 @@
 settings-comp{
+
+  .bc {
+    background-color: #21314a;
+    width: 100%;
+  }
   .container {
     color: #ffffff;
+    width: 75%;
+    margin-left: 15%;
+    background-color: #080b35 !important;
   }
 
   .usernameSettings-container {
@@ -8,8 +16,8 @@ settings-comp{
   }
 
   .Settings-container {
-    float: right !important;
-    margin: 30px !important;
+    float: left !important;
+    margin-top: 80px !important;
   }
 
   .col-md-3 {

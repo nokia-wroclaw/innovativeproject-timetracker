@@ -1,6 +1,6 @@
 <header-comp></header-comp>
 <menu-comp></menu-comp>
-
+<div class="bc">
 <div class="col-md-12">
     <div class = "transbox">
         <div class="timelineSettings-container" >
@@ -34,20 +34,16 @@
                 </div>
             </form>
             <br>
-        </div>
-    </div>
-</div>
-
-<div class="col-md-12">
-    <div class = "transbox">
         <h2>Users</h2>
-        <div *ngFor="let item of usersToWatch; let i = index">
+        <div style="margin-bottom: 15px;" *ngFor="let item of usersToWatch; let i = index">
             <div class="users"><h4>{{item[0]}} {{item[1]}} {{item[2]}} </h4>
-                <button type="button" id="show-timeline-btn" (click)=" getTimeline(item[2], i, timelineSettingsForm);" ><span class="glyphicon glyphicon-plus-sign"></span></button>
-                <button type="button" id="hide-timeline-btn" (click)=" remTimeline(i);" ><span class="glyphicon glyphicon-trash"></span></button>
+                <button class="btn btn-primary timeline-button1" type="button" id="show-timeline-btn" (click)=" getTimeline(item[2], i, timelineSettingsForm);" >A&dArr;</button>
+                <button class="btn btn-primary timeline-button1" type="button" id="hide-timeline-btn" (click)=" remTimeline(i);" >A&uArr;</button>
             </div>
             <div id="user-timeline-{{i}}"></div>
         </div>
     </div>
 </div>
 <div id="serverAnswer2"></div>
+</div>
+</div>

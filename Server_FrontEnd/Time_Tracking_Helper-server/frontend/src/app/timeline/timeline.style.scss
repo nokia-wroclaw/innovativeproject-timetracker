@@ -1,11 +1,15 @@
 timeline-comp{
 
+  .bc {
+    background-color: #21314a;
+    width: 100%;
+  }
   .transbox {
     font-weight: bold;
-    background-color: #21314a;
+    width: 75%;
+    margin-left: 15%;
+    background-color: #080b35 !important;
     color: #ffffff;
-    width: 100%;
-    margin: 0 auto;
 
     .timelineSettings-container {
       color: #ffffff;
@@ -13,6 +17,8 @@ timeline-comp{
       border-radius: 10px;
       padding-left: 20px;
       margin-top: 10px;
+      margin-right: 10px;
+      margin-bottom: 10px;
       border: 1px solid rgba(0, 0, 0, 0.18);
       margin-bottom: 10px;
     }
@@ -83,9 +89,9 @@ timeline-comp{
 
     .users h4 {
       font-size: 20px;
-      margin: 0px;
+      margin: 5px;
       float: left;
-      width: 25%;
+      width: 85%;
     }
 
     glyphicon glyphicon-plus-sign {

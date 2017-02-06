@@ -1,9 +1,17 @@
 <header-comp></header-comp>
 <menu-comp></menu-comp>
-
+<div class="bc">
 <div class="background">
     <div class="col-md-12">
         <div class="container">
+            <div class="Settings-container col-md-3">
+                <ul class="nav nav-pills nav-stacked">
+                    <li class="active"><a href="#">Settings</a></li>
+                    <li><a href="#"  (click) = "changePartView(1)">Password</a></li>
+                    <li><a href="#"  (click) = "changePartView(2)">Name</a></li>
+                    <li><a href="#"  (click) = "changePartView(3)">E-mail</a></li>
+                </ul>
+            </div>
             <div class="row">
                 <div id="thirdSettingsPart" [hidden]="thirdSettingsPartView">
                     <div class="usernameSettings-container col-md-3">
@@ -61,17 +69,10 @@
                         <br>
                     </div>
                 </div>
-                <div class="Settings-container col-md-3">
-                    <ul class="nav nav-pills nav-stacked">
-                        <li class="active"><a href="#">Settings</a></li>
-                        <li><a href="#"  (click) = "changePartView(1)">Password</a></li>
-                        <li><a href="#"  (click) = "changePartView(2)">Name</a></li>
-                        <li><a href="#"  (click) = "changePartView(3)">E-mail</a></li>
-                    </ul>
-                </div>
                 <div class="clearfix visible-lg"></div>
             </div>
         </div>
         <div id="serverAnswer"></div>
     </div>
+</div>
 </div>

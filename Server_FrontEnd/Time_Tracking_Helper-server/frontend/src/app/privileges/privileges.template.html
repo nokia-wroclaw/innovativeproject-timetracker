@@ -1,6 +1,6 @@
 <header-comp></header-comp>
 <menu-comp></menu-comp>
-
+<div class="bc">
 <div class="background">
     <div class="col-md-12">
         <div class="transbox">
@@ -10,9 +10,6 @@
                     <li><a href="#" (click) = "changePartView(2)">Others privileges</a></li>
                 </ul>
             </div>
-        </div>
-    </div>
-</div>
 <div id="test"></div>
 <div id="firstPrivilegesPart" [hidden]="firstPrivilegesPartView">
     <div class="container">
@@ -30,7 +27,7 @@
     </div>
     <div class="container">
         <h2>Users that You requested for adding</h2>
-            <table class="table table-striped">
+            <table class="table">
                 <thead>
         <tr>
             <th>Name</th>
@@ -44,7 +41,7 @@
             <td>{{item[0]}}</td>
             <td>{{item[1]}}</td>
             <td>{{item[2]}}</td>
-            <td><button type="button" (click)="sendPrivReq('decline', 'privReq', item[2]);" >&#10008;</button></td>
+            <td><button class="btn btn-primary privileges-button" type="button" (click)="sendPrivReq('decline', 'privReq', item[2]);" >&#10008;</button></td>
         </tr>
         </tbody>
             </table>
@@ -52,7 +49,7 @@
     <form>
         <div class="container">
             <h2>Users that You added</h2>
-            <table class="table table-striped">
+            <table class="table table">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -68,9 +65,9 @@
                     <td>{{item[0]}}</td>
                     <td>{{item[1]}}</td>
                     <td>{{item[2]}}</td>
-                    <td><input type="number" value = "{{item[3]}}"></td>
-                    <td><button type="button">&#10004;</button></td>
-                    <td><button type="button" (click)="sendPrivReq('deletefrom', 'privList', item[2]);">&#10008;</button></td>
+                    <td><input style="color:#000000; " type="number" value = "{{item[3]}}"></td>
+                    <td><button class="btn btn-primary privileges-button" type="button">&#10004;</button></td>
+                    <td><button class="btn btn-primary privileges-button" type="button" (click)="sendPrivReq('deletefrom', 'privList', item[2]);">&#10008;</button></td>
                 </tr>
             </tbody>
             </table>
@@ -81,7 +78,7 @@
 <div id="secondPrivilegesPart" [hidden]="secondPrivilegesPartView">
     <div class="container">
         <h2>Users that requested for adding You</h2>
-        <table class="table table-striped">
+        <table class="table">
         <thead>
         <tr>
             <th>Name</th>
@@ -95,15 +92,15 @@
             <td>{{item[0]}}</td>
             <td>{{item[1]}}</td>
             <td>{{item[2]}}</td>
-            <td><button type="button" (click)="sendPrivReq('acceptrequest', 'othersPrivReq', item[2]);">&#10004;</button>
-                <button type="button" (click)="sendPrivReq('decrequest', 'othersPrivReq', item[2]);">&#10008;</button></td>
+            <td><button type="button" class="btn btn-primary privileges-button" (click)="sendPrivReq('acceptrequest', 'othersPrivReq', item[2]);">&#10004;</button>
+                <button type="button" class="btn btn-primary privileges-button" (click)="sendPrivReq('decrequest', 'othersPrivReq', item[2]);">&#10008;</button></td>
         </tr>
         </tbody>
         </table>
     </div>
     <div class="container">
         <h2>Users that added You</h2>
-        <table class="table table-striped">
+        <table class="table">
         <thead>
         <tr>
             <th>Name</th>
@@ -117,9 +114,13 @@
             <td>{{item[0]}}</td>
             <td>{{item[1]}}</td>
             <td>{{item[2]}}</td>
-            <td><button type="button" (click)="sendPrivReq('deleteto', 'othersPrivList', item[2]);">&#10008;</button></td>
+            <td><button  class="btn btn-primary privileges-button" type="button" (click)="sendPrivReq('deleteto', 'othersPrivList', item[2]);">&#10008;</button></td>
         </tr>
         </tbody>
         </table>
     </div>
+</div>
+        </div>
+    </div>
+</div>
 </div>

@@ -1,9 +1,14 @@
 index-comp{
+
+  .bc {
+    background-color: #21314a;
+    width: 100%;
+  }
   .transbox {
     font-weight: bold;
-    width: 100%;
-    margin: 0 auto;
-    background-color: #21314a;
+    width: 75%;
+    margin-left: 15%;
+    background-color: #080b35 !important;
     color: #ffffff;
 
     .timelineSettings-container {
@@ -13,18 +18,26 @@ index-comp{
       margin-bottom: 10px;
 
       .timeline-button {
-        float: right;
+        margin: 0px;
       }
 
       .timeline-button1 {
         margin: 10px;
       }
+
+      .exel {
+        background-color: #21314a;
+        width: 50%;
+        margin: 5%;
+      }
+
+
+    }
     }
 
-    .col-md-3 {
-      background-color: #080b35 !important;
-      float: right;
-      border-radius: 22px;
-    }
+  .table {
+    width: 80%;
   }
-}
+
+
+  }
