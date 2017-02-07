@@ -38,17 +38,17 @@ export class ScheduleComponent {
         xhttp.open("GET", "/fullschedule", true);
         xhttp.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
         xhttp.onreadystatechange = function() {
-
-                // ElementById("schedule-info").innerHTML = xhttp.responseText;
-
-        }
+            if (this.readyState == 4 && this.status == 200) {
+                // document.getElementById("schedule-info").innerHTML = xhttp.responseText;
+            }
+        };
         xhttp.send();
 
     }
     sendSchedule(scheduleForm:NgForm) {
         var inputValue = (<HTMLInputElement>document.getElementById("field_monday00")).value;
 
-       /*holds string that will be send to server as json*/
+        /*holds string that will be send to server as json*/
         var sendingStr = "{ \"schedule\": [";
 
         /*holds information if every input is correct*/
@@ -81,7 +81,7 @@ export class ScheduleComponent {
                     j++;
                 }
                 i2 = i+1;
-                while(i2 <= 7) {
+                while(i2 < 7) {
                     if(this.displayedInputs[i2][0] == true) {
                         sendingStr += ", ";
                         break;
@@ -129,10 +129,10 @@ export class ScheduleComponent {
         return false;
     }
 
-    /*Displays next pair of inputs for specific day (max 7 pairs)*/
+    /*Displays next pair of inputs for specific day (max 8 pairs)*/
     addInput(day:number) {
         var i = 0;
-        while(this.displayedInputs[day][i] != false && i < 6) {
+        while(this.displayedInputs[day][i] != false && i < 8) {
             i++;
         }
         this.displayedInputs[day][i] = true;
@@ -142,16 +142,15 @@ export class ScheduleComponent {
 
     /*Hide one pair of inputs for specific day*/
     remInput(day:number,i:number) {
-        while (i < 7 && this.displayedInputs[day][i] == true) {
-                (<HTMLInputElement>document.getElementById("field_" + this.days[day] + i + "0")).value = (<HTMLInputElement>document.getElementById("field_" + this.days[day] + (i + 1) + "0")).value;
-                (<HTMLInputElement>document.getElementById("field_" + this.days[day] + i + "1")).value = (<HTMLInputElement>document.getElementById("field_" + this.days[day] + (i + 1) + "1")).value;
-                i++;
-            }
-            i--;
-            this.displayedInputs[day][i] = false;
-            document.getElementById('fields-' + this.days[day] + i).style.display = "none";
-            document.getElementById('fields-' + this.days[day] + '-span' + i).style.display = "none";
-
+        while(i < 7 && this.displayedInputs[day][i] == true) {
+            (<HTMLInputElement>document.getElementById("field_"+this.days[day]+i+"0")).value=(<HTMLInputElement>document.getElementById("field_"+this.days[day]+(i+1)+"0")).value;;
+            (<HTMLInputElement>document.getElementById("field_"+this.days[day]+i+"1")).value=(<HTMLInputElement>document.getElementById("field_"+this.days[day]+(i+1)+"1")).value;;
+            i++;
+        }
+        i--;
+        this.displayedInputs[day][i] = false;
+        document.getElementById('fields-'+this.days[day]+i).style.display = "none";
+        document.getElementById('fields-'+this.days[day]+'-span'+i).style.display = "none";
     }
 
     switch(day:number,i:number) {

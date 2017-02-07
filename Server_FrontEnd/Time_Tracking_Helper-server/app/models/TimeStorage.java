@@ -66,37 +66,39 @@ public class TimeStorage {
         java.util.Date date2 = fromStringToDate(json.findValue("end").textValue());
         List<Time> test = finder.all();
         if (test.isEmpty()) {
-            Time record15 = new Time("Wmblady", fromStringToDate("02/01/2017@08:00"), fromStringToDate("02/01/2017@16:00"), "End");
+            Time record15 = new Time("Kruk07", fromStringToDate("01/02/2017@08:00"), fromStringToDate("01/02/2017@10:00"), "End");
             record15.save();
-            Time record16 = new Time("Kruk07", fromStringToDate("03/01/2017@07:00"), fromStringToDate("03/01/2017@15:00"), "End");
+            Time record25 = new Time("Kruk07", fromStringToDate("03/02/2017@12:00"), fromStringToDate("03/02/2017@16:00"), "End");
+            record25.save();
+            Time record16 = new Time("Kruk07", fromStringToDate("03/02/2017@07:00"), fromStringToDate("03/02/2017@11:00"), "End");
             record16.save();
-            Time record5 = new Time("Kruk07", fromStringToDate("06/01/2017@07:00"), fromStringToDate("06/01/2017@15:00"), "End");
+            Time record5 = new Time("Kruk07", fromStringToDate("06/02/2017@07:00"), fromStringToDate("06/02/2017@15:00"), "End");
             record5.save();
-            Time record12 = new Time("Wmblady", fromStringToDate("06/01/2017@14:00"), fromStringToDate("06/01/2017@16:00"), "End");
+            Time record12 = new Time("Wmblady", fromStringToDate("06/02/2017@14:00"), fromStringToDate("06/02/2017@16:00"), "End");
             record12.save();
-            Time record11 = new Time("Wmblady", fromStringToDate("07/01/2017@14:00"), fromStringToDate("07/01/2017@16:00"), "End");
+            Time record11 = new Time("Wmblady", fromStringToDate("07/02/2017@14:00"), fromStringToDate("07/02/2017@16:00"), "End");
             record11.save();
             Time record10 = new Time("Wmblady", fromStringToDate("08/01/2017@09:00"), fromStringToDate("08/01/2017@14:00"), "End");
             record10.save();
-            Time record7 = new Time("Kruk07", fromStringToDate("09/01/2017@10:00"), fromStringToDate("09/01/2017@15:00"), "End");
+            Time record7 = new Time("Kruk07", fromStringToDate("19/01/2017@10:00"), fromStringToDate("19/01/2017@15:00"), "End");
             record7.save();
-            Time record9 = new Time("Wmblady", fromStringToDate("09/01/2017@08:00"), fromStringToDate("09/01/2017@14:30"), "End");
+            Time record9 = new Time("Wmblady", fromStringToDate("19/01/2017@08:00"), fromStringToDate("19/01/2017@14:30"), "End");
             record9.save();
-            Time record8 = new Time("Wmblady", fromStringToDate("09/01/2017@15:00"), fromStringToDate("09/01/2017@17:00"), "End");
+            Time record8 = new Time("Wmblady", fromStringToDate("19/01/2017@15:00"), fromStringToDate("19/01/2017@17:00"), "End");
             record8.save();
-            Time record6 = new Time("Wmblady", fromStringToDate("10/01/2017@11:00"), fromStringToDate("10/01/2017@19:00"), "End");
+            Time record6 = new Time("Wmblady", fromStringToDate("20/01/2017@11:00"), fromStringToDate("20/01/2017@19:00"), "End");
             record6.save();
-            Time record2 = new Time("Wmblady", fromStringToDate("12/01/2017@11:54"), fromStringToDate("12/01/2017@15:34"), "End");
+            Time record2 = new Time("Wmblady", fromStringToDate("22/01/2017@11:54"), fromStringToDate("22/01/2017@15:34"), "End");
             record2.save();
-            Time record = new Time("Kruk07", fromStringToDate("12/01/2017@12:12"), fromStringToDate("12/01/2017@14:14"), "End");
+            Time record = new Time("Kruk07", fromStringToDate("09/01/2017@12:12"), fromStringToDate("09/01/2017@14:14"), "End");
             record.save();
-            Time record4 = new Time("Wmblady", fromStringToDate("12/01/2017@16:11"), fromStringToDate("12/01/2017@18:30"), "End");
+            Time record4 = new Time("Wmblady", fromStringToDate("22/01/2017@16:11"), fromStringToDate("22/01/2017@18:30"), "End");
             record4.save();
-            Time record3 = new Time("Kruk07", fromStringToDate("13/01/2017@07:00"), fromStringToDate("13/01/2017@14:00"), "End");
+            Time record3 = new Time("Kruk07", fromStringToDate("12/01/2017@07:00"), fromStringToDate("12/01/2017@14:00"), "End");
             record3.save();
-            Time record13 = new Time("Wmblady", fromStringToDate("13/01/2017@08:00"), fromStringToDate("13/01/2017@16:00"), "End");
+            Time record13 = new Time("Wmblady", fromStringToDate("23/01/2017@08:00"), fromStringToDate("23/01/2017@16:00"), "End");
             record13.save();
-            Time record14 = new Time("Kruk07", fromStringToDate("15/01/2017@022:00"), fromStringToDate("15/01/2017@23:59"), "End");
+            Time record14 = new Time("Kruk07", fromStringToDate("25/01/2017@022:00"), fromStringToDate("25/01/2017@23:59"), "End");
             record14.save();
         }
         List<Time> t = finder.where().and().eq("login", name).ge("begin", date1).le("end", date2).
@@ -125,7 +127,7 @@ public class TimeStorage {
     /*
      * Metoda do wyświetlania timeline-u - z wyslanym w jsonie nickiem
      * TODO: weryfikacja, czy użytkownik z sesji ma uprawnienie do przeglądania timeline-u osoby wyslanej w nicku
-     * 
+     *
      */
     public static List<TimeStorage> getDataLogin(JsonNode json, String userlogin) throws Exception {
 
@@ -391,6 +393,7 @@ public class TimeStorage {
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(timestamp);
+        System.out.println(calendar.getTime());
         setMidnight(calendar);
 
         calendar.add(Calendar.DATE, 1);
