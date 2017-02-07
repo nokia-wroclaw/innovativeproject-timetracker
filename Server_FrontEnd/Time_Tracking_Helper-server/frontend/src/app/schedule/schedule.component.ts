@@ -17,7 +17,7 @@ export class ScheduleComponent {
     days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
     /*Two-dimensional array that holds information which inputs are displayed */
-    displayedInputs = [[true, false, false, false, false, false, false, false],
+    displayedInputs = [[false, false, false, false, false, false, false, false],
         [false, false, false, false, false, false, false, false],
         [false, false, false, false, false, false, false, false],
         [false, false, false, false, false, false, false, false],
