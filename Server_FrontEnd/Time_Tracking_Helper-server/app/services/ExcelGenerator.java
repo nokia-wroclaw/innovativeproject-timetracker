@@ -322,8 +322,7 @@ public class ExcelGenerator {
 
     private void insertTimeline(int weeks) {
         Map<Date, XSSFRow> days = new HashMap<Date, XSSFRow>();
-        //Date beginDate = this.timeline.get(0).getBegin();
-		Date beginDate = new Date(this.begin);
+        Date beginDate = new Date(this.begin);
 
         Calendar calendar = Calendar.getInstance();
         calendar.setFirstDayOfWeek(Calendar.MONDAY);
@@ -341,8 +340,8 @@ public class ExcelGenerator {
             insertDates(calendar, this.workbook.getSheetAt(sheetIndex), days);
             previousName = name;
         }
-		if (!this.timeline.isEmpty())
-			this.timeline.forEach((period) -> insertPeriod(period, days, calendar));
+        if (!this.timeline.isEmpty())
+            this.timeline.forEach((period) -> insertPeriod(period, days, calendar));
     }
 
     private void insertPeriod(Time period, Map<Date, XSSFRow> days, Calendar calendar) {
@@ -417,8 +416,7 @@ public class ExcelGenerator {
                 weeks = endWeek;
             else
                 weeks = endWeek - beginWeek;
-        }
-        else {
+        } else {
             calendar.set(Calendar.MONTH, Calendar.DECEMBER);
             calendar.set(Calendar.DAY_OF_MONTH, 31);
             weeks = calendar.get(Calendar.WEEK_OF_YEAR) - beginWeek;
