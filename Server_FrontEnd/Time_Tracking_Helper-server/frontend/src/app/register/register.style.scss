@@ -1,0 +1,50 @@
+register-comp{
+  .register-container {
+    background-color: #080b35;
+    color: #ffffff;
+  }
+
+
+  .header-container {
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    .custom-header {
+      margin: 0px;
+      font-family:courier;
+      font-size: 32px;
+      font-weight: bold;
+      color: rgb(73,165,191);
+    }
+  }
+
+  .header-container:hover {
+    cursor: pointer;
+  }
+
+
+  .footer-container {
+
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 30px;
+
+  }
+
+  .transbox {
+    font-weight: bold;
+    width: 45%;
+    margin: 0 auto;
+
+    .register-container {
+      padding: 20px;
+      border: 1px solid rgba(0, 0, 0, 0.18);
+      margin-bottom: 10px;
+
+      .register-button {
+        float: right;
+      }
+    }
+  }
+
+}

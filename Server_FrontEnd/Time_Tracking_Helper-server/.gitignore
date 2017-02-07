@@ -6,3 +6,8 @@ target
 /.project
 /.settings
 /RUNNING_PID
+database
+node_modules/
+public/app/
+/app/.idea/
+/app/NewExcelFile.xlsx

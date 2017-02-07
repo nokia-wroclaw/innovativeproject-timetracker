@@ -1,0 +1,122 @@
+body {
+    width: 300px;
+    height: 300px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: 0;
+    border: 0;
+    color: #ffffff;
+    background-color: #080b35;
+}
+
+#sel1 {
+    background-color: #0088cc;
+    color: #FFF;
+    margin-bottom: 5px;
+}
+
+.header {
+    height: 70px;
+    top: 70px;
+    padding-top: 15px;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 20px -8px #999999;
+}
+
+.text {
+    font-size: 11px;
+    font-weight: 300;
+    float: left;
+}
+
+
+.login {
+    margin-top: 5px;
+    color: #ffffff;
+    height: 50px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    top: 50px;
+    float: left;
+    padding-left: 5px;
+    padding-right: 10px;
+}
+
+.switch {
+    float: right;
+    width: 70px;
+    height: 32px;
+    background: #E5E5E5;
+    z-index: 0;
+    margin-right: 5px;
+    padding: 0;
+    line-height: 32px;
+    appearance: none;
+    border: #666666;
+    cursor: pointer;
+    position: relative;
+    -webkit-border-radius: 16px;
+}
+
+.switch:before {
+    content: 'OFF';
+    text-align: right;
+    color: #666666;
+    position: absolute;
+    left: 8px;
+    top: 1px;
+    width: 61px;
+    height: 30px;
+    background: #f3f3f3;
+    z-index: 1;
+    -webkit-border-radius: 16px;
+}
+
+.switch:after {
+    content: ' ';
+    height: 29px;
+    width: 31px;
+    border-radius: 28px;
+    z-index: 2;
+    background: #8c8c8c;
+    position: absolute;
+    -webkit-transition-duration: 300ms;
+    transition-duration: 300ms;
+    top: 1px;
+    left: 1px;
+    -webkit-box-shadow: 0 2px 5px #999999;
+    box-shadow: 0 2px 5px #999999;
+}
+
+.switchOn, .switchOn:before {
+    content: 'ON';
+    text-align: left;
+    color: #FFFFFF;
+    background: #38c8d9 !important;
+}
+
+.switchOn:after {
+    left: 38px !important;
+    background: #ffffff !important;
+}
+
+.tab-content {
+    margin-bottom: 25px;
+}
+
+.login-container {
+    padding-bottom: 30px;
+}
+
+.glyphicon-refresh {
+    background-color: #080b35;
+    margin-top: 7px;
+    float: right;
+}
+
+#scheduleTitle {
+    display: inline-block;
+}
+

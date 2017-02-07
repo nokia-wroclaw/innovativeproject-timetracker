@@ -1,0 +1,49 @@
+<header-comp></header-comp>
+<menu-comp></menu-comp>
+<div class="bc">
+<div class="col-md-12">
+    <div class = "transbox">
+        <div class="timelineSettings-container" >
+            <h2>Time range</h2>
+            <form #timelineSettingsForm="ngForm">
+
+                <div class="timelineSettings-primary">
+                    <input type="radio"  (click)="changeRange(7);" name="range" value="7" id="radio1" checked />
+                    <label for="radio1">7 Days</label>
+                </div>
+                <div class="timelineSettings-primary">
+                    <input type="radio"  (click)="changeRange(31);" name="range" value="31" id="radio2">
+                    <label for="radio2">31 Days</label>
+                </div>
+                <div class="timelineSettings-primary">
+                    <input type="radio"  (click)="changeRange(0);" name="range" value="0" id="radio3">
+                    <label for="radio3">Custom</label>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-xs-6">
+                        <label for="fromDate">From:</label>
+                        <input type="date" value="2016-12-12" class="form-control" required [(ngModel)]="model.fromDate"
+                               name="fromDate">
+                    </div>
+                    <div class="form-group col-xs-6">
+                        <label for="toDate">To: </label>
+                        <input type="date" value="2016-12-13" class="form-control" required [(ngModel)]="model.toDate"
+                               name="toDate">
+                    </div>
+                </div>
+            </form>
+            <br>
+        <h2>Users</h2>
+        <div style="margin-bottom: 15px;" *ngFor="let item of usersToWatch; let i = index">
+            <div class="users"><h4>{{item[0]}} {{item[1]}} {{item[2]}} </h4>
+                <button class="btn btn-primary timeline-button1" type="button" id="show-timeline-btn" (click)=" getTimeline(item[2], i, timelineSettingsForm);" >A&dArr;</button>
+                <button class="btn btn-primary timeline-button1" type="button" id="hide-timeline-btn" (click)=" remTimeline(i);" >A&uArr;</button>
+            </div>
+            <div id="user-timeline-{{i}}"></div>
+        </div>
+    </div>
+</div>
+<div id="serverAnswer2"></div>
+</div>
+</div>

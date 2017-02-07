@@ -1,0 +1,32 @@
+.bc {
+  background-color: #21314a;
+  width: 100%;
+  margin: 0px;
+}
+  .header-container2 {
+    text-align: center;
+    width: 75%;
+    margin-left: 15%;
+    background-color: #21314a;
+    margin-top: 50px;
+    .custom-header {
+      margin: 0px;
+      font-size: 32px;
+      font-weight: bold;
+      font-family: courier;
+      color: rgb(73, 165, 191);
+    }
+  }
+
+  .header-container2:hover {
+    cursor: pointer;
+  }
+
+.col-md-12 {
+  background-color: #21314a;
+}
+
+.vis-timeline {
+  margin-top: 30px !important;
+  background-color: #ffffff !important;
+}

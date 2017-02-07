@@ -3,11 +3,64 @@
 # ~~~~
 
 # An example controller showing a sample home page
-GET     /                           controllers.HomeController.index
+GET        /                    controllers.HomeController.index
+GET        /login               controllers.HomeController.login
+GET        /register            controllers.HomeController.register
+
 # An example controller showing how to use dependency injection
-GET     /count                      controllers.CountController.count
+GET        /count               controllers.CountController.count
 # An example controller showing how to write asynchronous code
-GET     /message                    controllers.AsyncController.message
+GET        /message             controllers.AsyncController.message
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+GET        /assets/*file        controllers.Assets.versioned(path="/public", file: Asset)
+
+# Kontroler POST sluzacy do dodawania uzytkownika
+POST    	/addUser            controllers.HomeController.addUserController
+# Kontrolery do testow, w koncowej wersji usunac
+GET     /users						controllers.HomeController.getUsers
+GET     /getusersinfo				controllers.HomeController.getUserinfo
+# Kontroler POST sluzacy do zalogowania strony
+POST    	/login				controllers.HomeController.loginController
+# Kontroler POST sluzacy do wylogowania strony
+POST    	/logout				controllers.HomeController.logoutController
+# Kontroler POST sluzacy do zalogowania wtyczki
+POST    	/loginextension		controllers.HomeController.loginExtensionController
+# Kontroler POST sluzacy do wylogowania strony
+POST    	/logoutextension	controllers.HomeController.logoutExtensionController
+# Kontroler POST sluzacy do rejestrowania czasu pracy
+POST		/tracking			controllers.HomeController.tracking
+# Kontroler POST sluzacy do wyswietlenia danych dotyczacych uzytkownika (timeline'a)
+POST		/userinfo			controllers.HomeController.sendUserTimelineData
+# Kontroler POST sluzacy do wyswietlenia danych dotyczacych innego użytkownika (timeline'a)
+POST		/otherinfo			controllers.HomeController.sendOtherTimelineData
+# Kontroler GET sprawdzający czy dany uzytkownik jest zalogowany
+GET     	/index2             controllers.HomeController.index2
+# Kontroler GET sluzacy do wyswietlenia timeline
+GET			/timeline			controllers.HomeController.timeline
+# Kontroler GET sluzacy do wyswietlenia ustawien
+GET			/settings		controllers.HomeController.settings
+# Kontroler GET sluzacy do wyswietlenia harmonogramu
+GET			/schedule		controllers.HomeController.schedule
+# Kontroler GET sluzacy do wyswietlenia uprawnien
+GET			/privileges		controllers.HomeController.privileges
+# Kontroler POST sluzacy do odebrania harmonogramu i zapisania go w bazie
+POST		/setschedule		controllers.HomeController.setschedule
+# Kontroler POST sluzacy do pobrania harmonogramu dla danego użytkownika i danego dnia
+POST		/getschedule		controllers.HomeController.getschedule
+# Kontroler POST sluzacy do obsługi systemu zaproszen
+POST		/sendprivelegesandrequests		controllers.HomeController.sendPaR
+# Kontroler POST sluzacy do wyświetlenia zawartosci tabel Priveleges i Request
+POST		/getprivelegesandrequests		controllers.HomeController.getPaR
+# Kontroler POST sluzacy do ustawienia estimatedHours użytkownikowi
+POST		/setestimated		controllers.HomeController.setEstimatedHours
+# Kontroler POST służący do wygenerowania excela dla danego użytkownika i danego przedziału czasowego
+POST        /excel              controllers.HomeController.generateExcel
+# Kontroler POST służący do wysłania danemu użytkownikowi liczbę jego przepracowanych minut w ciągu aktualnego dnia i miesiąca
+POST        /workedhours        controllers.HomeController.sendWorkedHours
+# Kontroler POST służący do edycji timeline'a
+POST        /sendtimelinechanges          controllers.HomeController.updateTimelineDay
+# Kontroler GET sluzacy do pobrania całego harmonogramu
+GET			/fullschedule		controllers.HomeController.sendFullSchedule
+# Kontroler POST sluzacy do zmiany informacji o użytkowniku
+POST		/changeuserinfo		controllers.HomeController.changeUserInfo

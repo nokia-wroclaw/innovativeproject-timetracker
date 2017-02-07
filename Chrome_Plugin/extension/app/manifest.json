@@ -1,0 +1,14 @@
+{
+  "name": "Time tracker",
+  "description" : "Time tracker",
+  "version" : "0.2",
+  "browser_action" : {
+    "default_popup": "index.html",
+    "default_icon": "icon.png"
+  },
+  "background": {
+    "page": "background.html"
+  },
+  "permissions" : ["notifications", "storage", "debugger", "background", "http://localhost:9000/"],
+  "manifest_version" : 2
+}

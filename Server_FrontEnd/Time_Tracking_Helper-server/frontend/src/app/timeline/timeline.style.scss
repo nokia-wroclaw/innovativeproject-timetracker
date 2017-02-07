@@ -1,0 +1,108 @@
+timeline-comp{
+
+  .bc {
+    background-color: #21314a;
+    width: 100%;
+  }
+  .transbox {
+    font-weight: bold;
+    width: 75%;
+    margin-left: 15%;
+    background-color: #080b35 !important;
+    color: #ffffff;
+
+    .timelineSettings-container {
+      color: #ffffff;
+      background-color: #080b35;
+      border-radius: 10px;
+      padding-left: 20px;
+      margin-top: 10px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      border: 1px solid rgba(0, 0, 0, 0.18);
+      margin-bottom: 10px;
+    }
+      .timelineSettings-container label {
+        width: 15%;
+        text-align: center;
+        border-radius: 3px;
+        border: 1px solid #D1D3D4;
+        font-weight: normal;
+      }
+
+      .timelineSettings-container input[type="radio"]:empty {
+        display: none;
+      }
+
+      .timelineSettings-container input[type="radio"]:empty ~ label {
+        text-align: center;
+        position: relative;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .timelineSettings-container input[type="radio"]:empty ~ label:before {
+        position: absolute;
+        display: block;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        content: '';
+        width: 15%;
+        background: #D1D3D4;
+        border-radius: 3px 0 0 3px;
+      }
+
+      .timelineSettings-container input[type="radio"]:hover:not(:checked) ~ label {
+        color: #888;
+      }
+
+      .timelineSettings-container input[type="radio"]:hover:not(:checked) ~ label:before {
+        content: '\2714';
+        color: #C2C2C2;
+      }
+
+      .timelineSettings-container input[type="radio"]:checked ~ label {
+        color: #777;
+      }
+
+      .timelineSettings-container input[type="radio"]:checked ~ label:before {
+        content: '\2714';
+        color: #333;
+        background-color: #ccc;
+      }
+
+      .timelineSettings-primary input[type="radio"]:checked ~ label:before{
+        color: #fff;
+        background-color: #337ab7;
+      }
+
+    .glyphicon {
+      color: #000000 !important;
+    }
+
+    .users {
+      clear: both;
+      border-bottom: solid #777;
+      margin-top: 10px;
+    }
+
+    .users h4 {
+      font-size: 20px;
+      margin: 5px;
+      float: left;
+      width: 85%;
+    }
+
+    glyphicon glyphicon-plus-sign {
+      margin-left: 5px;
+    }
+
+
+    .timeline-button {
+        float: right;
+      }
+
+  }
+
+}

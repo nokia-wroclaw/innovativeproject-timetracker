@@ -1,0 +1,99 @@
+<header-comp></header-comp>
+<menu-comp></menu-comp>
+<div class="bc">
+<div class="background">
+    <div class="col-md-12">
+        <div class="transbox">
+            <div class="timeline-container">
+                <ul class="nav nav-tabs ">
+                    <li class="active"><a href="#" (click) = "changePartView(1)">Graphical mode</a></li>
+                    <li><a href="#" (click) = "changePartView(2)">Editing mode</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12">
+    <div class="transbox">
+        <div class="timelineSettings-container">
+            <form (ngSubmit)="onSubmit()" #timelineSettingsForm="ngForm">
+                <div class="row">
+                    <div class="form-group col-xs-6">
+                        <label for="fromDate">From:</label>
+                        <input type="date" value="2016-12-12" class="form-control" required [(ngModel)]="model.fromDate"
+                               name="fromDate">
+                    </div>
+                    <div class="form-group col-xs-6">
+                        <label for="toDate">To: </label>
+                        <input type="date" value="2016-12-13" class="form-control" required [(ngModel)]="model.toDate"
+                               name="toDate">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary timeline-button"
+                        [disabled]="!timelineSettingsForm.form.valid" (click)="getTimeline(timelineSettingsForm)">Submit
+                </button>
+            </form>
+            <br>
+            <div id="serverAnswer"></div>
+            <div class="vis-timeline" id="visualization" [hidden]="timelineView"></div>
+            <div id="textMode" [hidden]="textView">
+                <div id="textMode2" [hidden]="isSubmitted">
+                    <form>
+                        <input type="range"  class="form-control" name="datesSlider" #datesSlider min="0" max="{{numberOfEditingDays}}" value={{actualDateNrEditing}} (change) = "changeEditingDay(datesSlider.value)">
+                        <input type="date"  class="form-control" name="dateInput" #dateInput value={{actualDateEditing}}>
+                        <button type="submit" class="btn btn-primary timeline-button"(click)="changeEditingDayInput(dateInput.value)">OK</button>
+                    </form>
+
+                    <div class="container">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Add Above</th>
+                                <th>Add Below</th>
+                                <th>Delete</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr *ngFor="let item of editingTables[actualDateNrEditing]; let i = index">
+                                <td><input type="time" class="form-control" id="edTables-{{i}}-1" name="edTables-{{i}}-1" value="{{item[0]}}" size="5"  /></td>
+                                <td><input type="time" class="form-control" id="edTables-{{i}}-2" name="edTables-{{i}}-2" value="{{item[1]}}" size="5"  /></td>
+                                <td><button class="btn btn-primary timeline-button1" type="button" (click)="addSpaceHours(0, i)">A&uArr;</button>
+                                <td><button class="btn btn-primary timeline-button1" type="button" (click)="addSpaceHours(1, i)">A&dArr;</button>
+                                <td><button class="btn btn-primary timeline-button1" type="button" (click)="deleteHours(i)">&#10008;</button>
+                            </tr>
+                            </tbody>
+                            <button class="btn btn-primary timeline-button1" type="button" (click)="submitDayChanges()">Submit Day Changes</button>
+                        </table>
+                    </div>
+                </div>
+            </div>
+                <div class="exel">
+                <form class="exel" #timelineSettingsForm2="ngForm">
+                    <div class="row">
+                        <h2>Excel generator</h2>
+                        <div class="form-group">
+                            <label>From:</label>
+                            <input type="date" class="form-control"
+                                   required [(ngModel)]="generationModel.fromDate" name="fromDate">
+                        </div>
+                        <div class="form-group">
+                            <label>To: </label>
+                            <input type="date" class="form-control"
+                                   required [(ngModel)]="generationModel.toDate" name="toDate">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary timeline-button"
+                            [disabled]="!timelineSettingsForm2.form.valid" (click)="getExcel(timelineSettingsForm2)">
+                        Generate
+                    </button>
+                </form>
+                <br>
+                </div>
+        </div>
+    </div>
+</div>
+</div>
+<div id="testing"></div>
